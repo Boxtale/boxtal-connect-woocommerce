@@ -1,0 +1,26 @@
+language: php
+
+sudo: false
+
+env:
+  - WP_VERSION=latest WP_MULTISITE=0
+
+matrix:
+  fast_finish: true
+  include:
+  - php: 5.4
+  - php: 5.6
+  - php: 7.0
+  - php: 7.2.1
+    env: WP_VERSION=latest WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
+
+before_script:
+  - bash test/bin/install.sh boxtal_woocommerce_test root '' localhost $WP_VERSION
+  - bash test/bin/travis.sh before
+
+script:
+  - bash test/bin/phpunit.sh
+  - bash test/bin/phpcs.sh
+
+after_script:
+  - bash tests/bin/travis.sh after

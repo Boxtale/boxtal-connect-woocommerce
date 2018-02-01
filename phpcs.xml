@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset for code sniffer">
+    <description>My rules for PHP CodeSniffer</description>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/docs/*</exclude-pattern>
+
+    <rule ref="PHPCompatibility" />
+    <rule ref="WordPress">
+        <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+    </rule>
+</ruleset>
