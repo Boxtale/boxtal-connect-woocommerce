@@ -74,7 +74,7 @@ if ( ! class_exists( 'Boxtal_Woocommerce' ) ) {
 		}
 
 		/**
-		 * Say hi to the world
+		 * Say hello to the world
 		 */
 		public function hello() {
 			return 'hello world';
