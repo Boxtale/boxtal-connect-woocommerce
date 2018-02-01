@@ -15,6 +15,7 @@ matrix:
     env: WP_VERSION=latest WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
 before_script:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - bash test/bin/install.sh boxtal_woocommerce_test root '' localhost $WP_VERSION
   - bash test/bin/travis.sh before
 
