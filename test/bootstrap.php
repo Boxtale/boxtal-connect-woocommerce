@@ -26,7 +26,9 @@ class BW_Unit_Tests_Bootstrap {
     /**
      * Setup the unit testing environment.
      */
-    public function __construct() {
+    public function __construct() {µ
+
+
 
         // phpcs:disable WordPress.PHP.DiscouragedPHPFunctions, WordPress.PHP.DevelopmentFunctions
         ini_set( 'display_errors', 'on' );

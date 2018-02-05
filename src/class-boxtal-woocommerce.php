@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require 'config/boxtal_woocommerce-autoloader.php';
 
 /**
  * Check if WooCommerce is active (include network check)
