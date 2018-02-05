@@ -26,37 +26,6 @@ wp='vendor/wp-cli/wp-cli/bin/wp'
 productCsvParser='build/product-csv-parser.php'
 TEST_DB_NAME="woocommerce_test"
 
-download() {
-    if [ `which curl` ]; then
-        curl -s "$1" > "$2";
-    elif [ `which wget` ]; then
-        wget -nv -O "$2" "$1"
-    fi
-}
-
-if [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+$ ]]; then
-	WP_TESTS_TAG="branches/$WP_VERSION"
-elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
-	if [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
-		# version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
-		WP_TESTS_TAG="tags/${WP_VERSION%??}"
-	else
-		WP_TESTS_TAG="tags/$WP_VERSION"
-	fi
-elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-	WP_TESTS_TAG="trunk"
-else
-	# http serves a single offer, whereas https serves multiple. we only want one
-	download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
-	grep '[0-9]+\.[0-9]+(\.[0-9]+)?' $TMPDIR/wp-latest.json
-	LATEST_VERSION=$(grep -o '"version":"[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//')
-	if [[ -z "$LATEST_VERSION" ]]; then
-		echo "Latest WordPress version could not be found"
-		exit 1
-	fi
-	WP_TESTS_TAG="tags/$LATEST_VERSION"
-fi
-
 check_requirements() {
  echo 'TO DO check requirements like apache, php, mysql, php extensions'
 }
@@ -67,6 +36,39 @@ create_directories() {
     rm -rf $TMPDIR
     mkdir -p $WP_TESTS_DIR
     mkdir -p $WP_CORE_DIR
+}
+
+download() {
+    if [ `which curl` ]; then
+        curl -s "$1" > "$2";
+    elif [ `which wget` ]; then
+        wget -nv -O "$2" "$1"
+    fi
+}
+
+set_version() {
+    if [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+$ ]]; then
+        WP_TESTS_TAG="branches/$WP_VERSION"
+    elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
+        if [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
+            # version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
+            WP_TESTS_TAG="tags/${WP_VERSION%??}"
+        else
+            WP_TESTS_TAG="tags/$WP_VERSION"
+        fi
+    elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
+        WP_TESTS_TAG="trunk"
+    else
+        # http serves a single offer, whereas https serves multiple. we only want one
+        download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
+        LATEST_VERSION=$(grep -o '"version":"[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//')
+        echo "Latest wp version $LATEST_VERSION"
+        if [[ -z "$LATEST_VERSION" ]]; then
+            echo "Latest WordPress version could not be found"
+            exit 1
+        fi
+        WP_TESTS_TAG="tags/$LATEST_VERSION"
+    fi
 }
 
 install_wp() {
@@ -136,6 +138,7 @@ activate_plugins() {
 
 check_requirements
 create_directories
+set_version
 install_wp
 install_test_suite
 install_wc
