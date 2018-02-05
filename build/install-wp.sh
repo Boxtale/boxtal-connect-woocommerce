@@ -6,6 +6,8 @@ if [ $# -lt 3 ]; then
 	exit 1
 fi
 
+set -ex
+
 DB_NAME=$1
 DB_USER=$2
 DB_PASS=$3
@@ -54,8 +56,6 @@ else
 	fi
 	WP_TESTS_TAG="tags/$LATEST_VERSION"
 fi
-
-set -ex
 
 check_requirements() {
  echo 'TO DO check requirements like apache, php, mysql, php extensions'
