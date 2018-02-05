@@ -15,7 +15,7 @@ matrix:
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - bash test/bin/install.sh boxtal_woocommerce_test root '' localhost $WP_VERSION
+  - bash build/install-wp.sh boxtal_woocommerce_test root '' localhost $WP_VERSION
   - bash test/bin/travis.sh before
 
 script:

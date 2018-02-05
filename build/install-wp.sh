@@ -55,7 +55,7 @@ else
 	WP_TESTS_TAG="tags/$LATEST_VERSION"
 fi
 
-# set -ex
+set -ex
 
 check_requirements() {
  echo 'TO DO check requirements like apache, php, mysql, php extensions'
