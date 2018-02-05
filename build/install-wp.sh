@@ -22,8 +22,8 @@ TMPSITEADMINPWD="admin"
 TMPSITEADMINEMAIL="test_wordpress@boxtal.com"
 TMPDIR=${TMPDIR-./tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
-wp='vendor/wp-cli/wp-cli/bin/wp'
-productCsvParser='build/product-csv-parser.php'
+wp='./vendor/wp-cli/wp-cli/bin/wp'
+productCsvParser='./build/product-csv-parser.php'
 TEST_DB_NAME="woocommerce_test"
 
 check_requirements() {
