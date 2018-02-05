@@ -14,12 +14,14 @@ matrix:
     env: WP_VERSION=latest WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
 before_script:
+  - bash build/travis.sh before
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
   - bash build/install-wp.sh boxtal_woocommerce_test root '' localhost $WP_VERSION
-  - bash test/bin/travis.sh before
 
 script:
-  - bash test/bin/phpunit.sh
-  - bash test/bin/phpcs.sh
+  - bash build/phpunit.sh
+  - bash build/phpcs.sh
 
 after_script:
-  - bash tests/bin/travis.sh after
+  - bash build/travis.sh after
