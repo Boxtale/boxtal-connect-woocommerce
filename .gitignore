@@ -3,4 +3,3 @@ composer.lock
 .idea/
 clover.xml
 tmp/
-coverage.clover
