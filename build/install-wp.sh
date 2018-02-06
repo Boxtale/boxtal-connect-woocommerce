@@ -1,41 +1,37 @@
 #!/usr/bin/env bash
-# See https://raw.githubusercontent.com/wp-cli/scaffold-command/master/templates/install-wp-tests.sh
 
-if [ $# -lt 3 ]; then
-	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]"
+if [ $# -lt 4 ]; then
+	echo "usage: $0 <destination> <db-name> <db-user> <db-pass> [db-host] [wp-version] [wc-version]"
 	exit 1
 fi
 
 set -ex
 
-DB_NAME=$1
-DB_USER=$2
-DB_PASS=$3
-DB_HOST=${4-localhost}
-WP_VERSION=${5-latest}
-SKIP_DB_CREATE=${6-false}
+DEST_DIR=$1
+DEST_DIR=$(echo $DEST_DIR | sed -e "s/\/$//")
+DB_NAME=$2
+DB_USER=$3
+DB_PASS=$4
+DB_HOST=${5-localhost}
+WP_VERSION=${6-latest}
+WC_VERSION=${7-3.3.0}
 
-TMPSITEURL="http://localhost:18770"
+TMPSITEURL="http://localhost/boxtal-woocommerce"
 TMPSITETITLE="boxtaltest"
 TMPSITEADMINLOGIN="admin"
 TMPSITEADMINPWD="admin"
 TMPSITEADMINEMAIL="test_wordpress@boxtal.com"
-TMPDIR=${TMPDIR-./tmp}
-TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
 wp='./vendor/wp-cli/wp-cli/bin/wp'
 productCsvParser='./build/product-csv-parser.php'
-TEST_DB_NAME="woocommerce_test"
 
 check_requirements() {
  echo 'TO DO check requirements like apache, php, mysql, php extensions'
 }
 
-create_directories() {
-    WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
-    WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
-    rm -rf $TMPDIR
-    mkdir -p $WP_TESTS_DIR
-    mkdir -p $WP_CORE_DIR
+create_directory() {
+    WP_CORE_DIR=${WP_CORE_DIR-$DEST_DIR/boxtal-woocommerce}
+    sudo rm -rf $WP_CORE_DIR
+    sudo -u www-data -H sh -c "mkdir -p $WP_CORE_DIR"
 }
 
 download() {
@@ -46,34 +42,9 @@ download() {
     fi
 }
 
-set_version() {
-    if [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+$ ]]; then
-        WP_TESTS_TAG="branches/$WP_VERSION"
-    elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
-        if [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
-            # version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
-            WP_TESTS_TAG="tags/${WP_VERSION%??}"
-        else
-            WP_TESTS_TAG="tags/$WP_VERSION"
-        fi
-    elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-        WP_TESTS_TAG="trunk"
-    else
-        # http serves a single offer, whereas https serves multiple. we only want one
-        download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
-        LATEST_VERSION=$(grep -o '"version":"[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//')
-        echo "Latest wp version $LATEST_VERSION"
-        if [[ -z "$LATEST_VERSION" ]]; then
-            echo "Latest WordPress version could not be found"
-            exit 1
-        fi
-        WP_TESTS_TAG="tags/$LATEST_VERSION"
-    fi
-}
-
 install_wp() {
-    $wp core download --locale=fr_FR --force --version=$WP_VERSION --path=$WP_CORE_DIR
-    $wp core version --path=$WP_CORE_DIR
+    sudo -u www-data -H sh -c "$wp core download --force --version=$WP_VERSION --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp core version --path=$WP_CORE_DIR"
 
     # parse DB_HOST for port or socket references
 	local PARTS=(${DB_HOST//\:/ })
@@ -84,52 +55,32 @@ install_wp() {
 	if ! [ -z $DB_HOSTNAME ] ; then
         EXTRA=" --dbhost=$DB_HOSTNAME"
 	fi
-    $wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS $EXTRA --skip-check --path=$WP_CORE_DIR <<PHP
+    sudo -u www-data -H sh -c "$wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS $EXTRA --skip-check --path=$WP_CORE_DIR <<PHP
 define( 'WP_DEBUG', true );
-PHP
+PHP"
 
-    $wp db reset --yes --path=$WP_CORE_DIR
-    $wp core install --url=$TMPSITEURL --title=$TMPSITETITLE --admin_user=$TMPSITEADMINLOGIN --admin_email=$TMPSITEADMINEMAIL --admin_password=$TMPSITEADMINPWD --skip-email --path=$WP_CORE_DIR
-}
-
-install_test_suite() {
-	# portable in-place argument for both GNU sed and Mac OSX sed
-	if [[ $(uname -s) == 'Darwin' ]]; then
-		local ioption='-i .bak'
-	else
-		local ioption='-i'
-	fi
-
-    svn co --quiet https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/includes/ $WP_TESTS_DIR/includes
-    svn co --quiet https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/data/ $WP_TESTS_DIR/data
-
-	if [ ! -f wp-tests-config.php ]; then
-		download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
-		# remove all forward slashes in the end
-		WP_CORE_DIR=$(echo $WP_CORE_DIR | sed "s:/\+$::")
-		echo $WP_CORE_DIR
-		sed $ioption "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s/yourpasswordhere/$DB_PASS/" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
-	fi
-
+    sudo -u www-data -H sh -c "$wp db reset --yes --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp core install --url=$TMPSITEURL --title=$TMPSITETITLE --admin_user=$TMPSITEADMINLOGIN --admin_email=$TMPSITEADMINEMAIL --admin_password=$TMPSITEADMINPWD --skip-email --path=$WP_CORE_DIR"
 }
 
 install_wc() {
-    $wp plugin install woocommerce --activate --path=$WP_CORE_DIR
+    sudo -u www-data -H sh -c "$wp plugin install woocommerce --version=$WC_VERSION --activate --path=$WP_CORE_DIR"
+}
+
+set_directory_rights() {
+    sudo find $WP_CORE_DIR -type f -exec chmod 664 {} \;
+    sudo find $WP_CORE_DIR -type d -exec chmod 775 {} \;
 }
 
 install_wc_dummy_data() {
-    $wp plugin install wordpress-importer --activate --path=$WP_CORE_DIR
-    $wp import $WP_CORE_DIR/wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors='create' --path=$WP_CORE_DIR
-    php $productCsvParser $WP_CORE_DIR/wp-content/plugins/woocommerce/dummy-data/dummy-data.csv
+    sudo -u www-data -H sh -c "$wp plugin install wordpress-importer --activate --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp import $WP_CORE_DIR/wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors='create' --path=$WP_CORE_DIR"
+    php $productCsvParser $WP_CORE_DIR/wp-content/plugins/woocommerce/sample-data/sample_composproducts.csv
     echo 'product import success'
 }
 
 copy_plugin_to_plugin_dir() {
-    cp -R src/ $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce
+    sudo -u www-data -H sh -c "cp -R src/ $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce"
 }
 
 activate_plugins() {
@@ -137,11 +88,10 @@ activate_plugins() {
 }
 
 check_requirements
-create_directories
-set_version
+create_directory
 install_wp
-install_test_suite
 install_wc
+set_directory_rights
 install_wc_dummy_data
 copy_plugin_to_plugin_dir
 activate_plugins

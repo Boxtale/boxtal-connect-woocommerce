@@ -18,8 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require 'config/boxtal_woocommerce-autoloader.php';
-
 /**
  * Check if WooCommerce is active (include network check)
  */
@@ -27,14 +25,9 @@ if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/plugin.php';
 }
 
-if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) :
-	if ( ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) ) :
-		return;
-	endif;
-endif;
-
-
 if ( ! class_exists( 'Boxtal_Woocommerce' ) ) {
+
+	require 'autoload/boxtal-woocommerce-autoloader.php';
 
 	define( 'EMC_LOG_FILE', 'Boxtal_Woocommerce' );
 
@@ -55,6 +48,30 @@ if ( ! class_exists( 'Boxtal_Woocommerce' ) ) {
 	 * @author      API Boxtal
 	 */
 	class Boxtal_Woocommerce {
+
+		/**
+		 * Protected instance for the plugin
+		 *
+		 * @static
+		 * @var Boxtal_Woocommerce
+		 */
+		protected static $_instance = null;
+
+		/**
+		 * Main boxtal woocommerce Instance
+		 *
+		 * Ensures only one instance of boxtal woocommerce is loaded or can be loaded.
+		 *
+		 * @static
+		 * @see boxtal_woocommerce()
+		 * @return Boxtal_Woocommerce - Main instance
+		 */
+		public static function instance() {
+			if ( null === self::$_instance ) {
+				self::$_instance = new self();
+			}
+			return self::$_instance;
+		}
 
 		/**
 		 * Activate the module, install it if its tables do not exist

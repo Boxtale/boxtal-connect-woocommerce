@@ -24,22 +24,19 @@
   },
   "prefer-stable" : true,
   "scripts": {
-    "test": [
-      "vendor/bin/phpunit --coverage-clover=coverage.clover"
+    "sync": [
+      "cp -R src/ tmp/wordpress/wp-content/plugins/boxtal-woocommerce"
     ],
     "phpcs": [
       "vendor/bin/phpcs -s -p ."
     ],
     "phpcbf": [
       "vendor/bin/phpcbf -p ."
-    ],
-    "install": [
-      ""
     ]
   },
   "extra": {
     "scripts-description": {
-      "test": "Run unit tests",
+      "syncs": "Syncs plugin code with local wordpress",
       "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
     }

@@ -1,27 +1,60 @@
+# Travis CI Configuration File
+
+# Tell Travis CI we're using PHP
 language: php
 
-sudo: false
+# PHP version used in first build configuration.
+php:
+  - 5.6
 
+# WordPress version used in first build configuration.
 env:
-  - WP_VERSION=latest WP_MULTISITE=0
+  - WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
 
 matrix:
-  fast_finish: true
   include:
+  - php: 5.3
+    env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
+  - php: 5.3
+    env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
+  - php: 5.3
+    env: WP_VERSION=latest WC_VERSION=2.6.14 WP_MULTISITE=0
+  - php: 5.3
+    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
+  - php: 5.3
+    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0
   - php: 5.6
+    env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
+  - php: 5.6
+    env: WP_VERSION=latest WC_VERSION=2.6.14 WP_MULTISITE=0
+  - php: 5.6
+    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
+  - php: 5.6
+    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0
   - php: 7.0
+    env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
+  - php: 7.0
+    env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
+  - php: 7.0
+    env: WP_VERSION=latest WC_VERSION=2.6.14 WP_MULTISITE=0
+  - php: 7.0
+    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
+  - php: 7.0
+    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0
   - php: 7.2.1
-    env: WP_VERSION=latest WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
+    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
 before_script:
-  - bash build/travis.sh before
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
-  - bash build/install-wp.sh boxtal_woocommerce_test root '' localhost $WP_VERSION
+  - bash test/bin/install-wc-tests.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION
+  - bash build/travis.sh before
 
 script:
-  - bash build/phpunit.sh
+  - bash test/bin/phpunit.sh
   - bash build/phpcs.sh
 
 after_script:
   - bash build/travis.sh after
+
+sudo: false

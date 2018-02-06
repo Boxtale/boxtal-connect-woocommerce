@@ -9,4 +9,8 @@
     <rule ref="WordPress">
         <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
     </rule>
+    <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+        <exclude-pattern>src/autoload/</exclude-pattern>
+        <exclude-pattern>tests/</exclude-pattern>
+    </rule>
 </ruleset>
