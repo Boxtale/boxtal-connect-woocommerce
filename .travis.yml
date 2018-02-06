@@ -15,14 +15,19 @@ matrix:
   include:
   - php: 5.3
     env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
+    dist: precise
   - php: 5.3
     env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
+    dist: precise
   - php: 5.3
     env: WP_VERSION=latest WC_VERSION=2.6.14 WP_MULTISITE=0
+    dist: precise
   - php: 5.3
     env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
+    dist: precise
   - php: 5.3
-    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0
+    dist: precise
   - php: 5.6
     env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
   - php: 5.6
@@ -30,7 +35,7 @@ matrix:
   - php: 5.6
     env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
   - php: 5.6
-    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0
   - php: 7.0
     env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
   - php: 7.0
@@ -40,9 +45,9 @@ matrix:
   - php: 7.0
     env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
   - php: 7.0
-    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0
   - php: 7.2.1
-    env: WP_VERSION=latest WC_VERSION=latest WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
+    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
 before_script:
   - composer self-update
