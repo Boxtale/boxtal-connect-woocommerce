@@ -56,7 +56,6 @@ before_script:
   - bash build/travis.sh before
 
 script:
-  - phpunit
   - bash build/phpcs.sh
 
 after_script:
