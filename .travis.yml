@@ -9,24 +9,24 @@ php:
 
 # WordPress version used in first build configuration.
 env:
-  - WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
+  - WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0 PHPUNIT_VERSION="travis"
 
 matrix:
   include:
   - php: 5.3
-    env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
+    env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5"
     dist: precise
   - php: 5.3
-    env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
+    env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5"
     dist: precise
   - php: 5.3
-    env: WP_VERSION=latest WC_VERSION=2.6.14 WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=2.6.14 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5"
     dist: precise
   - php: 5.3
-    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5"
     dist: precise
   - php: 5.3
-    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0 PHPUNIT_VERSION="~4.5"
     dist: precise
   - php: 5.6
     env: WP_VERSION=4.4 WC_VERSION=3.0.3 WP_MULTISITE=0
@@ -49,13 +49,18 @@ matrix:
   - php: 7.2.1
     env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
-before_script:
+before_install:
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
+  - composer install --no-dev --prefer-dist
+
+before_script:
   - bash test/bin/install-wc-tests.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION
   - bash build/travis.sh before
 
 script:
+  - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit; fi
+  - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit; fi
   - bash build/phpcs.sh
 
 after_script:
