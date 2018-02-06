@@ -8,10 +8,7 @@
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
-            <directory suffix=".php">.</directory>
-            <exclude>
-                <directory suffix=".php">test</directory>
-            </exclude>
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
     <logging>
