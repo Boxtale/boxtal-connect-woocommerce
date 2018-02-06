@@ -70,5 +70,7 @@ script:
 
 after_script:
   - bash build/travis.sh after
+  - if [[ RUN_CODE_COVERAGE == 1 ]]; then wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar; fi
+  - if [[ RUN_CODE_COVERAGE == 1 ]]; then php coveralls.phar --verbose; fi
 
 sudo: false
