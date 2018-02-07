@@ -75,16 +75,36 @@ set_directory_rights() {
 install_wc_dummy_data() {
     sudo -u www-data -H sh -c "$wp plugin install wordpress-importer --activate --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp import $WP_CORE_DIR/wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors='create' --path=$WP_CORE_DIR"
-    php $productCsvParser $WP_CORE_DIR/wp-content/plugins/woocommerce/sample-data/sample_composproducts.csv
     echo 'product import success'
+}
+
+wc_setup() {
+    sudo -u www-data -H sh -c "$wp option update woocommerce_version $WC_VERSION --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_db_version $WC_VERSION --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_store_address '24 rue Drouot' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_store_city 'Paris' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_default_country 'FR' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_currency 'EUR' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_product_type 'both' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_currency_pos 'right' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_price_decimal_sep ',' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_price_num_decimals '2' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_price_thousand_sep ' ' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_allow_tracking 'no' --path=$WP_CORE_DIR"
+
+    SHOP_ID=`sudo -u www-data -H sh -c "$wp post create --post_status=publish --post_type=page --post_author=1 --post_name='shop' --post_title='Shop' --post_content='' --post_parent=0 --comment_status='closed' --porcelain --path=$WP_CORE_DIR"`
+    CART_ID=`sudo -u www-data -H sh -c "$wp post create --post_status=publish --post_type=page --post_author=1 --post_name='cart' --post_title='Cart' --post_content='[woocommerce_cart]' --post_parent=0 --comment_status='closed' --porcelain --path=$WP_CORE_DIR"`
+    CHECKOUT_ID=`sudo -u www-data -H sh -c "$wp post create --post_status=publish --post_type=page --post_author=1 --post_name='checkout' --post_title='Checkout' --post_content='[woocommerce_checkout]' --post_parent=0 --comment_status='closed' --porcelain --path=$WP_CORE_DIR"`
+    MYACCOUNT_ID=`sudo -u www-data -H sh -c "$wp post create --post_status=publish --post_type=page --post_author=1 --post_name='myaccount' --post_title='My account' --post_content='[woocommerce_my_account]' --post_parent=0 --comment_status='closed' --porcelain --path=$WP_CORE_DIR"`
+    sudo -u www-data -H sh -c "$wp option update woocommerce_shop_page_id $SHOP_ID --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_cart_page_id $CART_ID --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_checkout_page_id $CHECKOUT_ID --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_myaccount_page_id $MYACCOUNT_ID --path=$WP_CORE_DIR"
+
 }
 
 copy_plugin_to_plugin_dir() {
     sudo -u www-data -H sh -c "cp -R src/ $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce"
-}
-
-activate_plugins() {
-    echo 'TO DO activate plugins & setup (OPTIONAL)'
 }
 
 check_requirements
@@ -93,5 +113,5 @@ install_wp
 install_wc
 set_directory_rights
 install_wc_dummy_data
+wc_setup
 copy_plugin_to_plugin_dir
-activate_plugins
