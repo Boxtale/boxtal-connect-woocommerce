@@ -83,6 +83,7 @@ wc_setup() {
     sudo -u www-data -H sh -c "$wp option update woocommerce_db_version $WC_VERSION --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_store_address '24 rue Drouot' --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_store_city 'Paris' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_store_postcode '75009' --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_default_country 'FR' --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_currency 'EUR' --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_product_type 'both' --path=$WP_CORE_DIR"
@@ -100,7 +101,10 @@ wc_setup() {
     sudo -u www-data -H sh -c "$wp option update woocommerce_cart_page_id $CART_ID --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_checkout_page_id $CHECKOUT_ID --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update woocommerce_myaccount_page_id $MYACCOUNT_ID --path=$WP_CORE_DIR"
-
+    sudo -u www-data -H sh -c "$wp option update woocommerce_cheque_settings '{\"enabled\":\"yes\",\"title\":\"Check payments\",\"description\":\"Please send a check to Store Name, Store Street, Store Town, Store State \/ County, Store Postcode.\",\"instructions\":\"\"}' --format=json --autoload='yes' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_calc_taxes 'yes' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp option update woocommerce_setup_automated_taxes 'yes' --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp theme install storefront --activate --path=$WP_CORE_DIR"
 }
 
 copy_plugin_to_plugin_dir() {
