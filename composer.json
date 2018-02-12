@@ -27,9 +27,6 @@
   },
   "prefer-stable" : true,
   "scripts": {
-    "sync": [
-      "cp -R src/ tmp/wordpress/wp-content/plugins/boxtal-woocommerce"
-    ],
     "phpcs": [
       "vendor/bin/phpcs -s -p ."
     ],
@@ -39,7 +36,6 @@
   },
   "extra": {
     "scripts-description": {
-      "syncs": "Syncs plugin code with local wordpress",
       "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
     }

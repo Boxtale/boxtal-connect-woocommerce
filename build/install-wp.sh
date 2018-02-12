@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 4 ]; then
-	echo "usage: $0 <destination> <db-name> <db-user> <db-pass> [db-host] [wp-version] [wc-version]"
+	echo "usage: $0 <destination> <db-name> <db-user> <db-pass> [db-host] [wp-version] [wc-version] [port]"
 	exit 1
 fi
 
+echo "starting install"
 set -ex
 
 DEST_DIR=$1
@@ -16,7 +17,11 @@ DB_HOST=${5-localhost}
 WP_VERSION=${6-latest}
 WC_VERSION=${7-3.3.0}
 
-TMPSITEURL="http://localhost/boxtal-woocommerce"
+if [ -z "$8" ]; then
+    TMPSITEURL="http://localhost/boxtal-woocommerce"
+else
+    TMPSITEURL="http://localhost:8082/boxtal-woocommerce"
+fi
 TMPSITETITLE="boxtaltest"
 TMPSITEADMINLOGIN="admin"
 TMPSITEADMINPWD="admin"
@@ -31,7 +36,9 @@ check_requirements() {
 create_directory() {
     WP_CORE_DIR=${WP_CORE_DIR-$DEST_DIR/boxtal-woocommerce}
     sudo rm -rf $WP_CORE_DIR
-    sudo -u www-data -H sh -c "mkdir -p $WP_CORE_DIR"
+    sudo mkdir -p $WP_CORE_DIR
+    sudo chown -R www-data:www-data $WP_CORE_DIR
+    sudo find $WP_CORE_DIR -type d -exec chmod 775 {} \;
 }
 
 download() {
