@@ -21,6 +21,10 @@ if [[ "$(docker images -q boxtal-woocommerce-poc-$PHP_VERSION-$WP_VERSION-$WC_VE
     docker stop $C1
 fi
 C2=$(docker run -di -p $PORT:$PORT boxtal-woocommerce-poc-$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT)
+docker cp src/. $C2:/home/docker/sync/
+docker exec -i $C2 sh -c "sudo -u www-data -H sh -c \"cp -R /home/docker/sync/ /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\""
+docker exec -i $C2 sh -c "sudo find /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce -type f -exec chmod 664 {} \;"
+docker exec -i $C2 sh -c "sudo find /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce -type d -exec chmod 775 {} \;"
 docker exec -i $C2 sh -c "sudo service mysql start"
 docker exec -i $C2 sh -c "sudo service apache2 start"
 echo "container is running on port $PORT"

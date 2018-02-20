@@ -114,10 +114,6 @@ wc_setup() {
     sudo -u www-data -H sh -c "$wp theme install storefront --activate --path=$WP_CORE_DIR"
 }
 
-copy_plugin_to_plugin_dir() {
-    sudo -u www-data -H sh -c "cp -R src/ $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce"
-}
-
 check_requirements
 create_directory
 install_wp
@@ -125,4 +121,3 @@ install_wc
 set_directory_rights
 install_wc_dummy_data
 wc_setup
-copy_plugin_to_plugin_dir
