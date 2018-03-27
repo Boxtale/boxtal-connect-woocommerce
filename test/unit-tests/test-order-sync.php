@@ -27,21 +27,25 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
 		);
 		$order      = wc_create_order( $order_data );
 
-		$item    = new WC_Order_Item_Product();
-		$product = WC_Helper_Product::create_simple_product();
-		$product->set_weight( 2.5 );
-		$product->set_name( 'simple product' );
-		$product->save();
-		$item->set_props(
-			array(
-				'product'  => $product,
-				'quantity' => 4,
-				'subtotal' => wc_get_price_excluding_tax( $product, array( 'qty' => 4 ) ),
-				'total'    => wc_get_price_excluding_tax( $product, array( 'qty' => 4 ) ),
-			)
-		);
-		$item->save();
-		$order->add_item( $item );
+        $product = WC_Helper_Product::create_simple_product();
+        $product->set_weight( 2.5 );
+        $product->set_name( 'simple product' );
+        $product->save();
+        if (class_exists('WC_Order_Item_Product')) {
+            $item    = new WC_Order_Item_Product();
+            $item->set_props(
+                array(
+                    'product'  => $product,
+                    'quantity' => 4,
+                    'subtotal' => wc_get_price_excluding_tax( $product, array( 'qty' => 4 ) ),
+                    'total'    => wc_get_price_excluding_tax( $product, array( 'qty' => 4 ) ),
+                )
+            );
+            $item->save();
+            $order->add_item( $item );
+        } else {
+            $order->add_product( $product, 4);
+        }
 
 		$order->set_shipping_first_name( 'Jon' );
 		$order->set_shipping_last_name( 'Snow' );
