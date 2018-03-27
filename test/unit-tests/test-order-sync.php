@@ -58,17 +58,61 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
             $order->add_product( $product, 4);
         }
 
-		$order->set_shipping_first_name( 'Jon' );
-		$order->set_shipping_last_name( 'Snow' );
-		$order->set_shipping_company( 'GoT' );
-		$order->set_shipping_address_1( 'House Stark' );
-		$order->set_shipping_address_2( 'Winterfell' );
-		$order->set_shipping_city( 'Paris' );
-		$order->set_shipping_state( '' );
-		$order->set_shipping_postcode( '75009' );
-		$order->set_shipping_country( 'FR' );
-		$order->set_billing_email( 'jsnow@boxtal.com' );
-		$order->set_billing_phone( '0612341234' );
+        if (method_exists($order, 'set_shipping_first_name')) {
+            $order->set_shipping_first_name( 'Jon' );
+        } else {
+            $order->shipping_first_name = 'Jon';
+        }
+        if (method_exists($order, 'set_shipping_last_name')) {
+            $order->set_shipping_last_name( 'Snow' );
+        } else {
+            $order->shipping_last_name = 'Snow';
+        }
+        if (method_exists($order, 'set_shipping_company')) {
+            $order->set_shipping_company( 'GoT' );
+        } else {
+            $order->shipping_company = 'GoT';
+        }
+        if (method_exists($order, 'set_shipping_address_1')) {
+            $order->set_shipping_address_1( 'House Stark' );
+        } else {
+            $order->shipping_address_1 = 'House Stark';
+        }
+        if (method_exists($order, 'set_shipping_address_2')) {
+            $order->set_shipping_address_2( 'Winterfell' );
+        } else {
+            $order->shipping_address_2 = 'Winterfell';
+        }
+        if (method_exists($order, 'set_shipping_city')) {
+            $order->set_shipping_city( 'Paris' );
+        } else {
+            $order->shipping_city = 'Paris';
+        }
+        if (method_exists($order, 'set_shipping_state')) {
+            $order->set_shipping_state( '' );
+        } else {
+            $order->shipping_state = '';
+        }
+        if (method_exists($order, 'set_shipping_postcode')) {
+            $order->set_shipping_postcode( '75009' );
+        } else {
+            $order->shipping_postcode = '75009';
+        }
+        if (method_exists($order, 'set_shipping_country')) {
+            $order->set_shipping_country( 'FR' );
+        } else {
+            $order->shipping_country = 'FR';
+        }
+        if (method_exists($order, 'set_billing_email')) {
+            $order->set_billing_email( 'jsnow@boxtal.com' );
+        } else {
+            $order->billing_email = 'jsnow@boxtal.com';
+        }
+        if (method_exists($order, 'set_billing_phone')) {
+            $order->set_billing_phone( '0612341234' );
+        } else {
+            $order->billing_phone = '0612341234';
+        }
 		$order->save();
 		$order_sync = new Order_Sync();
 
