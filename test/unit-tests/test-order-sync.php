@@ -38,7 +38,10 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
         } else {
             $product->name = 'simple product';
         }
-        $product->save();
+        if (method_exists($product, 'save')) {
+            $product->save();
+        }
+
         if (class_exists('WC_Order_Item_Product')) {
             $item    = new WC_Order_Item_Product();
             $item->set_props(
