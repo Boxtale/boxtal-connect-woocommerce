@@ -27,7 +27,7 @@ require_once $wp_tests_dir . '/includes/functions.php';
  * Activates this plugin in WordPress so it can be tested.
  */
 function _manually_load_plugin() {
-	require __DIR__ . '/../src/class-boxtal-woocommerce.php';
+	require __DIR__ . '/../src/boxtal-woocommerce.php';
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
