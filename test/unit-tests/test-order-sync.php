@@ -28,8 +28,16 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
 		$order      = wc_create_order( $order_data );
 
         $product = WC_Helper_Product::create_simple_product();
-        $product->set_weight( 2.5 );
-        $product->set_name( 'simple product' );
+        if (method_exists($product, 'set_weight')) {
+            $product->set_weight( 2.5 );
+        } else {
+            $product->weight = 2.5;
+        }
+        if (method_exists($product, 'set_name')) {
+            $product->set_name( 'simple product' );
+        } else {
+            $product->name = 'simple product';
+        }
         $product->save();
         if (class_exists('WC_Order_Item_Product')) {
             $item    = new WC_Order_Item_Product();
