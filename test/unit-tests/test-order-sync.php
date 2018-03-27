@@ -113,7 +113,10 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
         } else {
             $order->billing_phone = '0612341234';
         }
-		$order->save();
+        if (method_exists($order, 'save')) {
+            $order->save();
+        }
+
 		$order_sync = new Order_Sync();
 
 		$this->assertSame(
