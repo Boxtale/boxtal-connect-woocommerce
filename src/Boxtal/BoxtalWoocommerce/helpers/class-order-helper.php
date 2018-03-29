@@ -69,7 +69,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_first_name' ) ) {
 			$order->set_shipping_first_name( $name );
 		} else {
-			$order->shipping_first_name = $name;
+			update_post_meta( $order->id, '_shipping_first_name', $name );
 		}
 	}
 
@@ -97,7 +97,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_last_name' ) ) {
 			$order->set_shipping_last_name( $name );
 		} else {
-			$order->shipping_last_name = $name;
+			update_post_meta( $order->id, '_shipping_last_name', $name );
 		}
 	}
 
@@ -125,7 +125,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_company' ) ) {
 			$order->set_shipping_company( $name );
 		} else {
-			$order->shipping_company = $name;
+			update_post_meta( $order->id, '_shipping_company', $name );
 		}
 	}
 
@@ -153,7 +153,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_address_1' ) ) {
 			$order->set_shipping_address_1( $address );
 		} else {
-			$order->shipping_address_1 = $address;
+			update_post_meta( $order->id, '_shipping_address_1', $address );
 		}
 	}
 
@@ -181,7 +181,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_address_2' ) ) {
 			$order->set_shipping_address_2( $address );
 		} else {
-			$order->shipping_address_2 = $address;
+			update_post_meta( $order->id, '_shipping_address_2', $address );
 		}
 	}
 
@@ -209,7 +209,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_city' ) ) {
 			$order->set_shipping_city( $city );
 		} else {
-			$order->shipping_city = $city;
+			update_post_meta( $order->id, '_shipping_city', $city );
 		}
 	}
 
@@ -237,7 +237,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_state' ) ) {
 			$order->set_shipping_state( $state );
 		} else {
-			$order->shipping_state = $state;
+			update_post_meta( $order->id, '_shipping_state', $state );
 		}
 	}
 
@@ -265,7 +265,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_postcode' ) ) {
 			$order->set_shipping_postcode( $postcode );
 		} else {
-			$order->shipping_postcode = $postcode;
+			update_post_meta( $order->id, '_shipping_postcode', $postcode );
 		}
 	}
 
@@ -293,7 +293,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_shipping_country' ) ) {
 			$order->set_shipping_country( $country );
 		} else {
-			$order->shipping_country = $country;
+			update_post_meta( $order->id, '_shipping_country', $country );
 		}
 	}
 
@@ -321,7 +321,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_billing_email' ) ) {
 			$order->set_billing_email( $email );
 		} else {
-			$order->billing_email = $email;
+			update_post_meta( $order->id, '_billing_email', $email );
 		}
 	}
 
@@ -349,7 +349,7 @@ class Order_Helper {
 		if ( method_exists( $order, 'set_billing_phone' ) ) {
 			$order->set_billing_phone( $phone );
 		} else {
-			$order->billing_phone = $phone;
+			update_post_meta( $order->id, '_billing_phone', $phone );
 		}
 	}
 

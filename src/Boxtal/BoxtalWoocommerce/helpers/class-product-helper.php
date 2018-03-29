@@ -43,9 +43,10 @@ class Product_Helper {
 	 * @return string $description
 	 */
 	public static function get_product_description( $item ) {
-		$check_id    = 0 === $item['variation_id'] ? $item['product_id'] : $item['variation_id'];
-		$product     = self::get_product( $check_id );
-		$description = self::get_name( $product );
+		$variation_id = $item['variation_id'];
+		$check_id     = ( '0' === $variation_id || 0 === $variation_id ) ? $item['product_id'] : $variation_id;
+		$product      = self::get_product( $check_id );
+		$description  = self::get_name( $product );
 		// add attributes to title for variations.
 		$product_type = self::get_product_type( $product );
 		if ( 'variation' === $product_type ) {
@@ -103,7 +104,7 @@ class Product_Helper {
 		if ( method_exists( $product, 'set_weight' ) ) {
 			$product->set_weight( $weight );
 		} else {
-			$product->weight = $weight;
+			update_post_meta( $product->id, '_weight', $weight );
 		}
 	}
 
@@ -131,7 +132,7 @@ class Product_Helper {
 		if ( method_exists( $product, 'set_name' ) ) {
 			$product->set_name( $name );
 		} else {
-			$product->name = $name;
+			update_post_meta( $product->id, '_name', $name );
 		}
 	}
 

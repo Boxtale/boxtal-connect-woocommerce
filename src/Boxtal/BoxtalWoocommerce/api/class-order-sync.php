@@ -65,7 +65,8 @@ class Order_Sync {
 			$products  = array();
 			foreach ( $order->get_items( 'line_item' ) as $item ) {
 				$product                = array();
-				$product_id             = 0 !== $item['variation_id'] ? $item['variation_id'] : $item['product_id'];
+				$variation_id           = $item['variation_id'];
+				$product_id             = ( '0' !== $variation_id && 0 !== $variation_id ) ? $variation_id : $item['product_id'];
 				$product['weight']      = false !== Product_Helper::get_product_weight( $product_id ) ? (float) Product_Helper::get_product_weight( $product_id ) : null;
 				$product['quantity']    = (int) $item['qty'];
 				$product['description'] = esc_html( Product_Helper::get_product_description( $item ) );
