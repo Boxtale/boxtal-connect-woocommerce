@@ -57,7 +57,7 @@ matrix:
 before_install:
   - composer self-update
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
-  - composer install --no-dev --prefer-dist
+  - composer install --prefer-dist
 
 before_script:
   - bash test/bin/install-wc-tests.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION
