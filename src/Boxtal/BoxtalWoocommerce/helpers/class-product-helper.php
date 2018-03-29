@@ -45,7 +45,7 @@ class Product_Helper {
 	public static function get_product_description( $item ) {
 		$check_id    = 0 === $item['variation_id'] ? $item['product_id'] : $item['variation_id'];
 		$product     = self::get_product( $check_id );
-		$description = $product->get_name();
+		$description = self::get_name( $product );
 		// add attributes to title for variations.
 		$product_type = self::get_product_type( $product );
 		if ( 'variation' === $product_type ) {
@@ -105,6 +105,19 @@ class Product_Helper {
 		} else {
 			$product->weight = $weight;
 		}
+	}
+
+	/**
+	 * Get product name.
+	 *
+	 * @param WC_Product_Simple $product woocommerce product.
+	 * @return string $name
+	 */
+	private static function get_name( $product ) {
+		if ( method_exists( $product, 'get_name' ) ) {
+			return $product->get_name();
+		}
+		return $product->name;
 	}
 
 	/**
