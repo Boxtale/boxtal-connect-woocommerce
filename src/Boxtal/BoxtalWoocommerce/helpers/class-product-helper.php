@@ -109,12 +109,25 @@ class Product_Helper {
 	}
 
 	/**
+	 * Get product id.
+	 *
+	 * @param WC_Product_Simple $product woocommerce product.
+	 * @return string $id
+	 */
+	public static function get_id( $product ) {
+		if ( method_exists( $product, 'get_id' ) ) {
+			return $product->get_id();
+		}
+		return $product->id;
+	}
+
+	/**
 	 * Get product name.
 	 *
 	 * @param WC_Product_Simple $product woocommerce product.
 	 * @return string $name
 	 */
-	private static function get_name( $product ) {
+	public static function get_name( $product ) {
 		if ( method_exists( $product, 'get_name' ) ) {
 			return $product->get_name();
 		}

@@ -49,6 +49,19 @@ class Order_Helper {
 	 * Get shipping first name of WC order.
 	 *
 	 * @param WC_Order $order woocommerce order.
+	 * @return string $id order id
+	 */
+	public static function get_id( $order ) {
+		if ( method_exists( $order, 'get_id' ) ) {
+			return $order->get_id();
+		}
+		return $order->id;
+	}
+
+	/**
+	 * Get shipping first name of WC order.
+	 *
+	 * @param WC_Order $order woocommerce order.
 	 * @return string $firstname order shipping first name
 	 */
 	public static function get_shipping_first_name( $order ) {

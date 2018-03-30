@@ -1,6 +1,6 @@
 <?php
 /**
- * Order sync test
+ * Order sync tests
  *
  * @package Boxtal\Tests
  */
