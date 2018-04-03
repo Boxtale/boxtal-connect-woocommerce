@@ -38,6 +38,7 @@ class Order_Sync {
 	 */
 	public function api_callback_handler() {
 		$response = $this->get_orders();
+		header( 'Content-Type: application/json; charset=utf-8' );
 		echo wp_json_encode( $response );
 		die();
 	}
