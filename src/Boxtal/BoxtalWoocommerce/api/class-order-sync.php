@@ -52,16 +52,17 @@ class Order_Sync {
 		$result = array();
 		foreach ( wc_get_orders( array() ) as $order ) {
 			$recipient = array(
-				'firstname' => Order_Helper::get_shipping_first_name( $order ),
-				'lastname'  => Order_Helper::get_shipping_last_name( $order ),
-				'company'   => Order_Helper::get_shipping_company( $order ),
-				'address'   => Order_Helper::get_shipping_address_1( $order ) . ' ' . Order_Helper::get_shipping_address_2( $order ),
-				'city'      => Order_Helper::get_shipping_city( $order ),
-				'state'     => Order_Helper::get_shipping_state( $order ),
-				'postcode'  => Order_Helper::get_shipping_postcode( $order ),
-				'country'   => Order_Helper::get_shipping_country( $order ),
-				'phone'     => Order_Helper::get_billing_phone( $order ),
-				'email'     => Order_Helper::get_billing_email( $order ),
+				'firstname'    => Order_Helper::get_shipping_first_name( $order ),
+				'lastname'     => Order_Helper::get_shipping_last_name( $order ),
+				'company'      => Order_Helper::get_shipping_company( $order ),
+				'addressLine1' => Order_Helper::get_shipping_address_1( $order ),
+				'addressLine2' => Order_Helper::get_shipping_address_2( $order ),
+				'city'         => Order_Helper::get_shipping_city( $order ),
+				'state'        => Order_Helper::get_shipping_state( $order ),
+				'postcode'     => Order_Helper::get_shipping_postcode( $order ),
+				'country'      => Order_Helper::get_shipping_country( $order ),
+				'phone'        => Order_Helper::get_billing_phone( $order ),
+				'email'        => Order_Helper::get_billing_email( $order ),
 			);
 			$products  = array();
 			foreach ( $order->get_items( 'line_item' ) as $item ) {

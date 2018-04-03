@@ -54,16 +54,17 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
 			$order_sync->get_orders(), array(
 				0 => array(
 					'recipient' => array(
-						'firstname' => 'Jon',
-						'lastname'  => 'Snow',
-						'company'   => 'GoT',
-						'address'   => 'House Stark Winterfell',
-						'city'      => 'Paris',
-						'state'     => '',
-						'postcode'  => '75009',
-						'country'   => 'FR',
-						'phone'     => '0612341234',
-						'email'     => 'jsnow@boxtal.com',
+						'firstname'    => 'Jon',
+						'lastname'     => 'Snow',
+						'company'      => 'GoT',
+						'addressLine1' => 'House Stark',
+						'addressLine2' => 'Winterfell',
+						'city'         => 'Paris',
+						'state'        => '',
+						'postcode'     => '75009',
+						'country'      => 'FR',
+						'phone'        => '0612341234',
+						'email'        => 'jsnow@boxtal.com',
 					),
 					'products'  => array(
 						0 => array(
