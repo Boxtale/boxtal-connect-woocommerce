@@ -47,12 +47,14 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
 		Order_Helper::set_billing_email( $order, 'jsnow@boxtal.com' );
 		Order_Helper::set_billing_phone( $order, '0612341234' );
 		Order_Helper::save( $order );
+		$order->update_status( 'wc-on-hold' );
 
 		$order_sync = new Order_Sync();
 
 		$this->assertSame(
 			$order_sync->get_orders(), array(
 				0 => array(
+					'reference' => '' . Order_Helper::get_id( $order ),
 					'recipient' => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',
@@ -60,7 +62,7 @@ class BW_Test_Order_Sync extends WC_Unit_Test_Case {
 						'addressLine1' => 'House Stark',
 						'addressLine2' => 'Winterfell',
 						'city'         => 'Paris',
-						'state'        => '',
+						'state'        => null,
 						'postcode'     => '75009',
 						'country'      => 'FR',
 						'phone'        => '0612341234',

@@ -9,6 +9,7 @@ namespace Boxtal\BoxtalWoocommerce\Api;
 
 use Boxtal\BoxtalWoocommerce\Helpers\Product_Helper;
 use Boxtal\BoxtalWoocommerce\Helpers\Order_Helper;
+use Boxtal\BoxtalWoocommerce\Helpers\Helper_Functions;
 
 /**
  * Order sync container class.
@@ -50,19 +51,19 @@ class Order_Sync {
 	 */
 	public function get_orders() {
 		$result = array();
-		foreach ( wc_get_orders( array() ) as $order ) {
+		foreach ( wc_get_orders( array( 'status' => array( 'on-hold', 'processing' ) ) ) as $order ) {
 			$recipient = array(
-				'firstname'    => Order_Helper::get_shipping_first_name( $order ),
-				'lastname'     => Order_Helper::get_shipping_last_name( $order ),
-				'company'      => Order_Helper::get_shipping_company( $order ),
-				'addressLine1' => Order_Helper::get_shipping_address_1( $order ),
-				'addressLine2' => Order_Helper::get_shipping_address_2( $order ),
-				'city'         => Order_Helper::get_shipping_city( $order ),
-				'state'        => Order_Helper::get_shipping_state( $order ),
-				'postcode'     => Order_Helper::get_shipping_postcode( $order ),
-				'country'      => Order_Helper::get_shipping_country( $order ),
-				'phone'        => Order_Helper::get_billing_phone( $order ),
-				'email'        => Order_Helper::get_billing_email( $order ),
+				'firstname'    => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_first_name( $order ) ),
+				'lastname'     => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_last_name( $order ) ),
+				'company'      => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_company( $order ) ),
+				'addressLine1' => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_address_1( $order ) ),
+				'addressLine2' => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_address_2( $order ) ),
+				'city'         => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_city( $order ) ),
+				'state'        => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_state( $order ) ),
+				'postcode'     => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_postcode( $order ) ),
+				'country'      => Helper_Functions::not_empty_or_null( Order_Helper::get_shipping_country( $order ) ),
+				'phone'        => Helper_Functions::not_empty_or_null( Order_Helper::get_billing_phone( $order ) ),
+				'email'        => Helper_Functions::not_empty_or_null( Order_Helper::get_billing_email( $order ) ),
 			);
 			$products  = array();
 			foreach ( $order->get_items( 'line_item' ) as $item ) {
@@ -75,6 +76,7 @@ class Order_Sync {
 				$products[]             = $product;
 			}
 			$result[] = array(
+				'reference' => '' . Order_Helper::get_id( $order ),
 				'recipient' => $recipient,
 				'products'  => $products,
 			);
