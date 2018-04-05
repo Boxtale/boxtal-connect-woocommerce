@@ -9,7 +9,7 @@ WP_DIR=/var/www/html
 
 set -ex
 
-if [[ (("$4" = "false") && ("$(docker images -q 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT  2> /dev/null)" == "")) || (("$4" = "true") && ("$(docker images -q 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce-legacy:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT  2> /dev/null)" == "")) ]]; then
+if [[ (("$INCLUDE_LEGACY" = "false") && ("$(docker images -q 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT  2> /dev/null)" == "")) || (("$INCLUDE_LEGACY" = "true") && ("$(docker images -q 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce-legacy:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT  2> /dev/null)" == "")) ]]; then
     if [[ "$(docker images -q 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION  2> /dev/null)" == "" ]]; then
         docker build . -t 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION --build-arg PHP_VERSION=$PHP_VERSION
     fi
