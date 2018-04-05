@@ -1,26 +1,35 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 4 ]; then
-	echo "usage: $0 <destination> <db-name> <db-user> <db-pass> [db-host] [wp-version] [wc-version] [port]"
+	echo "usage: $0 <db-name> <db-user> <db-pass> [destination] [db-host] [wp-version] [wc-version] [port]"
 	exit 1
 fi
 
 echo "starting install"
 set -ex
 
-DEST_DIR=$1
+DB_NAME=$1
+DB_USER=$2
+DB_PASS=$3
+DEST_DIR=${4-}
 DEST_DIR=$(echo $DEST_DIR | sed -e "s/\/$//")
-DB_NAME=$2
-DB_USER=$3
-DB_PASS=$4
 DB_HOST=${5-localhost}
 WP_VERSION=${6-latest}
 WC_VERSION=${7-3.3.0}
+INCLUDE_LEGACY=${9-false}
 
 if [ -z "$8" ]; then
-    TMPSITEURL="http://localhost/boxtal-woocommerce"
+    if [ -z "$4" ]; then
+        TMPSITEURL="http://localhost"
+    else
+        TMPSITEURL="http://localhost/$4"
+    fi
 else
-    TMPSITEURL="http://localhost:8082/boxtal-woocommerce"
+    if [ -z "$4" ]; then
+        TMPSITEURL="http://localhost:$8"
+    else
+        TMPSITEURL="http://localhost:$8/$4"
+    fi
 fi
 TMPSITETITLE="boxtaltest"
 TMPSITEADMINLOGIN="admin"
@@ -34,7 +43,7 @@ check_requirements() {
 }
 
 create_directory() {
-    WP_CORE_DIR=${WP_CORE_DIR-$DEST_DIR/boxtal-woocommerce}
+    WP_CORE_DIR=${WP_CORE_DIR-/var/www/html/$DEST_DIR}
     sudo rm -rf $WP_CORE_DIR
     sudo mkdir -p $WP_CORE_DIR
     sudo chown -R www-data:www-data $WP_CORE_DIR
@@ -114,6 +123,10 @@ wc_setup() {
     sudo -u www-data -H sh -c "$wp theme install storefront --activate --path=$WP_CORE_DIR"
 }
 
+install_legacy() {
+    sudo -u www-data -H sh -c "$wp plugin install envoimoinscher --activate --path=$WP_CORE_DIR"
+}
+
 check_requirements
 create_directory
 install_wp
@@ -121,3 +134,7 @@ install_wc
 set_directory_rights
 install_wc_dummy_data
 wc_setup
+
+if [ "$INCLUDE_LEGACY" = "true" ]; then
+    install_legacy
+fi

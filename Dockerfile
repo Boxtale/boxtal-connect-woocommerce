@@ -22,7 +22,11 @@ RUN curl https://packages.sury.org/php/apt.gpg | apt-key add - \
  && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
  &&  apt-get update && apt-get install -y --no-install-recommends \
       php${PHP_VERSION} \
-      php${PHP_VERSION}-mysql
+      php${PHP_VERSION}-mysql \
+      php${PHP_VERSION}-mbstring \
+      php${PHP_VERSION}-soap \
+      php${PHP_VERSION}-curl \
+      php${PHP_VERSION}-dom
 
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo \
  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -31,5 +35,8 @@ ENV HOME=/home/docker
 WORKDIR $HOME
 ADD . $HOME
 RUN chown -R docker:docker $HOME
+RUN chmod 777 $HOME/build/entrypoint.sh
+
+ENTRYPOINT $HOME/build/entrypoint.sh
 
 USER docker
