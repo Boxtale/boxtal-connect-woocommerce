@@ -1,7 +1,5 @@
 FROM buildpack-deps:stretch-scm
 ARG PHP_VERSION
-ARG WP_VERSION
-ARG WC_VERSION
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       apache2 \
@@ -30,13 +28,3 @@ RUN curl https://packages.sury.org/php/apt.gpg | apt-key add - \
 
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo \
  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-ENV HOME=/home/docker
-WORKDIR $HOME
-ADD . $HOME
-RUN chown -R docker:docker $HOME
-RUN chmod 777 $HOME/build/entrypoint.sh
-
-ENTRYPOINT $HOME/build/entrypoint.sh
-
-USER docker

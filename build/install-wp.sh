@@ -71,10 +71,8 @@ install_wp() {
 	if ! [ -z $DB_HOSTNAME ] ; then
         EXTRA=" --dbhost=$DB_HOSTNAME"
 	fi
-    sudo -u www-data -H sh -c "$wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS $EXTRA --skip-check --path=$WP_CORE_DIR <<PHP
-define( 'WP_DEBUG', true );
-PHP"
-
+    sudo -u www-data -H sh -c "$wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS $EXTRA --skip-check --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "echo \"\n define( 'WP_DEBUG', true ); \n \" >> $WP_CORE_DIR/wp-config.php"
     sudo -u www-data -H sh -c "$wp db reset --yes --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp core install --url=$TMPSITEURL --title=$TMPSITETITLE --admin_user=$TMPSITEADMINLOGIN --admin_email=$TMPSITEADMINEMAIL --admin_password=$TMPSITEADMINPWD --skip-email --path=$WP_CORE_DIR"
 }
