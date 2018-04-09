@@ -50,10 +50,10 @@ class Product_Helper {
 		// add attributes to title for variations.
 		$product_type = self::get_product_type( $product );
 		if ( 'variation' === $product_type ) {
-			$parent_id      = $product->parent->id;
+			$parent_id      = self::get_parent_id($product);
 			$parent_product = self::get_product( $parent_id );
 			foreach ( $parent_product->get_available_variations() as $variation ) {
-				if ( $variation['variation_id'] === $check_id ) {
+				if ( $variation['variation_id'] === (int)$check_id ) {
 					foreach ( $variation['attributes'] as $attributes ) {
 						$description .= ' ' . $attributes;
 					}
@@ -81,9 +81,9 @@ class Product_Helper {
 	 * Get WC product from product id. Fix for WC > 2.5.
 	 *
 	 * @param integer $product_id woocommerce product id.
-	 * @return WC_Product_Simple $product
+	 * @return mixed $product
 	 */
-	private static function get_product( $product_id ) {
+	public static function get_product( $product_id ) {
 		if ( function_exists( 'wc_get_product' ) ) {
 			$product = wc_get_product( $product_id );
 		} else {
@@ -107,6 +107,21 @@ class Product_Helper {
 			update_post_meta( $product->id, '_weight', $weight );
 		}
 	}
+
+    /**
+     * Set WC product variation weight.
+     *
+     * @param WC variation $variation woocommerce product variation.
+     * @param float             $weight desired weight.
+     * @void
+     */
+    public static function set_variation_weight( $variation, $weight ) {
+        if ( method_exists( $variation, 'set_weight' ) ) {
+            $variation->set_weight( $weight );
+        } else {
+            update_post_meta( $variation['variation_id'], '_weight', $weight );
+        }
+    }
 
 	/**
 	 * Get product id.
@@ -148,6 +163,34 @@ class Product_Helper {
 			update_post_meta( $product->id, '_name', $name );
 		}
 	}
+
+    /**
+     * Set WC product variation name.
+     *
+     * @param WC variation $variation woocommerce product variation.
+     * @param string            $name desired name.
+     * @void
+     */
+    public static function set_variation_name( $variation, $name ) {
+        if ( method_exists( $variation, 'set_name' ) ) {
+            $variation->set_name( $name );
+        } else {
+            update_post_meta( $variation['variation_id'], '_name', $name );
+        }
+    }
+
+    /**
+     * Get WC product variation parent id.
+     *
+     * @param WC variation $variation woocommerce product variation.
+     * @return string $id
+     */
+    private static function get_parent_id($variation) {
+        if ( method_exists( $variation, 'get_parent_id' ) ) {
+            return $variation->get_parent_id();
+        }
+        return $variation->parent->id;
+    }
 
 	/**
 	 * Save WC product.

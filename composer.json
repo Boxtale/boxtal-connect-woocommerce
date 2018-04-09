@@ -28,7 +28,7 @@
   "prefer-stable" : true,
   "scripts": {
     "sync": [
-      "sudo -u www-data -H sh -c \"rm -rf /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/*;cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\""
+      "sudo -u www-data -H sh -c \"rm -rf /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/*;mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce; cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\""
     ],
     "phpcs": [
       "vendor/bin/phpcs -s -p ."
