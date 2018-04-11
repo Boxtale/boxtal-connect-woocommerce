@@ -14,6 +14,8 @@
 
 use Boxtal\BoxtalWoocommerce\Plugin;
 use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
+use Boxtal\BoxtalWoocommerce\Admin\Notices;
+use Boxtal\BoxtalWoocommerce\Config\Environment_Check;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/plugin.php';
@@ -34,54 +36,28 @@ function boxtal_woocommerce_init() {
 	$plugin['version']           = '0.1.0';
 	$plugin['min-wc-version']    = '2.3.0';
 	$plugin['min-php-version']   = '5.3.0';
+	$plugin['notices']           = 'boxtal_woocommerce_init_admin_notices';
 	$plugin['check-environment'] = 'boxtal_woocommerce_check_environment';
 	$plugin['api-order-sync']    = 'boxtal_woocommerce_service_api_order_sync';
 	$plugin->run();
 }
 
-add_action( 'admin_init', 'boxtal_woocommerce_check_environment' );
+
 /**
  * Check PHP version, WC version.
  *
  * @param array $plugin plugin array.
- * @void
+ * @return Environment_Check $environment_check static environment check instance.
  */
 function boxtal_woocommerce_check_environment( $plugin ) {
+	static $object;
 
-	$environment_warning = boxtal_woocommerce_get_environment_warning( $plugin );
-
-	/*
-	 * Implement notices.
-	 * if ( $environment_warning && is_plugin_active( plugin_basename( __FILE__ ) ) ) {
-	 * 	add notice.
-	 * }
-	 */
-}
-
-/**
- * Get warning about PHP version, WC version.
- *
- * @param array $plugin plugin array.
- * @return string $message
- */
-function boxtal_woocommerce_get_environment_warning( $plugin ) {
-	if ( version_compare( phpversion(), $plugin['min-php-version'], '<' ) ) {
-		/* translators: 1) int version 2) int version */
-		$message = __( 'Boxtal - The minimum PHP version required for this plugin is %1$s. You are running %2$s.', 'boxtal-woocommerce' );
-
-		return sprintf( $message, $plugin['min-php-version'], phpversion() );
+	if ( null !== $object ) {
+		return $object;
 	}
 
-	if ( ! defined( 'WC_VERSION' ) ) {
-		return __( 'Boxtal requires WooCommerce to be activated to work.', 'boxtal-woocommerce' );
-	}
-
-	if ( version_compare( WC_VERSION, $plugin['min-php-version'], '<' ) ) {
-		/* translators: 1) int version 2) int version */
-		$message = __( 'Boxtal - The minimum WooCommerce version required for this plugin is %1$s. You are running %2$s.', 'boxtal-woocommerce' );
-
-		return sprintf( $message, $plugin['min-php-version'], WC_VERSION );
-	}
+	$object = new Environment_Check( $plugin );
+	return $object;
 }
 
 /**
@@ -90,5 +66,29 @@ function boxtal_woocommerce_get_environment_warning( $plugin ) {
  * @return Order_Sync $order_sync
  */
 function boxtal_woocommerce_service_api_order_sync() {
-	return new Order_Sync();
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Order_Sync();
+	return $object;
+}
+
+/**
+ * Start admin notice singleton.
+ *
+ * @param array $plugin plugin array.
+ * @return string $message
+ */
+function boxtal_woocommerce_init_admin_notices( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Notices( $plugin );
+	return $object;
 }

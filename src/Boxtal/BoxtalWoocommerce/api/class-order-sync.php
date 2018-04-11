@@ -12,7 +12,7 @@ use Boxtal\BoxtalWoocommerce\Helpers\Order_Helper;
 use Boxtal\BoxtalWoocommerce\Helpers\Helper_Functions;
 
 /**
- * Order sync container class.
+ * Order sync class.
  *
  * Opens API endpoint to sync orders.
  *

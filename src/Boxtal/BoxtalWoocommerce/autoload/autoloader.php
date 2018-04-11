@@ -42,18 +42,17 @@ function boxtal_woocommerce_autoload( $class_name ) {
 		// If we're at the first entry, then we're at the filename.
 		if ( count( $file_parts ) - 1 === $i ) {
 			/*
-			 * If 'interface' is contained in the parts of the file name, then
+			 * If 'abstracts' is contained in the parts of the file name, then
 			 * define the $file_name differently so that it's properly loaded.
 			 * Otherwise, just set the $file_name equal to that of the class
 			 * filename structure.
 			 */
-			if ( strpos( $file_parts[ count( $file_parts ) - 1 ], 'interface' ) ) {
+			if ( strpos( $file_parts[ count( $file_parts ) - 2 ], 'Abstracts' ) > -1 ) {
+				// Grab the name of the abstract class from its qualified name.
+				$abstract_class_name = explode( '_', $file_parts[ count( $file_parts ) - 1 ] );
+				$abstract_class_name = strtolower( $abstract_class_name[0] );
 
-				// Grab the name of the interface from its qualified name.
-				$interface_name = explode( '_', $file_parts[ count( $file_parts ) - 1 ] );
-				$interface_name = $interface_name[0];
-
-				$file_name = "interface-$interface_name.php";
+				$file_name = "abstract-$abstract_class_name.php";
 
 			} else {
 				$file_name = "class-$current.php";

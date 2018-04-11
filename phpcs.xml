@@ -4,6 +4,9 @@
 
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/docs/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/css/*</exclude-pattern>
+    <exclude-pattern>gulpfile.js</exclude-pattern>
 
     <rule ref="PHPCompatibility" />
     <rule ref="WordPress">
@@ -11,6 +14,7 @@
     </rule>
     <rule ref="WordPress.Files.FileName.InvalidClassFileName">
         <exclude-pattern>src/autoload/</exclude-pattern>
+        <exclude-pattern>src/**/abstract-*.php</exclude-pattern>
         <exclude-pattern>tests/</exclude-pattern>
     </rule>
 </ruleset>

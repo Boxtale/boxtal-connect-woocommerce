@@ -3,3 +3,5 @@ composer.lock
 .idea/
 coverage.xml
 tmp/
+src/Boxtal/BoxtalWoocommerce/assets/css
+nodes_modules/

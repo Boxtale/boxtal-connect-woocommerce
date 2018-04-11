@@ -27,8 +27,14 @@
   },
   "prefer-stable" : true,
   "scripts": {
+    "compile": [
+      "gulp css"
+    ],
     "sync": [
-      "sudo -u www-data -H sh -c \"rm -rf /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/*;mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce; cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\""
+      "@compile",
+      "sudo -u www-data -H sh -c \"rm -rf /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
+      "sudo -u www-data -H sh -c \"mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
+      "sudo -u www-data -H sh -c \"cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\""
     ],
     "phpcs": [
       "vendor/bin/phpcs -s -p ."
@@ -39,6 +45,8 @@
   },
   "extra": {
     "scripts-description": {
+      "compile": "Compile less files into css folder",
+      "sync": "Sync plugin code with local wp install",
       "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
     }
