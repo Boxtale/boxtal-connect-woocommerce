@@ -4,4 +4,4 @@ composer.lock
 coverage.xml
 tmp/
 src/Boxtal/BoxtalWoocommerce/assets/css
-nodes_modules/
+node_modules/
