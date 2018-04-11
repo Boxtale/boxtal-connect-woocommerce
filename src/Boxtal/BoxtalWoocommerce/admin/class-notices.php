@@ -24,7 +24,7 @@ class Notices {
 	 *
 	 * @var array
 	 */
-	private static $core_notices = [ 'pair', 'update', 'install' ];
+	private static $core_notices = array('pair', 'update', 'install');
 
 	/**
 	 * Plugin url.
