@@ -58,11 +58,11 @@ class Environment_Check {
 	 * @return string $message
 	 */
 	public function boxtal_woocommerce_get_environment_warning() {
-		if ( version_compare( phpversion(), $this->min_php_version, '<' ) ) {
+		if ( version_compare( PHP_VERSION, $this->min_php_version, '<' ) ) {
 			/* translators: 1) int version 2) int version */
 			$message = __( 'Boxtal - The minimum PHP version required for this plugin is %1$s. You are running %2$s.', 'boxtal-woocommerce' );
 
-			return sprintf( $message, $this->min_php_version, phpversion() );
+			return sprintf( $message, $this->min_php_version, PHP_VERSION );
 		}
 
 		if ( ! defined( 'WC_VERSION' ) ) {
