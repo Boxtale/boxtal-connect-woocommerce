@@ -7,7 +7,7 @@
 
 namespace Boxtal\BoxtalWoocommerce\Config;
 
-use Boxtal\BoxtalWoocommerce\Admin\Notice;
+use Boxtal\BoxtalWoocommerce\Admin\Notices;
 
 /**
  * Environment check class.
@@ -37,7 +37,6 @@ class Environment_Check {
 	public function __construct( $plugin ) {
 		$this->min_php_version = $plugin['min-php-version'];
 		$this->min_wc_version  = $plugin['min-wc-version'];
-		$this->notices         = $plugin['notices'];
 	}
 
 	/**
@@ -85,7 +84,7 @@ class Environment_Check {
 	 * @void
 	 */
 	public function boxtal_woocommerce_display_environment_warning() {
-		$this->notices->add_notice(
+		Notices::add_notice(
 			'custom', array(
 				'status'  => 'warning',
 				'message' => $this->environment_warning,

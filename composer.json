@@ -28,7 +28,8 @@
   "prefer-stable" : true,
   "scripts": {
     "compile": [
-      "gulp css"
+      "gulp css",
+      "gulp js"
     ],
     "sync": [
       "@compile",

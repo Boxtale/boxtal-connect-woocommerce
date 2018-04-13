@@ -24,7 +24,7 @@ class Notices {
 	 *
 	 * @var array
 	 */
-	private static $core_notices = array('pair', 'update', 'install');
+	private static $core_notices = array( 'shop', 'update', 'install' );
 
 	/**
 	 * Plugin url.
@@ -57,7 +57,7 @@ class Notices {
 	 * @void
 	 */
 	public function run() {
-		$notices = $this->get_notices();
+		$notices = self::get_notices();
 
 		if ( ! empty( $notices ) ) {
 			foreach ( $notices as $notice ) {
@@ -72,7 +72,7 @@ class Notices {
 	 *
 	 * @return mixed $notices instances of notice.
 	 */
-	public function get_notices() {
+	public static function get_notices() {
 		$notices          = get_option( 'BW_NOTICES', array() );
 		$notice_instances = array();
 		foreach ( $notices as $key ) {
@@ -106,7 +106,7 @@ class Notices {
 	 * @param mixed  $args additional args.
 	 * @void
 	 */
-	public function add_notice( $type, $args = array() ) {
+	public static function add_notice( $type, $args = array() ) {
 		if ( ! in_array( $type, self::$core_notices, true ) ) {
 			$key           = uniqid( 'bw_', false );
 			$value         = $args;
@@ -115,9 +115,11 @@ class Notices {
 		} else {
 			$key = $type;
 		}
-		$notices   = get_option( 'BW_NOTICES', array() );
-		$notices[] = $key;
-		update_option( 'BW_NOTICES', $notices );
+		$notices = get_option( 'BW_NOTICES', array() );
+		if ( ! in_array( $key, $notices, true ) ) {
+			$notices[] = $key;
+			update_option( 'BW_NOTICES', $notices );
+		}
 	}
 
 	/**
@@ -133,5 +135,15 @@ class Notices {
 			unset( $notices[ $index ] );
 		}
 		update_option( 'BW_NOTICES', $notices );
+	}
+
+	/**
+	 * Whether there are active notices.
+	 *
+	 * @void
+	 */
+	public static function has_notices() {
+		$notices = self::get_notices();
+		return ! empty( $notices );
 	}
 }

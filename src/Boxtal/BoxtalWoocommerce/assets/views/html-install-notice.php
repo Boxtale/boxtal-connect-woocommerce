@@ -1,6 +1,6 @@
 <?php
 /**
- * Pair notice rendering
+ * Install notice rendering
  *
  * @package     Boxtal\BoxtalWoocommerce\Assets\Views
  */

@@ -10,6 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="bw-notice <?php echo esc_attr( $notice->status ); ?>">
+<div class="bw-notice <?php echo esc_attr( 'bw-' . $notice->status ); ?>">
 	<?php echo esc_html( $notice->message ); ?>
 </div>

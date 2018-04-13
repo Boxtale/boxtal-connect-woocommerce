@@ -60,9 +60,13 @@ abstract class Notice {
 	 */
 	public function render() {
 		$notice = $this;
-		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-' . $this->type . '-notice.php';
-		if ( $this->autodestruct ) {
-			$this->remove();
+		if ( $notice->is_valid() ) {
+			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-' . $this->type . '-notice.php';
+			if ( $notice->autodestruct ) {
+				$notice->remove();
+			}
+		} else {
+			$notice->remove();
 		}
 	}
 
@@ -73,5 +77,14 @@ abstract class Notice {
 	 */
 	public function remove() {
 		Notices::remove_notice( $this->key );
+	}
+
+	/**
+	 * Check if notice is still valid.
+	 *
+	 * @boolean
+	 */
+	public function is_valid() {
+		return true;
 	}
 }

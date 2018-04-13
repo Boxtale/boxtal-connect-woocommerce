@@ -14,29 +14,18 @@ use Boxtal\BoxtalWoocommerce\Admin\Notices;
 class BW_Test_Notices extends WC_Unit_Test_Case {
 
 	/**
-	 * Mock plugin container values.
-	 *
-	 * @var array
-	 */
-	private $plugin = array(
-		'url'     => '',
-		'version' => '0.1.0',
-	);
-
-	/**
 	 * Test add & remove notice.
 	 */
 	public function test_add_remove_notice() {
-		$notices = new Notices( $this->plugin );
-		$notices->add_notice( 'pair' );
+		Notices::add_notice( 'shop' );
 		$stored_notices = get_option( 'BW_NOTICES' );
 		$this->assertSame(
 			$stored_notices,
 			array(
-				0 => 'pair',
+				0 => 'shop',
 			)
 		);
-		$notices->remove_notice( 'pair' );
+		Notices::remove_notice( 'shop' );
 		$stored_notices = get_option( 'BW_NOTICES' );
 		$this->assertEmpty( $stored_notices );
 	}
@@ -45,13 +34,12 @@ class BW_Test_Notices extends WC_Unit_Test_Case {
 	 * Test autodestruct notice.
 	 */
 	public function test_autodestruct_notice() {
-		$notices = new Notices( $this->plugin );
-		$notices->add_notice( 'custom' );
-		$stored_notices = $notices->get_notices();
+		Notices::add_notice( 'custom' );
+		$stored_notices = Notices::get_notices();
 		foreach ( $stored_notices as $notice ) {
 			$notice->render();
 		}
-		$stored_notices = $notices->get_notices();
+		$stored_notices = Notices::get_notices();
 		$this->assertEmpty( $stored_notices );
 	}
 }

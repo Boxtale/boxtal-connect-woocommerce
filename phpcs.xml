@@ -6,11 +6,13 @@
     <exclude-pattern>*/docs/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/css/*</exclude-pattern>
+    <exclude-pattern>*/js/*</exclude-pattern>
     <exclude-pattern>gulpfile.js</exclude-pattern>
 
     <rule ref="PHPCompatibility" />
     <rule ref="WordPress">
         <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+        <exclude name="WordPress.VIP.SuperGlobalInputUsage" />
     </rule>
     <rule ref="WordPress.Files.FileName.InvalidClassFileName">
         <exclude-pattern>src/autoload/</exclude-pattern>

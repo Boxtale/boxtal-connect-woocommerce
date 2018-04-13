@@ -12,10 +12,13 @@
  * @package Boxtal\BoxtalWoocommerce
  */
 
-use Boxtal\BoxtalWoocommerce\Plugin;
-use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
 use Boxtal\BoxtalWoocommerce\Admin\Notices;
+use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
+use Boxtal\BoxtalWoocommerce\Api\Shop;
 use Boxtal\BoxtalWoocommerce\Config\Environment_Check;
+use Boxtal\BoxtalWoocommerce\Includes\Scripts;
+use Boxtal\BoxtalWoocommerce\Includes\Styles;
+use Boxtal\BoxtalWoocommerce\Plugin;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/plugin.php';
@@ -36,9 +39,12 @@ function boxtal_woocommerce_init() {
 	$plugin['version']           = '0.1.0';
 	$plugin['min-wc-version']    = '2.3.0';
 	$plugin['min-php-version']   = '5.3.0';
+	$plugin['scripts']           = 'boxtal_woocommerce_load_scripts';
+	$plugin['styles']            = 'boxtal_woocommerce_load_styles';
 	$plugin['notices']           = 'boxtal_woocommerce_init_admin_notices';
 	$plugin['check-environment'] = 'boxtal_woocommerce_check_environment';
 	$plugin['api-order-sync']    = 'boxtal_woocommerce_service_api_order_sync';
+	$plugin['api-shop']          = 'boxtal_woocommerce_service_api_shop';
 	$plugin->run();
 }
 
@@ -47,7 +53,7 @@ function boxtal_woocommerce_init() {
  * Check PHP version, WC version.
  *
  * @param array $plugin plugin array.
- * @return Environment_Check $environment_check static environment check instance.
+ * @return Environment_Check $object static environment check instance.
  */
 function boxtal_woocommerce_check_environment( $plugin ) {
 	static $object;
@@ -63,7 +69,7 @@ function boxtal_woocommerce_check_environment( $plugin ) {
 /**
  * Get new Order_Sync instance.
  *
- * @return Order_Sync $order_sync
+ * @return Order_Sync $object
  */
 function boxtal_woocommerce_service_api_order_sync() {
 	static $object;
@@ -77,10 +83,26 @@ function boxtal_woocommerce_service_api_order_sync() {
 }
 
 /**
- * Start admin notice singleton.
+ * Get new Shop instance.
+ *
+ * @return Shop $object
+ */
+function boxtal_woocommerce_service_api_shop() {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Shop();
+	return $object;
+}
+
+/**
+ * Return admin notices singleton.
  *
  * @param array $plugin plugin array.
- * @return string $message
+ * @return Notices $object
  */
 function boxtal_woocommerce_init_admin_notices( $plugin ) {
 	static $object;
@@ -90,5 +112,39 @@ function boxtal_woocommerce_init_admin_notices( $plugin ) {
 	}
 
 	$object = new Notices( $plugin );
+	return $object;
+}
+
+/**
+ * Return scripts singleton.
+ *
+ * @param array $plugin plugin array.
+ * @return Scripts $object
+ */
+function boxtal_woocommerce_load_scripts( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Scripts( $plugin );
+	return $object;
+}
+
+/**
+ * Return styles singleton.
+ *
+ * @param array $plugin plugin array.
+ * @return Styles $object
+ */
+function boxtal_woocommerce_load_styles( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Styles( $plugin );
 	return $object;
 }

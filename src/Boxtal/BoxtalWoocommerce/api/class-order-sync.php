@@ -7,6 +7,7 @@
 
 namespace Boxtal\BoxtalWoocommerce\Api;
 
+use Boxtal\BoxtalWoocommerce\Helpers\Auth_Helper;
 use Boxtal\BoxtalWoocommerce\Helpers\Product_Helper;
 use Boxtal\BoxtalWoocommerce\Helpers\Order_Helper;
 use Boxtal\BoxtalWoocommerce\Helpers\Helper_Functions;
@@ -29,7 +30,32 @@ class Order_Sync {
 	 * @void
 	 */
 	public function run() {
-		add_action( 'woocommerce_api_boxtal_pull_orders', array( $this, 'api_callback_handler' ) );
+		add_action(
+			'rest_api_init', function() {
+				register_rest_route(
+					'boxtal-woocommerce/v1', '/order', array(
+						'methods'  => 'GET',
+						'callback' => array( $this, 'api_callback_handler' ),
+						'args'     => array(
+							'token' => array(
+								'required'          => true,
+								'validate_callback' => array( $this, 'authenticate' ),
+							),
+						),
+					)
+				);
+			}
+		);
+	}
+
+	/**
+	 * Call to auth helper class authenticate function.
+	 *
+	 * @param string $param param value.
+	 * @return WP_Error|boolean
+	 */
+	public function authenticate( $param ) {
+		return Auth_Helper::authenticate( $param );
 	}
 
 	/**
