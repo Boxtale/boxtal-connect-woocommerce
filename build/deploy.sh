@@ -21,6 +21,7 @@ if [[ (("$INCLUDE_LEGACY" = "false") && ("$(docker images -q 890731937511.dkr.ec
         docker build . -f Dockerfile-boxtal-woocommerce -t 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT --build-arg PHP_VERSION=$PHP_VERSION --build-arg PORT=$PORT
         C1=$(docker run -di -p $PORT:$PORT 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT)
     fi
+    docker exec -i $C1 sh -c "sudo sed -i '172,\$s/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf"
     docker exec -i $C1 sh -c "/bin/bash ./build/install-wp.sh woocommerce dbadmin dbpass '' localhost $WP_VERSION $WC_VERSION $PORT $INCLUDE_LEGACY"
     if [ "$REMOTE" = "true" ]; then
         docker cp src/. $C1:/home/docker/sync/

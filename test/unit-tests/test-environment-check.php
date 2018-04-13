@@ -6,7 +6,6 @@
  */
 
 use Boxtal\BoxtalWoocommerce\Config\Environment_Check;
-use Boxtal\BoxtalWoocommerce\Admin\Notices;
 
 
 /**
