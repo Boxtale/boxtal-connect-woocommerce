@@ -15,7 +15,8 @@
 use Boxtal\BoxtalWoocommerce\Admin\Notices;
 use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
 use Boxtal\BoxtalWoocommerce\Api\Shop;
-use Boxtal\BoxtalWoocommerce\Config\Environment_Check;
+use Boxtal\BoxtalWoocommerce\Activation\Environment_Check;
+use Boxtal\BoxtalWoocommerce\Activation\Setup_Wizard;
 use Boxtal\BoxtalWoocommerce\Includes\Scripts;
 use Boxtal\BoxtalWoocommerce\Includes\Styles;
 use Boxtal\BoxtalWoocommerce\Plugin;
@@ -43,6 +44,7 @@ function boxtal_woocommerce_init() {
 	$plugin['styles']            = 'boxtal_woocommerce_load_styles';
 	$plugin['notices']           = 'boxtal_woocommerce_init_admin_notices';
 	$plugin['check-environment'] = 'boxtal_woocommerce_check_environment';
+	$plugin['setup-wizard']      = 'boxtal_woocommerce_setup_wizard';
 	$plugin['api-order-sync']    = 'boxtal_woocommerce_service_api_order_sync';
 	$plugin['api-shop']          = 'boxtal_woocommerce_service_api_shop';
 	$plugin->run();
@@ -63,6 +65,23 @@ function boxtal_woocommerce_check_environment( $plugin ) {
 	}
 
 	$object = new Environment_Check( $plugin );
+	return $object;
+}
+
+/**
+ * Runs install.
+ *
+ * @param array $plugin plugin array.
+ * @return Install $object static setup wizard instance.
+ */
+function boxtal_woocommerce_setup_wizard( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Setup_Wizard( $plugin );
 	return $object;
 }
 

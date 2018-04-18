@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php
 		/* translators: 1) string "here" link */
 		$message = sprintf( __( 'Boxtal Woocommerce is ready to pair, click %s to enter your 6-digit code.', 'boxtal-woocommerce' ), '<a href="#" class="bw-modal-trigger" bw-modal-target="bw-shop-notice-modal">' . __( 'here', 'boxtal-woocommerce' ) . '</a>' );
-		echo esc_html( $message );
+        // phpcs:ignore
+		echo $message;
 	?>
 </div>
 
@@ -25,7 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php
 			$i = 0;
 		while ( $i < 6 ) {
-			echo esc_html( '<input type="number" name="bw-digit-' . $i . '" min="0" max="9" size="1" maxlength="1" step="1" oninput="this.value=this.value.substring(0,1);" />' );
+            // phpcs:ignore
+            echo '<input type="number" name="bw-digit-' . $i . '" min="0" max="9" size="1" maxlength="1" step="1" oninput="this.value=this.value.substring(0,1);" />';
 			$i++;
 		}
 			?>

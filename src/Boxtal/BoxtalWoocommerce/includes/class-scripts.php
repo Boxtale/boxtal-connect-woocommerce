@@ -38,8 +38,10 @@ class Scripts {
 	 * @void
 	 */
 	public function run() {
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
+
 		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( &$this, 'admin_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( &$this, 'load_admin_scripts' ) );
 
 			if ( $this->notices->has_notices() ) {
 				add_action( 'admin_enqueue_scripts', array( &$this, 'notices_scripts' ) );
@@ -48,11 +50,20 @@ class Scripts {
 	}
 
 	/**
+	 * Enqueue scripts
+	 *
+	 * @void
+	 */
+	public function load_scripts() {
+		wp_enqueue_script( 'bw_polyfills', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/polyfills.min.js', array(), $this->plugin_version );
+	}
+
+	/**
 	 * Enqueue admin scripts
 	 *
 	 * @void
 	 */
-	public function admin_scripts() {
+	public function load_admin_scripts() {
 		wp_enqueue_script( 'bw_component', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/component.min.js', array(), $this->plugin_version );
 		wp_localize_script( 'bw_component', 'ajax_nonce', $this->ajax_nonce );
 	}

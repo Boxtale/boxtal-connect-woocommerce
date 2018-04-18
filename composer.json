@@ -11,6 +11,12 @@
     }
   ],
   "type": "wordpress-plugin",
+  "repositories": [
+    {
+      "type": "github",
+      "url": "https://github.com/Boxtale/boxtal-php-poc.git"
+    }
+  ],
   "require": {
     "php": ">=5.3"
   },
@@ -20,7 +26,8 @@
     "squizlabs/php_codesniffer": "^2.2 || ^3.0.2",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
     "wp-coding-standards/wpcs": "^0.14",
-    "wp-cli/wp-cli" : "~0.22"
+    "wp-cli/wp-cli" : "~0.22",
+    "boxtal/boxtal-php-poc": "dev-master"
   },
   "conflict": {
     "squizlabs/php_codesniffer": "2.6.2"
@@ -35,7 +42,9 @@
       "@compile",
       "sudo -u www-data -H sh -c \"rm -rf /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
       "sudo -u www-data -H sh -c \"mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
-      "sudo -u www-data -H sh -c \"cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\""
+      "sudo -u www-data -H sh -c \"cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
+      "sudo -u www-data -H sh -c \"mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp\"",
+      "sudo -u www-data -H sh -c \"cp -R vendor/boxtal/boxtal-php-poc/src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp\""
     ],
     "phpcs": [
       "vendor/bin/phpcs -s -p ."

@@ -2,10 +2,10 @@
 /**
  * Contains code for the environment check class.
  *
- * @package     Boxtal\BoxtalWoocommerce\Config
+ * @package     Boxtal\BoxtalWoocommerce\Activation
  */
 
-namespace Boxtal\BoxtalWoocommerce\Config;
+namespace Boxtal\BoxtalWoocommerce\Activation;
 
 use Boxtal\BoxtalWoocommerce\Admin\Notices;
 
@@ -15,7 +15,7 @@ use Boxtal\BoxtalWoocommerce\Admin\Notices;
  * Display environment warning if needed.
  *
  * @class       Environment_Check
- * @package     Boxtal\BoxtalWoocommerce\Config
+ * @package     Boxtal\BoxtalWoocommerce\Activation
  * @category    Class
  * @author      API Boxtal
  */

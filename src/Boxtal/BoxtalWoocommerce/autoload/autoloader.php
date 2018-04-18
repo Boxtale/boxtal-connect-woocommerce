@@ -23,7 +23,7 @@ spl_autoload_register( 'boxtal_woocommerce_autoload' );
 function boxtal_woocommerce_autoload( $class_name ) {
 
 	// If the specified $class_name does not include our namespace, duck out.
-	if ( false === strpos( $class_name, 'Boxtal\BoxtalWoocommerce' ) ) {
+	if ( false === strpos( $class_name, 'Boxtal\BoxtalWoocommerce' ) && false === strpos( $class_name, 'Boxtal\BoxtalPhp' ) ) {
 		return;
 	}
 
@@ -33,29 +33,37 @@ function boxtal_woocommerce_autoload( $class_name ) {
 	// Do a reverse loop through $file_parts to build the path to the file.
 	$namespace = '';
 	$file_name = '';
-	for ( $i = count( $file_parts ) - 1; $i > 1; $i-- ) {
+	for ( $i = count( $file_parts ) - 1; $i > 0; $i-- ) {
 
 		// Read the current component of the file part.
-		$current = strtolower( $file_parts[ $i ] );
-		$current = str_ireplace( '_', '-', $current );
+		if ( 1 !== $i && false !== strpos( $class_name, 'Boxtal\BoxtalWoocommerce' ) ) {
+			$current = strtolower( $file_parts[ $i ] );
+			$current = str_ireplace( '_', '-', $current );
+		} else {
+			$current = $file_parts[ $i ];
+		}
 
 		// If we're at the first entry, then we're at the filename.
 		if ( count( $file_parts ) - 1 === $i ) {
-			/*
-			 * If 'abstracts' is contained in the parts of the file name, then
-			 * define the $file_name differently so that it's properly loaded.
-			 * Otherwise, just set the $file_name equal to that of the class
-			 * filename structure.
-			 */
-			if ( strpos( $file_parts[ count( $file_parts ) - 2 ], 'Abstracts' ) > -1 ) {
-				// Grab the name of the abstract class from its qualified name.
-				$abstract_class_name = explode( '_', $file_parts[ count( $file_parts ) - 1 ] );
-				$abstract_class_name = strtolower( $abstract_class_name[0] );
+			if ( false !== strpos( $class_name, 'Boxtal\BoxtalWoocommerce' ) ) {
+				/*
+				 * If 'abstracts' is contained in the parts of the file name, then
+				 * define the $file_name differently so that it's properly loaded.
+				 * Otherwise, just set the $file_name equal to that of the class
+				 * filename structure.
+				 */
+				if ( strpos( $file_parts[ count( $file_parts ) - 2 ], 'Abstracts' ) > -1 ) {
+					// Grab the name of the abstract class from its qualified name.
+					$abstract_class_name = explode( '_', $file_parts[ count( $file_parts ) - 1 ] );
+					$abstract_class_name = strtolower( $abstract_class_name[0] );
 
-				$file_name = "abstract-$abstract_class_name.php";
+					$file_name = "abstract-$abstract_class_name.php";
 
+				} else {
+					$file_name = "class-$current.php";
+				}
 			} else {
-				$file_name = "class-$current.php";
+				$file_name = "$current.php";
 			}
 		} else {
 			$namespace = '/' . $current . $namespace;
@@ -63,7 +71,7 @@ function boxtal_woocommerce_autoload( $class_name ) {
 	}
 
 	// Now build a path to the file using mapping to the file location.
-	$filepath  = trailingslashit( dirname( dirname( __FILE__ ) ) . $namespace );
+	$filepath  = trailingslashit( dirname( dirname( __DIR__ ) ) . $namespace );
 	$filepath .= $file_name;
 
 	// If the file exists in the specified path, then include it.

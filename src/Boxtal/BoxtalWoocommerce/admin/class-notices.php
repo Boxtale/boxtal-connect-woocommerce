@@ -24,7 +24,7 @@ class Notices {
 	 *
 	 * @var array
 	 */
-	private static $core_notices = array( 'shop', 'update', 'install' );
+	private static $core_notices = array( 'shop', 'update', 'setup-wizard' );
 
 	/**
 	 * Plugin url.
@@ -62,7 +62,8 @@ class Notices {
 		if ( ! empty( $notices ) ) {
 			foreach ( $notices as $notice ) {
 				add_action( 'admin_notices', array( $notice, 'render' ) );
-				wp_enqueue_style( 'bw_notices_css', self::$plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), self::$plugin_version );
+				wp_enqueue_style( 'bw_notices', self::$plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), self::$plugin_version );
+				add_action( 'wp_ajax_hide_notice', array( $this, 'hide_notice_callback' ) );
 			}
 		}
 	}
@@ -89,7 +90,7 @@ class Notices {
 					self::remove_notice( $key );
 				}
 			} else {
-				$classname .= ucfirst( $key ) . '_Notice';
+				$classname .= ucwords( str_replace( '-', '_', $key ) ) . '_Notice';
 				if ( class_exists( $classname, true ) ) {
 					$class              = new $classname( $key );
 					$notice_instances[] = $class;
@@ -145,5 +146,30 @@ class Notices {
 	public static function has_notices() {
 		$notices = self::get_notices();
 		return ! empty( $notices );
+	}
+
+	/**
+	 * Ajax callback. Hide notice.
+	 *
+	 * @void
+	 */
+	public function hide_notice_callback() {
+		check_ajax_referer( 'boxtale_woocommerce', 'security' );
+		header( 'Content-Type: application/json; charset=utf-8' );
+		if ( ! isset( $_REQUEST['notice_id'] ) ) {
+			wp_send_json( true );
+		}
+		$notice_id = sanitize_text_field( wp_unslash( $_REQUEST['notice_id'] ) );
+		self::remove_notice( $notice_id );
+		wp_send_json( true );
+	}
+
+	/**
+	 * Remove all notices.
+	 *
+	 * @void
+	 */
+	public static function remove_all_notices() {
+		update_option( 'BW_NOTICES', array() );
 	}
 }

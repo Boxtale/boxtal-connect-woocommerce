@@ -17,6 +17,7 @@ class BW_Test_Notices extends WC_Unit_Test_Case {
 	 * Test add & remove notice.
 	 */
 	public function test_add_remove_notice() {
+		Notices::remove_all_notices();
 		Notices::add_notice( 'shop' );
 		$stored_notices = get_option( 'BW_NOTICES' );
 		$this->assertSame(
@@ -34,6 +35,7 @@ class BW_Test_Notices extends WC_Unit_Test_Case {
 	 * Test autodestruct notice.
 	 */
 	public function test_autodestruct_notice() {
+		Notices::remove_all_notices();
 		Notices::add_notice( 'custom' );
 		$stored_notices = Notices::get_notices();
 		foreach ( $stored_notices as $notice ) {

@@ -42,20 +42,19 @@ class Shop {
 	/**
 	 * Endpoint callback.
 	 *
+	 * @param WP_REST_Request $request request.
 	 * @void
 	 */
-	public function api_callback_handler() {
+	public function api_callback_handler( $request ) {
+		$params = $request->get_json_params();
+        // phpcs:ignore
+		if ( isset( $params['callbackUrl'] ) ) {
+            // phpcs:ignore
+			set_transient( 'bw_callback_url', sanitize_text_field( wp_unslash( $params['callbackUrl'] ) ), 60 * 10 );
+		}
+		Notices::remove_notice( 'setup-wizard' );
+		update_option( 'BW_PLUGIN_SETUP', true );
 		Notices::add_notice( 'shop' );
-        // phpcs:ignore
-		if ( isset( $_GET['sha1'] ) ) {
-            // phpcs:ignore
-			set_transient( 'bw_shop_sha1', sanitize_text_field( wp_unslash( $_GET['sha1'] ) ), 60 * 10 );
-		}
-        // phpcs:ignore
-		if ( isset( $_GET['token'] ) ) {
-            // phpcs:ignore
-			set_transient( 'bw_shop_token', sanitize_text_field( wp_unslash( $_GET['token'] ) ), 60 * 10 );
-		}
 		echo 1;
 		die();
 	}

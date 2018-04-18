@@ -7,8 +7,10 @@
 
 namespace Boxtal\BoxtalWoocommerce\Notices;
 
+use Boxtal\BoxtalPhp\RestClient;
 use Boxtal\BoxtalWoocommerce\Abstracts\Notice;
 use Boxtal\BoxtalWoocommerce\Admin\Notices;
+use Boxtal\BoxtalWoocommerce\Helpers\Auth_Helper;
 
 /**
  * Shop notice class.
@@ -42,7 +44,7 @@ class Shop_Notice extends Notice {
 	 * @boolean
 	 */
 	public function is_valid() {
-		return get_transient( 'bw_shop_sha1' ) && get_transient( 'bw_shop_token' );
+		return get_transient( 'bw_callback_url' );
 	}
 
 	/**
@@ -74,9 +76,8 @@ class Shop_Notice extends Notice {
 			wp_send_json( true );
 		}
 
-		$sha1  = get_transient( 'bw_shop_sha1' );
-		$token = get_transient( 'bw_shop_token' );
-		if ( false === $sha1 || false === $token ) {
+		$bw_callback_url = get_transient( 'bw_callback_url' );
+		if ( false === $bw_callback_url ) {
 			Notices::add_notice(
 				'custom', array(
 					'status'  => 'warning',
@@ -86,7 +87,24 @@ class Shop_Notice extends Notice {
 			wp_send_json( true );
 		}
 
-		if ( sha1( $token ) === $sha1 ) {
+		$encrypted_key = Auth_Helper::encrypt_key( $input );
+
+		$rest_client = new RestClient();
+		$res         = $rest_client->request(
+			RestClient::PATCH,
+			$bw_callback_url,
+			array( 'cryptedAccessKey' => $encrypted_key ),
+			array( 'Content-Type' => 'application/json; charset=utf-8' )
+		);
+
+		if ( $res->isError() ) {
+			Notices::add_notice(
+				'custom', array(
+					'status'  => 'warning',
+					'message' => __( 'Wrong code! Try again.', 'boxtal-woocommerce' ),
+				)
+			);
+		} else {
 			Notices::add_notice(
 				'custom', array(
 					'status'  => 'success',
@@ -94,15 +112,9 @@ class Shop_Notice extends Notice {
 				)
 			);
 			Notices::remove_notice( 'shop' );
-			update_option( 'BW_API_TOKEN', $token );
-		} else {
-			Notices::add_notice(
-				'custom', array(
-					'status'  => 'warning',
-					'message' => __( 'Wrong code! Try again.', 'boxtal-woocommerce' ),
-				)
-			);
+			update_option( 'BW_API_TOKEN', '' );
 		}
+
 		wp_send_json( true );
 	}
 }
