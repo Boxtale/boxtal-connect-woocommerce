@@ -39,7 +39,7 @@ function boxtal_woocommerce_init() {
 	$plugin['url']               = plugin_dir_url( __FILE__ );
 	$plugin['version']           = '0.1.0';
 	$plugin['min-wc-version']    = '2.3.0';
-	$plugin['min-php-version']   = '5.4.0';
+	$plugin['min-php-version']   = '5.3.0';
 	$plugin['scripts']           = 'boxtal_woocommerce_load_scripts';
 	$plugin['styles']            = 'boxtal_woocommerce_load_styles';
 	$plugin['notices']           = 'boxtal_woocommerce_init_admin_notices';
