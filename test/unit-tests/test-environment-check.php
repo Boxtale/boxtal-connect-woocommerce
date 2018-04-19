@@ -18,10 +18,10 @@ class BW_Test_Environment_Check extends WC_Unit_Test_Case {
 	 * Test get environment warning.
 	 */
 	public function test_get_environment_warning() {
-        $plugin = new Plugin();
-        $plugin['min-wc-version']    = '2.3.0';
-        $plugin['min-php-version']   = '5.3.0';
-		$environment_check = new Environment_Check( $plugin );
+		$plugin                    = new Plugin();
+		$plugin['min-wc-version']  = '2.3.0';
+		$plugin['min-php-version'] = '5.3.0';
+		$environment_check         = new Environment_Check( $plugin );
 		$this->assertFalse(
 			$environment_check->boxtal_woocommerce_get_environment_warning()
 		);
