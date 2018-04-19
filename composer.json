@@ -14,7 +14,8 @@
   "repositories": [
     {
       "type": "github",
-      "url": "git@github.com:Boxtale/boxtal-php-poc.git"
+      "url": "https://github.com/Boxtale/boxtal-php-poc.git",
+      "no-api": true
     }
   ],
   "require": {
