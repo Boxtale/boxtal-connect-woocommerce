@@ -13,7 +13,7 @@
   "type": "wordpress-plugin",
   "repositories": [
     {
-      "type": "github",
+      "type": "vcs",
       "url": "https://github.com/Boxtale/boxtal-php-poc.git"
     }
   ],
