@@ -21,7 +21,7 @@ class BW_Test_Setup_Wizard extends WC_Unit_Test_Case {
 		$setup_wizard_notice = new Setup_Wizard_Notice( 'setup-wizard' );
 		$setup_wizard_notice->set_base_connect_link( 'http://xxx/connect-shop' );
 		$admins = get_super_admins();
-		if ( is_array( $admins ) && count( $admins > 0 ) ) {
+		if ( is_array( $admins ) && count( $admins ) > 0 ) {
 			$admin_user_login = array_shift( $admins );
 			$admin_user       = get_user_by( 'login', $admin_user_login );
 			$admin_user_id    = $admin_user->get( 'ID' );

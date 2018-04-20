@@ -66,7 +66,7 @@ class Setup_Wizard_Notice extends Notice {
 	public function get_connect_url() {
 		$connect_url = $this->base_connect_link;
 		$admins      = get_super_admins();
-		if ( is_array( $admins ) && count( $admins > 0 ) ) {
+		if ( is_array( $admins ) && count( $admins ) > 0 ) {
 			$admin_user_login = array_shift( $admins );
 			$admin_user       = get_user_by( 'login', $admin_user_login );
 			$admin_user_id    = $admin_user->get( 'ID' );
