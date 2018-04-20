@@ -54,8 +54,8 @@ class Setup_Wizard_Notice extends Notice {
 		$this->type         = 'setup-wizard';
 		$this->autodestruct = false;
 		$this->set_base_connect_link( 'http://localhost:4200/app/connect-shop' );
-        $this->return_url   = get_dashboard_url();
-        $this->connect_link = $this->get_connect_url();
+		$this->return_url   = get_dashboard_url();
+		$this->connect_link = $this->get_connect_url();
 	}
 
 	/**
