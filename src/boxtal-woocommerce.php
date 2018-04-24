@@ -13,6 +13,8 @@
  */
 
 use Boxtal\BoxtalWoocommerce\Admin\Notices;
+use Boxtal\BoxtalWoocommerce\Admin\Shipping_Method_Label_Override;
+use Boxtal\BoxtalWoocommerce\Admin\Shipping_Method_Settings_Override;
 use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
 use Boxtal\BoxtalWoocommerce\Api\Shop;
 use Boxtal\BoxtalWoocommerce\Activation\Environment_Check;
@@ -34,19 +36,21 @@ add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
  * @void
  */
 function boxtal_woocommerce_init() {
-	$plugin                      = new Plugin(); // Create container.
-	$plugin['path']              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
-	$plugin['url']               = plugin_dir_url( __FILE__ );
-	$plugin['version']           = '0.1.0';
-	$plugin['min-wc-version']    = '2.3.0';
-	$plugin['min-php-version']   = '5.3.0';
-	$plugin['scripts']           = 'boxtal_woocommerce_load_scripts';
-	$plugin['styles']            = 'boxtal_woocommerce_load_styles';
-	$plugin['notices']           = 'boxtal_woocommerce_init_admin_notices';
-	$plugin['check-environment'] = 'boxtal_woocommerce_check_environment';
-	$plugin['setup-wizard']      = 'boxtal_woocommerce_setup_wizard';
-	$plugin['api-order-sync']    = 'boxtal_woocommerce_service_api_order_sync';
-	$plugin['api-shop']          = 'boxtal_woocommerce_service_api_shop';
+	$plugin                          = new Plugin(); // Create container.
+	$plugin['path']                  = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
+	$plugin['url']                   = plugin_dir_url( __FILE__ );
+	$plugin['version']               = '0.1.0';
+	$plugin['min-wc-version']        = '2.3.0';
+	$plugin['min-php-version']       = '5.3.0';
+	$plugin['scripts']               = 'boxtal_woocommerce_load_scripts';
+	$plugin['styles']                = 'boxtal_woocommerce_load_styles';
+	$plugin['notices']               = 'boxtal_woocommerce_init_admin_notices';
+	$plugin['check-environment']     = 'boxtal_woocommerce_check_environment';
+	$plugin['setup-wizard']          = 'boxtal_woocommerce_setup_wizard';
+	$plugin['api-order-sync']        = 'boxtal_woocommerce_service_api_order_sync';
+	$plugin['api-shop']              = 'boxtal_woocommerce_service_api_shop';
+	$plugin['tag-shipping-method']   = 'boxtal_woocommerce_tag_shipping_method';
+	$plugin['shipping-method-label'] = 'boxtal_woocommerce_shipping_method_label';
 	$plugin->run();
 }
 
@@ -165,5 +169,37 @@ function boxtal_woocommerce_load_styles( $plugin ) {
 	}
 
 	$object = new Styles( $plugin );
+	return $object;
+}
+
+/**
+ * Return tag shipping method singleton.
+ *
+ * @return Shipping_Method_Settings_Override $object
+ */
+function boxtal_woocommerce_tag_shipping_method() {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Shipping_Method_Settings_Override();
+	return $object;
+}
+
+/**
+ * Return shipping method label override singleton.
+ *
+ * @return Shipping_Method_Label_Override $object
+ */
+function boxtal_woocommerce_shipping_method_label() {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Shipping_Method_Label_Override();
 	return $object;
 }

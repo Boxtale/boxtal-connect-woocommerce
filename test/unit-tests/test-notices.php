@@ -18,15 +18,15 @@ class BW_Test_Notices extends WC_Unit_Test_Case {
 	 */
 	public function test_add_remove_notice() {
 		Notices::remove_all_notices();
-		Notices::add_notice( 'shop' );
+		Notices::add_notice( 'setup-wizard' );
 		$stored_notices = get_option( 'BW_NOTICES' );
 		$this->assertSame(
 			$stored_notices,
 			array(
-				0 => 'shop',
+				0 => 'setup-wizard',
 			)
 		);
-		Notices::remove_notice( 'shop' );
+		Notices::remove_notice( 'setup-wizard' );
 		$stored_notices = get_option( 'BW_NOTICES' );
 		$this->assertEmpty( $stored_notices );
 	}

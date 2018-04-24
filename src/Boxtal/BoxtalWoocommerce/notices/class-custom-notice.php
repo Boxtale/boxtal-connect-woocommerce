@@ -46,7 +46,7 @@ class Custom_Notice extends Notice {
 	public function __construct( $key, $args ) {
 		parent::__construct( $key );
 		$this->type         = 'custom';
-		$this->autodestruct = true;
+		$this->autodestruct = isset( $args['autodestruct'] ) ? $args['autodestruct'] : true;
 		$this->status       = isset( $args['status'] ) ? $args['status'] : 'info';
 		$this->message      = isset( $args['message'] ) ? $args['message'] : '';
 	}

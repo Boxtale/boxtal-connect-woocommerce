@@ -7,6 +7,8 @@
 
 namespace Boxtal\BoxtalWoocommerce\Includes;
 
+use Boxtal\BoxtalWoocommerce\Admin\Notices;
+
 /**
  * Styles class.
  *
@@ -28,7 +30,6 @@ class Styles {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
-		$this->notices        = $plugin['notices'];
 	}
 
 	/**
@@ -37,13 +38,21 @@ class Styles {
 	 * @void
 	 */
 	public function run() {
-		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( &$this, 'admin_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
 
-			if ( $this->notices->has_notices() ) {
-				add_action( 'admin_enqueue_scripts', array( &$this, 'notices_styles' ) );
-			}
+		if ( is_admin() ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'notices_styles' ) );
 		}
+	}
+
+	/**
+	 * Enqueue parcel point styles
+	 *
+	 * @void
+	 */
+	public function parcel_point_styles() {
+		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
 	}
 
 	/**
@@ -62,6 +71,8 @@ class Styles {
 	 * @void
 	 */
 	public function notices_styles() {
-		wp_enqueue_style( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), $this->plugin_version );
+		if ( Notices::has_notices() ) {
+			wp_enqueue_style( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), $this->plugin_version );
+		}
 	}
 }

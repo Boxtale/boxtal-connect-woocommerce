@@ -34,14 +34,9 @@ class Order_Sync {
 			'rest_api_init', function() {
 				register_rest_route(
 					'boxtal-woocommerce/v1', '/order', array(
-						'methods'  => 'GET',
-						'callback' => array( $this, 'api_callback_handler' ),
-						'args'     => array(
-							'token' => array(
-								'required'          => true,
-								'validate_callback' => array( $this, 'authenticate' ),
-							),
-						),
+						'methods'             => 'GET',
+						'callback'            => array( $this, 'api_callback_handler' ),
+						'permission_callback' => array( $this, 'authenticate' ),
 					)
 				);
 			}
@@ -51,11 +46,11 @@ class Order_Sync {
 	/**
 	 * Call to auth helper class authenticate function.
 	 *
-	 * @param string $param param value.
+	 * @param WP_REST_Request $request request.
 	 * @return WP_Error|boolean
 	 */
-	public function authenticate( $param ) {
-		return Auth_Helper::authenticate( $param );
+	public function authenticate( $request ) {
+		return Auth_Helper::authenticate( $request );
 	}
 
 	/**
