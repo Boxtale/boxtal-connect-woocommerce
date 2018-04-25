@@ -95,6 +95,14 @@ class Helper_Functions {
 			return false;
 		}
 
+		if ( ! isset( $settings['bw_tag_relay_operators'] ) ) {
+			return false;
+		}
+
+		if ( empty( $settings['bw_tag_relay_operators'] ) ) {
+			return false;
+		}
+
 		if ( ! WC()->customer->get_shipping_country() || ! WC()->customer->get_shipping_city() ) {
 			return false;
 		}
@@ -110,5 +118,21 @@ class Helper_Functions {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get shipping method settings from method id.
+	 *
+	 * @param string $method_id woocommerce method id.
+	 * @return array $settings method settings
+	 */
+	public static function get_settings( $method_id ) {
+		if ( -1 !== strpos( $method_id, ':' ) ) {
+			$method_name  = explode( ':', $method_id );
+			$settings_key = 'woocommerce_' . $method_name[0] . '_' . $method_name[1] . '_settings';
+		} else {
+			$settings_key = 'woocommerce_' . $method_id . '_settings';
+		}
+		return get_option( $settings_key );
 	}
 }

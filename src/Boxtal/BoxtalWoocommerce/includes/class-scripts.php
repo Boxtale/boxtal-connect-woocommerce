@@ -60,27 +60,30 @@ class Scripts {
 		}
 
 		$translations = array(
-			'Close map'                    => __( 'Close map', 'boxtal-woocommerce' ),
-			'Unable to load parcel points' => __( 'Unable to load parcel points', 'boxtal-woocommerce' ),
-			'I want this pickup point'     => __( 'I want this pickup point', 'boxtal-woocommerce' ),
-			'From %1 to %2'                => __( 'From %1 to %2', 'boxtal-woocommerce' ),
-			' and %1 to %2'                => __( ' and %1 to %2', 'boxtal-woocommerce' ),
-			'day_1'                        => __( 'monday', 'boxtal-woocommerce' ),
-			'day_2'                        => __( 'tuesday', 'boxtal-woocommerce' ),
-			'day_3'                        => __( 'wednesday', 'boxtal-woocommerce' ),
-			'day_4'                        => __( 'thursday', 'boxtal-woocommerce' ),
-			'day_5'                        => __( 'friday', 'boxtal-woocommerce' ),
-			'day_6'                        => __( 'saturday', 'boxtal-woocommerce' ),
-			'day_7'                        => __( 'sunday', 'boxtal-woocommerce' ),
-			'Opening hours'                => __( 'Opening hours', 'boxtal-woocommerce' ),
-			'relayName'                    => __( 'Choose this Relay Point', 'boxtal-woocommerce' ),
-			'noPP'                         => __( 'Could not find any parcel point for this address', 'boxtal-woocommerce' ),
+			'Close map'                     => __( 'Close map', 'boxtal-woocommerce' ),
+			'Unable to load parcel points:' => __( 'Unable to load parcel points:', 'boxtal-woocommerce' ),
+			'I want this pickup point'      => __( 'I want this pickup point', 'boxtal-woocommerce' ),
+			'From %1 to %2'                 => __( 'From %1 to %2', 'boxtal-woocommerce' ),
+			' and %1 to %2'                 => __( ' and %1 to %2', 'boxtal-woocommerce' ),
+			'day_1'                         => __( 'monday', 'boxtal-woocommerce' ),
+			'day_2'                         => __( 'tuesday', 'boxtal-woocommerce' ),
+			'day_3'                         => __( 'wednesday', 'boxtal-woocommerce' ),
+			'day_4'                         => __( 'thursday', 'boxtal-woocommerce' ),
+			'day_5'                         => __( 'friday', 'boxtal-woocommerce' ),
+			'day_6'                         => __( 'saturday', 'boxtal-woocommerce' ),
+			'day_7'                         => __( 'sunday', 'boxtal-woocommerce' ),
+			'Opening hours'                 => __( 'Opening hours', 'boxtal-woocommerce' ),
+			'relayName'                     => __( 'Choose this Relay Point', 'boxtal-woocommerce' ),
+			'noPP'                          => __( 'Could not find any parcel point for this address', 'boxtal-woocommerce' ),
+			'selected'                      => __( 'Selected:', 'boxtal-woocommerce' ),
 		);
 		wp_enqueue_script( 'bw_gmap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBLvWeSENu0h4lDozEYIOaAbMbgVtS9EWI' );
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_gmap' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		$ajax_nonce = wp_create_nonce( 'boxtale_woocommerce' );
 		wp_localize_script( 'bw_shipping', 'ajax_nonce', $ajax_nonce );
+		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
 	}
 
 	/**

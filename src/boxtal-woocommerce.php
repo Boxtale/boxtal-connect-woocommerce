@@ -13,6 +13,7 @@
  */
 
 use Boxtal\BoxtalWoocommerce\Admin\Notices;
+use Boxtal\BoxtalWoocommerce\Admin\Parcel_Point_Handler;
 use Boxtal\BoxtalWoocommerce\Admin\Shipping_Method_Label_Override;
 use Boxtal\BoxtalWoocommerce\Admin\Shipping_Method_Settings_Override;
 use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
@@ -51,6 +52,7 @@ function boxtal_woocommerce_init() {
 	$plugin['api-shop']              = 'boxtal_woocommerce_service_api_shop';
 	$plugin['tag-shipping-method']   = 'boxtal_woocommerce_tag_shipping_method';
 	$plugin['shipping-method-label'] = 'boxtal_woocommerce_shipping_method_label';
+	$plugin['parcel-point-handler']  = 'boxtal_woocommerce_service_parcel_point_handler';
 	$plugin->run();
 }
 
@@ -201,5 +203,21 @@ function boxtal_woocommerce_shipping_method_label() {
 	}
 
 	$object = new Shipping_Method_Label_Override();
+	return $object;
+}
+
+/**
+ * Manage parcel points.
+ *
+ * @return Parcel_Point_Handler $object
+ */
+function boxtal_woocommerce_service_parcel_point_handler() {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Parcel_Point_Handler();
 	return $object;
 }
