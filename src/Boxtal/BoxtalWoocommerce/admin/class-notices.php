@@ -24,7 +24,7 @@ class Notices {
 	 *
 	 * @var array
 	 */
-	private static $core_notices = array( 'update', 'setup-wizard' );
+	private static $core_notices = array( 'update', 'setup-wizard', 'pairing' );
 
 	/**
 	 * Plugin url.

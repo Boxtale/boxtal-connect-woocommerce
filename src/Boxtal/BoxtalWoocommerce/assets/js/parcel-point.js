@@ -3,28 +3,32 @@
 
     Components.links = {
         trigger: '.bw-select-parcel',
+        mapContainer: null,
 
         init: function () {
             var triggers = document.querySelectorAll(this.trigger);
             var self = this;
 
             if (triggers.length) {
-                var map = document.querySelector('#bw-map');
-                if (!map) {
+                self.mapContainer = document.querySelector('#bw-map');
+                if (!self.mapContainer) {
                     self.initMap();
-                    map = document.querySelector('#bw-map');
                 }
 
                 self.on("body", "click", self.trigger, function() {
-                    map.classList.add("bw-modal-show");
+                    self.showMap();
                 });
             }
         },
 
         initMap: function() {
+            var self = this;
             var mapClose = document.createElement("div");
             mapClose.setAttribute("class", "bw-close");
             mapClose.setAttribute("title", "Close map");
+            /*mapClose.addEventListener("click", function() {
+                self.closeMap()
+            });*/
 
             var mapCanvas = document.createElement("div");
             mapCanvas.setAttribute("id", "bw-map-canvas");
@@ -42,17 +46,34 @@
             mapInner.appendChild(mapContainer);
             mapInner.appendChild(mapPPContainer);
 
-            var mapOuter = document.createElement("div");
-            mapOuter.setAttribute("id", "bw-map");
-            mapOuter.appendChild(mapInner);
-            document.body.appendChild(mapOuter);
+            self.mapContainer = document.createElement("div");
+            self.mapContainer.setAttribute("id", "bw-map");
+            self.mapContainer.appendChild(mapInner);
+            document.body.appendChild(self.mapContainer);
 
-            var offset = window.pageYOffset + (window.innerHeight - mapOuter.outerHeight)/2;
+            /*
+            var options = {
+                zoom: 11,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("bw-map-canvas"), options);
+            var bounds = new google.maps.LatLngBounds();
+            var infowindow = new google.maps.InfoWindow();
+            google.maps.event.trigger(map, 'resize');
+            */
+        },
+
+        showMap: function() {
+            this.mapContainer.classList.add("bw-modal-show");
+            var offset = window.pageYOffset + (window.innerHeight - this.mapContainer.offsetHeight)/2;
             if (offset < window.pageYOffset) {
                 offset = window.pageYOffset;
             }
-            mapOuter.style.top = offset + 'px';
-            console.log(offset);
+            this.mapContainer.style.top = offset + 'px';
+        },
+
+        closeMap: function() {
+            this.mapContainer.classList.remove("bw-modal-show");
         },
 
         on: function(elSelector, eventName, selector, fn) {

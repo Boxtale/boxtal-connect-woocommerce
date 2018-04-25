@@ -60,10 +60,9 @@ class Shop {
 		Notices::remove_notice( 'setup-wizard' );
 		update_option( 'BW_PLUGIN_SETUP', true );
 		Notices::add_notice(
-			'custom', array(
-				'status'       => 'success',
-				'message'      => __( 'Congratulations! You\'ve successfully paired your site with Boxtal.', 'boxtal-woocommerce' ),
-				'autodestruct' => false,
+			'pairing', array(
+				'status'  => 'success',
+				'message' => __( 'Congratulations! You\'ve successfully paired your site with Boxtal.', 'boxtal-woocommerce' ),
 			)
 		);
 		echo 1;
