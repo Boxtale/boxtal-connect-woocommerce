@@ -31,6 +31,8 @@ class Parcel_Point_Handler {
 		add_action( 'wp_ajax_nopriv_get_points', array( $this, 'get_points_callback' ) );
 		add_action( 'wp_ajax_set_point', array( $this, 'set_point_callback' ) );
 		add_action( 'wp_ajax_nopriv_set_point', array( $this, 'set_point_callback' ) );
+		add_action( 'wp_ajax_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
+		add_action( 'wp_ajax_nopriv_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
 	}
 
 	/**
@@ -42,19 +44,23 @@ class Parcel_Point_Handler {
 		check_ajax_referer( 'boxtale_woocommerce', 'security' );
 		header( 'Content-Type: application/json; charset=utf-8' );
 		if ( ! isset( $_REQUEST['carrier'] ) ) {
-			wp_send_json_error( array( 'message' => 'could not figure carrier' ) );
+			wp_send_json_error( array( 'message' => __( 'Unable to find carrier', 'boxtal-woocommerce' ) ) );
 		}
 		$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
 		$settings = Helper_Functions::get_settings( $carrier );
 		if ( ! isset( $settings['bw_tag_category'], $settings['bw_tag_relay_operators'] ) || 'relay' !== $settings['bw_tag_category'] ) {
-			wp_send_json_error( array( 'message' => 'something is wrong with this carrier\'s settings' ) );
+			wp_send_json_error( array( 'message' => __( 'Something is wrong with this carrier\'s settings', 'boxtal-woocommerce' ) ) );
 		}
 		$operators = $settings['bw_tag_relay_operators'];
 		if ( empty( $operators ) ) {
-			wp_send_json_error( array( 'message' => 'no relay operators were defined for this carrier' ) );
+			wp_send_json_error( array( 'message' => __( 'No relay operators were defined for this carrier', 'boxtal-woocommerce' ) ) );
 		}
 
 		$mock_parcel_points = $this->get_mock_points();
+
+		if ( empty( $mock_parcel_points ) ) {
+			wp_send_json_error( array( 'message' => __( 'Could not find any parcel point for this address', 'boxtal-woocommerce' ) ) );
+		}
 
 		wp_send_json( $mock_parcel_points );
 	}
@@ -83,6 +89,20 @@ class Parcel_Point_Handler {
 		}
 
 		wp_send_json( true );
+	}
+
+	/**
+	 * Get recipient address callback.
+	 *
+	 * @void
+	 */
+	public function get_recipient_address_callback() {
+		check_ajax_referer( 'boxtale_woocommerce', 'security' );
+		header( 'Content-Type: application/json; charset=utf-8' );
+		$recipient_address = WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() . ' '
+			. WC()->customer->get_shipping_postcode() . ' ' . WC()->customer->get_shipping_city() . ' ' . WC()->customer->get_shipping_country();
+		$recipient_address = preg_replace( '/\s+/', ' ', $recipient_address );
+		wp_send_json( $recipient_address );
 	}
 
 	/**
