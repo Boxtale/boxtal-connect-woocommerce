@@ -5,7 +5,7 @@
  * @package Boxtal\Tests
  */
 
-use Boxtal\BoxtalWoocommerce\Activation\Environment_Check;
+use Boxtal\BoxtalWoocommerce\Init\Environment_Check;
 use Boxtal\BoxtalWoocommerce\Plugin;
 
 

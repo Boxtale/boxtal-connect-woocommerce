@@ -12,23 +12,22 @@
  * @package Boxtal\BoxtalWoocommerce
  */
 
-use Boxtal\BoxtalWoocommerce\Admin\Notices;
-use Boxtal\BoxtalWoocommerce\Admin\Parcel_Point_Handler;
-use Boxtal\BoxtalWoocommerce\Admin\Shipping_Method_Label_Override;
-use Boxtal\BoxtalWoocommerce\Admin\Shipping_Method_Settings_Override;
-use Boxtal\BoxtalWoocommerce\Api\Order_Sync;
-use Boxtal\BoxtalWoocommerce\Api\Shop;
-use Boxtal\BoxtalWoocommerce\Activation\Environment_Check;
-use Boxtal\BoxtalWoocommerce\Activation\Setup_Wizard;
-use Boxtal\BoxtalWoocommerce\Includes\Scripts;
-use Boxtal\BoxtalWoocommerce\Includes\Styles;
+use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
+use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Checkout;
+use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Controller;
+use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Label_Override;
+use Boxtal\BoxtalWoocommerce\Shipping_Method\Settings_Override;
+use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
+use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
+use Boxtal\BoxtalWoocommerce\Init\Environment_Check;
+use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
 use Boxtal\BoxtalWoocommerce\Plugin;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/plugin.php';
 }
 
-require_once trailingslashit( __DIR__ ) . 'Boxtal/BoxtalWoocommerce/autoload/autoloader.php';
+require_once trailingslashit( __DIR__ ) . 'Boxtal/BoxtalWoocommerce/autoloader.php';
 
 add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
 /**
@@ -37,22 +36,21 @@ add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
  * @void
  */
 function boxtal_woocommerce_init() {
-	$plugin                          = new Plugin(); // Create container.
-	$plugin['path']                  = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
-	$plugin['url']                   = plugin_dir_url( __FILE__ );
-	$plugin['version']               = '0.1.0';
-	$plugin['min-wc-version']        = '2.3.0';
-	$plugin['min-php-version']       = '5.3.0';
-	$plugin['scripts']               = 'boxtal_woocommerce_load_scripts';
-	$plugin['styles']                = 'boxtal_woocommerce_load_styles';
-	$plugin['notices']               = 'boxtal_woocommerce_init_admin_notices';
-	$plugin['check-environment']     = 'boxtal_woocommerce_check_environment';
-	$plugin['setup-wizard']          = 'boxtal_woocommerce_setup_wizard';
-	$plugin['api-order-sync']        = 'boxtal_woocommerce_service_api_order_sync';
-	$plugin['api-shop']              = 'boxtal_woocommerce_service_api_shop';
-	$plugin['tag-shipping-method']   = 'boxtal_woocommerce_tag_shipping_method';
-	$plugin['shipping-method-label'] = 'boxtal_woocommerce_shipping_method_label';
-	$plugin['parcel-point-handler']  = 'boxtal_woocommerce_service_parcel_point_handler';
+	$plugin                                      = new Plugin(); // Create container.
+	$plugin['path']                              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
+	$plugin['url']                               = plugin_dir_url( __FILE__ );
+	$plugin['version']                           = '0.1.0';
+	$plugin['min-wc-version']                    = '2.3.0';
+	$plugin['min-php-version']                   = '5.3.0';
+	$plugin['notice']                            = 'boxtal_woocommerce_init_admin_notices';
+	$plugin['check-environment']                 = 'boxtal_woocommerce_check_environment';
+	$plugin['setup-wizard']                      = 'boxtal_woocommerce_setup_wizard';
+	$plugin['rest-controller-order']             = 'boxtal_woocommerce_rest_controller_order';
+	$plugin['rest-controller-shop']              = 'boxtal_woocommerce_rest_controller_shop';
+	$plugin['shipping-method-settings-override'] = 'boxtal_woocommerce_shipping_method_settings_override';
+	$plugin['parcel-point-label-override']       = 'boxtal_woocommerce_parcel_point_label_override';
+	$plugin['parcel-point-controller']           = 'boxtal_woocommerce_parcel_point_controller';
+	$plugin['parcel-point-checkout']             = 'boxtal_woocommerce_parcel_point_checkout';
 	$plugin->run();
 }
 
@@ -92,34 +90,36 @@ function boxtal_woocommerce_setup_wizard( $plugin ) {
 }
 
 /**
- * Get new Order_Sync instance.
+ * Get new Order instance.
  *
- * @return Order_Sync $object
+ * @param array $plugin plugin array.
+ * @return Order $object
  */
-function boxtal_woocommerce_service_api_order_sync() {
+function boxtal_woocommerce_rest_controller_order( $plugin ) {
 	static $object;
 
 	if ( null !== $object ) {
 		return $object;
 	}
 
-	$object = new Order_Sync();
+	$object = new Order( $plugin );
 	return $object;
 }
 
 /**
  * Get new Shop instance.
  *
+ * @param array $plugin plugin array.
  * @return Shop $object
  */
-function boxtal_woocommerce_service_api_shop() {
+function boxtal_woocommerce_rest_controller_shop( $plugin ) {
 	static $object;
 
 	if ( null !== $object ) {
 		return $object;
 	}
 
-	$object = new Shop();
+	$object = new Shop( $plugin );
 	return $object;
 }
 
@@ -127,7 +127,7 @@ function boxtal_woocommerce_service_api_shop() {
  * Return admin notices singleton.
  *
  * @param array $plugin plugin array.
- * @return Notices $object
+ * @return Notice_Controller $object
  */
 function boxtal_woocommerce_init_admin_notices( $plugin ) {
 	static $object;
@@ -136,88 +136,74 @@ function boxtal_woocommerce_init_admin_notices( $plugin ) {
 		return $object;
 	}
 
-	$object = new Notices( $plugin );
+	$object = new Notice_Controller( $plugin );
 	return $object;
 }
 
 /**
- * Return scripts singleton.
+ * Return settings override singleton.
  *
  * @param array $plugin plugin array.
- * @return Scripts $object
+ * @return Settings_Override $object
  */
-function boxtal_woocommerce_load_scripts( $plugin ) {
+function boxtal_woocommerce_shipping_method_settings_override( $plugin ) {
 	static $object;
 
 	if ( null !== $object ) {
 		return $object;
 	}
 
-	$object = new Scripts( $plugin );
+	$object = new Settings_Override( $plugin );
 	return $object;
 }
 
 /**
- * Return styles singleton.
+ * Return label override singleton.
  *
  * @param array $plugin plugin array.
- * @return Styles $object
+ * @return Label_Override $object
  */
-function boxtal_woocommerce_load_styles( $plugin ) {
+function boxtal_woocommerce_parcel_point_label_override( $plugin ) {
 	static $object;
 
 	if ( null !== $object ) {
 		return $object;
 	}
 
-	$object = new Styles( $plugin );
+	$object = new Label_Override( $plugin );
 	return $object;
 }
 
 /**
- * Return tag shipping method singleton.
+ * Parcel point controller.
  *
- * @return Shipping_Method_Settings_Override $object
+ * @param array $plugin plugin array.
+ * @return Controller $object
  */
-function boxtal_woocommerce_tag_shipping_method() {
+function boxtal_woocommerce_parcel_point_controller( $plugin ) {
 	static $object;
 
 	if ( null !== $object ) {
 		return $object;
 	}
 
-	$object = new Shipping_Method_Settings_Override();
+	$object = new Controller( $plugin );
 	return $object;
 }
 
 /**
- * Return shipping method label override singleton.
+ * Manage parcel point checkout.
  *
- * @return Shipping_Method_Label_Override $object
+ * @param array $plugin plugin array.
+ * @return Checkout $object
  */
-function boxtal_woocommerce_shipping_method_label() {
+function boxtal_woocommerce_parcel_point_checkout( $plugin ) {
 	static $object;
 
 	if ( null !== $object ) {
 		return $object;
 	}
 
-	$object = new Shipping_Method_Label_Override();
-	return $object;
-}
-
-/**
- * Manage parcel points.
- *
- * @return Parcel_Point_Handler $object
- */
-function boxtal_woocommerce_service_parcel_point_handler() {
-	static $object;
-
-	if ( null !== $object ) {
-		return $object;
-	}
-
-	$object = new Parcel_Point_Handler();
+	$object = new Checkout( $plugin );
 	return $object;
 }

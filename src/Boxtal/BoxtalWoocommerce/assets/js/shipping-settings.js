@@ -1,26 +1,26 @@
 document.addEventListener(
     "DOMContentLoaded", function() {
-        var bwCategoryTag = document.querySelectorAll(".bw-tag-category-dropdown");
-        var relayElement = document.querySelectorAll(".bw-tag-relay-operators-dropdown");
-        if (bwCategoryTag.length > 0) {
-            var initialValue = bwCategoryTag[0].value || bwCategoryTag[0].options[bwCategoryTag[0].selectedIndex].value;
-            bwShowHideRelaySetting(relayElement, initialValue);
+        var bwMapDisplay = document.querySelector(".bw-map-display-dropdown");
+        var bwParcelPointOperators = document.querySelector(".bw-parcel-point-operators-dropdown");
+        if (bwMapDisplay) {
+            var initialValue = bwMapDisplay.value || bwMapDisplay.options[bwMapDisplay.selectedIndex].value;
+            bwShowHideRelaySetting(bwParcelPointOperators, initialValue);
 
-            bwCategoryTag[0].onchange = function() {
+            bwMapDisplay.onchange = function() {
                 var elem = (typeof this.selectedIndex === "undefined" ? window.event.srcElement : this);
                 var value = elem.value || elem.options[elem.selectedIndex].value;
-                bwShowHideRelaySetting(relayElement, value);
+                bwShowHideRelaySetting(bwParcelPointOperators, value);
             }
         }
     }
 );
 
-function bwShowHideRelaySetting(relayElement, categoryTagValue) {
-    if (relayElement.length > 0) {
-        if (categoryTagValue === "relay") {
-            relayElement[0].closest('tr').style.display = "table-row";
+function bwShowHideRelaySetting(bwParcelPointOperators, bwMapDisplayValue) {
+    if (bwParcelPointOperators) {
+        if (bwMapDisplayValue === "1") {
+            bwParcelPointOperators.closest('tr').style.display = "table-row";
         } else {
-            relayElement[0].closest('tr').style.display = "none";
+            bwParcelPointOperators.closest('tr').style.display = "none";
         }
     }
 }
