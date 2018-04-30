@@ -2,15 +2,18 @@ import config from 'config';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import test from 'selenium-webdriver/testing';
-
-// Helper objects for performing actions.
 import {WebDriverManager, WebDriverHelper as helper} from 'wp-e2e-webdriver';
-
-// We're going to use the ShopPage and CartPage objects for this tutorial.
-import {ShopPage, CartPage} from 'wc-e2e-page-objects';
+import {StoreOwnerFlow, ShopPage, CartPage} from 'wc-e2e-page-objects';
 
 chai.use(chaiAsPromised);
+
 const assert = chai.assert;
+
+const storeOwnerFlowArgs = {
+    baseUrl: config.get( 'url' ),
+    username: config.get( 'users.admin.username' ),
+    password: config.get( 'users.admin.password' )
+};
 
 let manager;
 let driver;
@@ -19,12 +22,29 @@ test.describe('Frontend Tests', function () {
 
     // Set up the driver and manager before testing starts.
     test.before( function () {
-        this.timeout(config.get('startBrowserTimeoutMs'));
+        this.timeout( config.get( 'startBrowserTimeoutMs' ) );
 
-        manager = new WebDriverManager('chrome', {baseUrl: config.get('url')});
+        manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
         driver = manager.getDriver();
 
-        helper.clearCookiesAndDeleteLocalStorage(driver);
+        helper.clearCookiesAndDeleteLocalStorage( driver );
+
+        const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
+
+        // General settings for this test.
+        storeOwner.setGeneralSettings( {
+            baseLocation: [ 'United States', 'United States (US) — California' ],
+            sellingLocation: 'Sell to all countries',
+            enableTaxes: true,
+            currency: [ 'United States', 'United States dollar ($)' ],
+        } );
+
+        // Make sure payment method is set in setting.
+        storeOwner.enableBACS();
+        storeOwner.enableCOD();
+        storeOwner.enablePayPal();
+
+        storeOwner.logout();
     });
 
     this.timeout(config.get('mochaTimeoutMs'));
