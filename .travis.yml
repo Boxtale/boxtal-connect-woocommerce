@@ -3,12 +3,6 @@
 # Tell Travis CI we're using PHP
 language: php
 
-addons:
-  chrome: stable
-  apt:
-    packages:
-      - nginx
-
 # PHP version used in first build configuration.
 php:
   - 5.6
@@ -56,7 +50,7 @@ matrix:
 #  - php: 7.0
 #    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
   - php: 7.0
-    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0 RUN_E2E=1
+    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0
 #  - php: 7.2.1
 #    env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
@@ -73,6 +67,7 @@ script:
   - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit; fi
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit; fi
   - bash build/phpcs.sh
+  - bash test/bin/run-e2e-CI.sh
 
 after_script:
   - bash build/travis.sh after
