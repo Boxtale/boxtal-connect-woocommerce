@@ -49,7 +49,7 @@ install_e2e_tests() {
         REPO=$TRAVIS_PULL_REQUEST_SLUG
     fi
 
-    set -ex
+    set -ev
     npm install
     export NODE_CONFIG_DIR="./test/e2e-test/config"
 
@@ -98,6 +98,7 @@ PHP
     php wp-cli.phar plugin install $BW_DIR/boxtal-woocommerce.zip --activate
 
     cd "$WORKING_DIR"
+    npm run test
 }
 
 clean_directories
