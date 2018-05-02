@@ -9,4 +9,5 @@ sh -e /etc/init.d/xvfb start
 sleep 3
 
 # Run the tests
+    ls -l
 npm test

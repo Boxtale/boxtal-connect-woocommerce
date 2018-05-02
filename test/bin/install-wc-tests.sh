@@ -98,7 +98,6 @@ PHP
     php wp-cli.phar plugin install $BW_DIR/boxtal-woocommerce.zip --activate
 
     cd "$WORKING_DIR"
-    ls -l
 }
 
 clean_directories
