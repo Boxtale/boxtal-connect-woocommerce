@@ -58,6 +58,7 @@ install_e2e_tests() {
     mkdir -p "$NGINX_DIR"
     mkdir -p "$NGINX_DIR/sites-enabled"
     mkdir -p "$NGINX_DIR/var"
+    mkdir -p "tpm/nginx-logs"
 
     cp "$CONFIG_DIR/travis_php-fpm.conf" "$PHP_FPM_CONF"
 
@@ -68,6 +69,7 @@ install_e2e_tests() {
     cp "$CONFIG_DIR/travis_nginx.conf" "$NGINX_DIR/nginx.conf"
     cp "$CONFIG_DIR/travis_fastcgi.conf" "$NGINX_DIR/fastcgi.conf"
     cp "$CONFIG_DIR/travis_default-site.conf" "$NGINX_DIR/sites-enabled/default-site.conf"
+
 
     find /tmp/nginx-logs -type d -exec chmod 766 {} \;
 
