@@ -1,7 +1,7 @@
 {
-  "name": "wc-e2e-page-objects-tutorial",
+  "name": "boxtal-woocommerce-e2e-tests",
   "version": "0.0.1",
-  "description": "WooCommerce Page Objects tutorial",
+  "description": "Boxtal WooCommerce plugin e2e tests",
   "scripts": {
     "test": "cross-env NODE_CONFIG_DIR='./config' BABEL_ENV=commonjs mocha \"tests\" --compilers js:babel-register --recursive -r jsdom-global/register"
   },

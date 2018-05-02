@@ -28,6 +28,7 @@ test.describe('Frontend Tests', function () {
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
+console.log('test');
 console.log(document.body.innerHTML);
         // General settings for this test.
         storeOwner.setGeneralSettings( {
