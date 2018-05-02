@@ -37,7 +37,7 @@ test.describe('Frontend Tests', function () {
             console.log(document.body.innerHTML);
         });
 
-        const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
+        /*const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
 
         // General settings for this test.
         storeOwner.setGeneralSettings( {
@@ -52,7 +52,7 @@ test.describe('Frontend Tests', function () {
         storeOwner.enableCOD();
         storeOwner.enablePayPal();
 
-        storeOwner.logout();
+        storeOwner.logout();*/
     });
 
     this.timeout(config.get('mochaTimeoutMs'));
