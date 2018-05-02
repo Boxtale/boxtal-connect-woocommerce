@@ -58,7 +58,7 @@ install_e2e_tests() {
     mkdir -p "$NGINX_DIR"
     mkdir -p "$NGINX_DIR/sites-enabled"
     mkdir -p "$NGINX_DIR/var"
-    mkdir -p "tpm/nginx-logs"
+    mkdir -p "tmp/nginx-logs"
 
     cp "$CONFIG_DIR/travis_php-fpm.conf" "$PHP_FPM_CONF"
 
