@@ -87,12 +87,12 @@ PHP
 
     git clone https://github.com/$REPO.git $BW_DIR
 
-    npm install --prefix $BW_DIR
-
     cd "$BW_DIR"
+    npm install
     gulp css
     gulp js
 
+    cd "$WP_CORE_DIR"
     php wp-cli.phar plugin install $BW_DIR/src --activate
 
     cd "$WORKING_DIR"
