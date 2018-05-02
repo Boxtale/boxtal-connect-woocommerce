@@ -32,7 +32,7 @@ test.describe('Frontend Tests', function () {
         driver.get('http://localhost:8080');
         helper.waitTillPresentAndDisplayed(
             driver,
-            By.css( '#content' )
+            By.css( 'body' )
         ).then(function() {
             console.log(document.body.innerHTML);
         });
