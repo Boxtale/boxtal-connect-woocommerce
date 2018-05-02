@@ -25,7 +25,7 @@ test.describe('Frontend Tests', function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
         manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
         driver = manager.getDriver();
-        console.log(document.getElementsByTagName('body').innerHtml);
+        console.log(document.getElementsByTagName('body')[0].innerHtml);
 
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
