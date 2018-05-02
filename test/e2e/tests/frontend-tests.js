@@ -23,10 +23,9 @@ test.describe('Frontend Tests', function () {
     // Set up the driver and manager before testing starts.
     test.before( function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
-console.log('test');
-console.log(config.get( 'url' ));
         manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
         driver = manager.getDriver();
+        console.log(document.getElementsByTagName('body').innerHtml);
 
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
