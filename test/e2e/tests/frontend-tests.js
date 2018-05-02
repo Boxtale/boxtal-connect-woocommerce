@@ -20,6 +20,8 @@ let driver;
 
 test.describe('Frontend Tests', function () {
 
+    jsdom();
+
     // Set up the driver and manager before testing starts.
     test.before( function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
@@ -28,7 +30,7 @@ test.describe('Frontend Tests', function () {
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
-
+console.log(document.body.innerHTML);
         // General settings for this test.
         storeOwner.setGeneralSettings( {
             baseLocation: [ 'United States', 'United States (US) — California' ],
