@@ -27,10 +27,10 @@ test.describe('Frontend Tests', function () {
         driver = manager.getDriver();
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
-        console.log('test1');
-
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
-        console.log(document.body.innerHTML);
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log(document.body.innerHTML);
+        }, false);
         console.log('test2');
         // General settings for this test.
         storeOwner.setGeneralSettings( {
