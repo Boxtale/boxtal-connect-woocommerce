@@ -4,6 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import test from 'selenium-webdriver/testing';
 import {WebDriverManager, WebDriverHelper as helper} from 'wp-e2e-webdriver';
 import {StoreOwnerFlow, ShopPage, CartPage} from 'wc-e2e-page-objects';
+import jsdom from 'mocha-jsdom';
 
 chai.use(chaiAsPromised);
 
