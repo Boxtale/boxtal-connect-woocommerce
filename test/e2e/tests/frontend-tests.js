@@ -25,12 +25,13 @@ test.describe('Frontend Tests', function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
         manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
         driver = manager.getDriver();
-        console.log(document.body.innerHTML);
-
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
-        const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
+        console.log('test1');
 
+        const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
+        console.log(document.body.innerHTML);
+        console.log('test2');
         // General settings for this test.
         storeOwner.setGeneralSettings( {
             baseLocation: [ 'United States', 'United States (US) — California' ],

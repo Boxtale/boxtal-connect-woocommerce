@@ -88,7 +88,6 @@ PHP
     git clone https://github.com/$REPO.git $BW_DIR
 
     cd "$BW_DIR"
-    npm install
     npm install -g gulp-cli
     gulp css
     gulp js
