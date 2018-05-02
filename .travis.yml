@@ -5,6 +5,9 @@ language: php
 
 addons:
   chrome: stable
+  apt:
+    packages:
+      - nginx
 
 # PHP version used in first build configuration.
 php:
