@@ -9,5 +9,4 @@ sh -e /etc/init.d/xvfb start
 sleep 3
 
 # Run the tests
-npm install --prefix test/e2e
-npm test --prefix test/e2e
+npm test
