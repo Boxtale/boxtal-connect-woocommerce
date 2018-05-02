@@ -28,8 +28,7 @@ test.describe('Frontend Tests', function () {
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
-console.log('test');
-console.log(document.body.innerHTML);
+
         // General settings for this test.
         storeOwner.setGeneralSettings( {
             baseLocation: [ 'United States', 'United States (US) — California' ],
@@ -37,7 +36,8 @@ console.log(document.body.innerHTML);
             enableTaxes: true,
             currency: [ 'United States', 'United States dollar ($)' ],
         } );
-
+        console.log('test');
+        console.log(document.body.innerHTML);
         // Make sure payment method is set in setting.
         storeOwner.enableBACS();
         storeOwner.enableCOD();
