@@ -83,7 +83,15 @@ PHP
     php wp-cli.phar core install --url="$WP_SITE_URL" --title="Example" --admin_user=admin --admin_password=admin --admin_email=info@example.com --path=$WP_CORE_DIR --skip-email
     php wp-cli.phar search-replace "http://local.wordpress.test" "$WP_SITE_URL"
     php wp-cli.phar theme install twentytwelve --activate
-    php wp-cli.phar plugin install https://github.com/$REPO/archive/$BRANCH.zip --activate
+
+    git clone https://github.com/$REPO.git /tmp/bw
+
+    npm install --prefix /tmp/bw
+
+    /tmp/bw/gulp css
+    /tmp/bw/gulp js
+
+    php wp-cli.phar plugin install /tmp/bw/src --activate
 
     cd "$WORKING_DIR"
 }
