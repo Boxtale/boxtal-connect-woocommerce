@@ -89,7 +89,7 @@ PHP
 
     cd "$BW_DIR"
     npm install
-    ls -l /usr/local
+    ls -l $HOME/.nvm/versions/node
     gulp css
     gulp js
 
