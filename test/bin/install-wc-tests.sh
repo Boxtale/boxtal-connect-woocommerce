@@ -49,7 +49,7 @@ install_e2e_tests() {
         REPO=$TRAVIS_PULL_REQUEST_SLUG
     fi
 
-    set -ev
+    set -ex
     npm install
     export NODE_CONFIG_DIR="./test/e2e-test/config"
 
