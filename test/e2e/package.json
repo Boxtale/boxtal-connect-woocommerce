@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Boxtal WooCommerce plugin e2e tests",
   "scripts": {
-    "test": "cross-env NODE_CONFIG_DIR='./config' BABEL_ENV=commonjs mocha \"tests\" --compilers js:babel-register --recursive"
+    "test": "cross-env NODE_CONFIG_DIR='./config' BABEL_ENV=commonjs mocha \"tests\" --compilers js:babel-register --recursive -r jsdom-global/register"
   },
   "dependencies": {},
   "devDependencies": {
@@ -19,6 +19,8 @@
     "cross-env": "~5.1.1",
     "istanbul": "^1.0.0-alpha",
     "mocha": "^3.0.2",
+    "jsdom": "^11.10.0",
+    "jsdom-global": "^3.0.2",
     "chromedriver": "^2.38.2",
     "wc-e2e-page-objects": "0.10.0"
   }
