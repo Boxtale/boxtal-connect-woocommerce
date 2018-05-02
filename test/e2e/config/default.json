@@ -1,5 +1,5 @@
 {
-  "url": "http://localhost/boxtal-woocommerce",
+  "url": "http://localhost:8080",
   "users": {
     "admin": {
       "username": "admin",

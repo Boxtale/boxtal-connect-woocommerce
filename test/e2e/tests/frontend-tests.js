@@ -28,10 +28,7 @@ test.describe('Frontend Tests', function () {
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log(document.body.innerHTML);
-        }, false);
-        console.log('test2');
+
         // General settings for this test.
         storeOwner.setGeneralSettings( {
             baseLocation: [ 'United States', 'United States (US) — California' ],
