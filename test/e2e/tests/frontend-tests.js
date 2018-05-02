@@ -1,7 +1,6 @@
 import config from 'config';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { By } from 'selenium-webdriver';
 import test from 'selenium-webdriver/testing';
 import {WebDriverManager, WebDriverHelper as helper} from 'wp-e2e-webdriver';
 import {StoreOwnerFlow, ShopPage, CartPage} from 'wc-e2e-page-objects';
@@ -28,14 +27,6 @@ test.describe('Frontend Tests', function () {
 
         driver = manager.getDriver();
         helper.clearCookiesAndDeleteLocalStorage( driver );
-
-        helper.waitTillPresentAndDisplayed(
-            driver,
-            By.css( '#user_login' )
-        ).then(function() {
-            console.log('success');
-        });
-
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
 
         // General settings for this test.
