@@ -24,6 +24,7 @@ test.describe('Frontend Tests', function () {
     test.before( function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
         manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
+        console.log(config.get( 'url' ));
         driver = manager.getDriver();
         helper.clearCookiesAndDeleteLocalStorage( driver );
 
@@ -36,8 +37,7 @@ test.describe('Frontend Tests', function () {
             enableTaxes: true,
             currency: [ 'United States', 'United States dollar ($)' ],
         } );
-        console.log('test');
-        console.log(document.body.innerHTML);
+
         // Make sure payment method is set in setting.
         storeOwner.enableBACS();
         storeOwner.enableCOD();
