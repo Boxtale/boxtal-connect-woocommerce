@@ -24,9 +24,14 @@ test.describe('Frontend Tests', function () {
     test.before( function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
         manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
-        console.log(config.get( 'url' ));
+
         driver = manager.getDriver();
         helper.clearCookiesAndDeleteLocalStorage( driver );
+
+        helper.waitTillPresentAndDisplayed(
+            driver,
+            By.css( '#user_login' )
+        );
 
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
 
