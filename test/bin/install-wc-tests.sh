@@ -36,6 +36,7 @@ install_e2e_tests() {
     CONFIG_DIR="./test/e2e/config/travis"
     WP_CORE_DIR="$HOME/wordpress"
     NGINX_DIR="$HOME/nginx"
+    NGINX_LOG_DIR="/tmp/nginx-logs"
     PHP_FPM_BIN="$HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/sbin/php-fpm"
     PHP_FPM_CONF="$NGINX_DIR/php-fpm.conf"
     WP_SITE_URL="http://localhost:8080"
@@ -58,7 +59,7 @@ install_e2e_tests() {
     mkdir -p "$NGINX_DIR"
     mkdir -p "$NGINX_DIR/sites-enabled"
     mkdir -p "$NGINX_DIR/var"
-    mkdir -p "/tmp/nginx-logs"
+    mkdir -p "$NGINX_LOG_DIR"
 
     cp "$CONFIG_DIR/travis_php-fpm.conf" "$PHP_FPM_CONF"
 
@@ -69,9 +70,6 @@ install_e2e_tests() {
     cp "$CONFIG_DIR/travis_nginx.conf" "$NGINX_DIR/nginx.conf"
     cp "$CONFIG_DIR/travis_fastcgi.conf" "$NGINX_DIR/fastcgi.conf"
     cp "$CONFIG_DIR/travis_default-site.conf" "$NGINX_DIR/sites-enabled/default-site.conf"
-
-
-    find /tmp/nginx-logs -type d -exec chmod 766 {} \;
 
     # Start nginx.
     nginx -c "$NGINX_DIR/nginx.conf"
