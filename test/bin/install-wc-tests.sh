@@ -42,6 +42,7 @@ install_e2e_tests() {
     BRANCH=$TRAVIS_BRANCH
     REPO=$TRAVIS_REPO_SLUG
     WORKING_DIR="$PWD"
+    BW_DIR="/tmp/bw"
 
     if [ "$TRAVIS_PULL_REQUEST_BRANCH" != "" ]; then
         BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
@@ -84,14 +85,15 @@ PHP
     php wp-cli.phar search-replace "http://local.wordpress.test" "$WP_SITE_URL"
     php wp-cli.phar theme install twentytwelve --activate
 
-    git clone https://github.com/$REPO.git /tmp/bw
+    git clone https://github.com/$REPO.git $BW_DIR
 
-    npm install --prefix /tmp/bw
+    npm install --prefix $BW_DIR
 
-    /tmp/bw/gulp css
-    /tmp/bw/gulp js
+    cd "$BW_DIR"
+    gulp css
+    gulp js
 
-    php wp-cli.phar plugin install /tmp/bw/src --activate
+    php wp-cli.phar plugin install $BW_DIR/src --activate
 
     cd "$WORKING_DIR"
 }
