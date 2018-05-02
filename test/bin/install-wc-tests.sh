@@ -50,7 +50,7 @@ install_e2e_tests() {
     fi
 
     set -ex
-    npm install
+    npm install --prefix test/e2e
     export NODE_CONFIG_DIR="./test/e2e-test/config"
 
     # Set up nginx to run the server
