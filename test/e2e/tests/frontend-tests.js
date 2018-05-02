@@ -20,8 +20,6 @@ let driver;
 
 test.describe('Frontend Tests', function () {
 
-    jsdom();
-
     // Set up the driver and manager before testing starts.
     test.before( function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
