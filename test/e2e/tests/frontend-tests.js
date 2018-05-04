@@ -24,19 +24,12 @@ test.describe('Frontend Tests', function () {
     // Set up the driver and manager before testing starts.
     test.before( function () {
         this.timeout( config.get( 'startBrowserTimeoutMs' ) );
-        manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
 
+        manager = new WebDriverManager( 'chrome', { baseUrl: config.get( 'url' ) } );
         driver = manager.getDriver();
+
         helper.clearCookiesAndDeleteLocalStorage( driver );
-/*
-        driver.get('http://localhost:8080');
-        helper.waitTillPresentAndDisplayed(
-            driver,
-            By.css( 'body' )
-        ).then(function() {
-            console.log(document.body.innerHTML);
-        });
-*/
+
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
 
         // General settings for this test.
@@ -44,7 +37,7 @@ test.describe('Frontend Tests', function () {
             baseLocation: [ 'United States', 'United States (US) — California' ],
             sellingLocation: 'Sell to all countries',
             enableTaxes: true,
-            currency: [ 'United States', 'United States (US) dollar ($)' ]
+            currency: [ 'United States', 'United States (US) dollar ($)' ],
         } );
 
         // Make sure payment method is set in setting.
