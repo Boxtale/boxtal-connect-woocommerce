@@ -94,7 +94,8 @@ PHP
     npm install -g gulp-cli
     gulp css
     gulp js
-    zip -r boxtal-woocommerce.zip src/.
+    cp -R src/. /tmp/boxtal-woocommerce
+    zip -r boxtal-woocommerce.zip /tmp/boxtal-woocommerce/.
 
     cd "$WP_CORE_DIR"
     php wp-cli.phar plugin install $BW_DIR/boxtal-woocommerce.zip --activate
