@@ -52,7 +52,7 @@ class Notice_Controller {
 
 			foreach ( $notices as $notice ) {
 				add_action( 'admin_notices', array( $notice, 'render' ) );
-				wp_enqueue_style( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), $this->$plugin_version );
+				wp_enqueue_style( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), $this->plugin_version );
 				add_action( 'wp_ajax_hide_notice', array( $this, 'hide_notice_callback' ) );
 			}
 		}

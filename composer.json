@@ -52,6 +52,11 @@
     ],
     "phpcbf": [
       "vendor/bin/phpcbf -p ."
+    ],
+    "travis-local" : [
+      "docker stop local_travis && docker rm local_travis",
+      "docker run --name local_travis -dit travisci/ci-garnet:packer-1515445631-7dfb2e1 /sbin/init",
+      "docker exec -it local_travis sh"
     ]
   },
   "extra": {

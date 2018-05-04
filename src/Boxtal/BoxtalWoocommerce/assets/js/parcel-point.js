@@ -123,14 +123,9 @@
         },
 
         getParcelPoints: function() {
+            var self = this;
             return new Promise(function(resolve, reject) {
-                var carrier;
-                var radios = document.getElementsByName("shipping_method[0]");
-                for(var i = 0; i < radios.length; i++) {
-                    if(radios[i].checked) {
-                        carrier = radios[i].value;
-                    }
-                }
+                var carrier = self.getSelectedCarrier();
                 if (!carrier) {
                     reject(translations.error.carrierNotFound);
                 }
@@ -336,14 +331,9 @@
         },
 
         selectPoint: function(code, name, operator) {
+            var self = this;
             return new Promise(function(resolve, reject) {
-                var carrier;
-                var radios = document.getElementsByName("shipping_method[0]");
-                for(var i = 0; i < radios.length; i++) {
-                    if(radios[i].checked) {
-                        carrier = radios[i].value;
-                    }
-                }
+                var carrier = self.getSelectedCarrier();
                 if (!carrier) {
                     reject(translations.error.carrierNotFound);
                 }
@@ -372,6 +362,16 @@
             for (var i = 0; i < this.markers.length; i++) {
                 this.markers[i].setMap(null);
             }
+        },
+
+        getSelectedCarrier: function() {
+            var carrier;
+            if (jQuery('input[type="hidden"].shipping_method').length === 1) {
+                carrier = jQuery('input[type="hidden"].shipping_method').attr('value');
+            } else {
+                carrier = jQuery('input.shipping_method:checked').attr('value');
+            }
+            return carrier;
         },
 
         showError: function(error) {
