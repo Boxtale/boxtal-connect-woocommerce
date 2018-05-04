@@ -84,10 +84,10 @@ install_e2e_tests() {
 define('WP_MEMORY_LIMIT', '256M');
 PHP
     php wp-cli.phar core install --url="$WP_SITE_URL" --title="Example" --admin_user=admin --admin_password=admin --admin_email=info@example.com --path=$WP_CORE_DIR --skip-email
-    php wp-cli.phar search-replace "http://local.wordpress.test" "$WP_SITE_URL"
     php wp-cli.phar theme install twentytwelve --activate
 
     git clone https://github.com/$REPO.git $BW_DIR
+
 
     cd "$BW_DIR"
     npm install
@@ -99,6 +99,7 @@ PHP
     zip -r boxtal-woocommerce.zip boxtal-woocommerce
 
     cd "$WP_CORE_DIR"
+    php wp-cli.phar plugin install https://github.com/woocommerce/woocommerce/archive/$WC_VERSION.zip --activate
     php wp-cli.phar plugin install /tmp/boxtal-woocommerce.zip --activate
 
     cd "$WORKING_DIR"
