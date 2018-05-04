@@ -44,6 +44,7 @@ install_e2e_tests() {
     REPO=$TRAVIS_REPO_SLUG
     WORKING_DIR="$PWD"
     BW_DIR="/tmp/bw"
+    WP_DB_DATA="/tmp/woocommerce/tests/e2e-tests/data/e2e-db.sql"
 
     if [ "$TRAVIS_PULL_REQUEST_BRANCH" != "" ]; then
         BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
@@ -84,6 +85,7 @@ install_e2e_tests() {
 define('WP_MEMORY_LIMIT', '256M');
 PHP
     php wp-cli.phar core install --url="$WP_SITE_URL" --title="Example" --admin_user=admin --admin_password=admin --admin_email=info@example.com --path=$WP_CORE_DIR --skip-email
+    php wp-cli.phar db import $WP_DB_DATA
     php wp-cli.phar theme install twentytwelve --activate
 
     git clone https://github.com/$REPO.git $BW_DIR
