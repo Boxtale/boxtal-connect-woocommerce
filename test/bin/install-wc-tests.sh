@@ -99,7 +99,7 @@ PHP
     zip -r boxtal-woocommerce.zip boxtal-woocommerce
 
     cd "$WP_CORE_DIR"
-    php wp-cli.phar plugin install $BW_DIR/boxtal-woocommerce.zip --activate
+    php wp-cli.phar plugin install /tmp/boxtal-woocommerce.zip --activate
 
     cd "$WORKING_DIR"
 }
