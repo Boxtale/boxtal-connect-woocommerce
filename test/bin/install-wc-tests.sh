@@ -94,7 +94,7 @@ PHP
     npm install -g gulp-cli
     gulp css
     gulp js
-    cp -R src/. /tmp/boxtal-woocommerce
+    cp -R src/ /tmp/boxtal-woocommerce
     zip -r boxtal-woocommerce.zip /tmp/boxtal-woocommerce/.
 
     cd "$WP_CORE_DIR"
