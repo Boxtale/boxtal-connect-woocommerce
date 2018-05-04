@@ -33,17 +33,17 @@ test.describe('Frontend Tests', function () {
         const storeOwner = new StoreOwnerFlow( driver, storeOwnerFlowArgs );
 
         // General settings for this test.
-        storeOwner.setGeneralSettings( {
+        /*storeOwner.setGeneralSettings( {
             baseLocation: [ 'United States', 'United States (US) — California' ],
             sellingLocation: 'Sell to all countries',
             enableTaxes: true,
             currency: [ 'United States', 'United States (US) dollar ($)' ],
-        } );
+        } );*/
 
         // Make sure payment method is set in setting.
-        // storeOwner.enableBACS();
-        // storeOwner.enableCOD();
-        // storeOwner.enablePayPal();
+        storeOwner.enableBACS();
+        storeOwner.enableCOD();
+        storeOwner.enablePayPal();
 
         storeOwner.logout();
     });
