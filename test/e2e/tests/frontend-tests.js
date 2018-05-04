@@ -41,9 +41,9 @@ test.describe('Frontend Tests', function () {
         } );
 
         // Make sure payment method is set in setting.
-        storeOwner.enableBACS();
-        storeOwner.enableCOD();
-        storeOwner.enablePayPal();
+        // storeOwner.enableBACS();
+        // storeOwner.enableCOD();
+        // storeOwner.enablePayPal();
 
         storeOwner.logout();
     });
