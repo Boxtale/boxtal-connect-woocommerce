@@ -37,11 +37,11 @@ install_wp() {
 		return 0
 	fi
 
-	sudo $HOME/build/install-wp.sh $WP_VERSION $WC_VERSION 80
+	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION 80
 }
 
 install_db() {
-    sudo $HOME/test/bin/reset-unit-test-db.sh $DB_NAME $DB_USER $DB_PASS $DB_HOST
+    $HOME/test/bin/reset-unit-test-db.sh $DB_NAME $DB_USER $DB_PASS $DB_HOST
 }
 
 install_wc() {
