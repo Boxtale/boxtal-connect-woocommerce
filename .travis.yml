@@ -5,9 +5,6 @@ language: php
 
 addons:
   chrome: stable
-  apt:
-    packages:
-      - nginx
 
 # PHP version used in first build configuration.
 php:
@@ -69,7 +66,7 @@ before_script:
   - sudo apt-get install apache2
   - sudo a2enmod actions
   - sudo a2enmod rewrite
-  - sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+  - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
   - sudo service apache2 restart
   - bash test/bin/build-test.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION
   - bash build/travis.sh before
