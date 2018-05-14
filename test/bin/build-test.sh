@@ -21,7 +21,7 @@ WC_DIR='/tmp/woocommerce'
 if [ ${TRAVIS} = "false" ]; then
 	HOME='/home/docker'
 else
-	HOME='/home/travis/Boxtal/boxtal-woocommerce-poc'
+	HOME='/home/travis/Boxtale/boxtal-woocommerce-poc'
 fi
 
 download() {
