@@ -113,7 +113,7 @@ class Controller {
 		}
 		$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
 		$settings = Misc_Util::get_settings( $carrier );
-		if ( ! isset( $settings['bw_map_display'] ) || '0' === $settings['bw_map_display'] || ! isset( $settings['bw_parcel_point_operators'] ) ) {
+		if ( ! isset( $settings['bw_parcel_point_operators'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Something is wrong with this carrier\'s settings', 'boxtal-woocommerce' ) ) );
 		}
 		if ( empty( $settings['bw_parcel_point_operators'] ) ) {

@@ -11,7 +11,7 @@ use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
 /**
  * Class BW_Test_Misc_Util.
  */
-class BW_Test_Misc_Util extends WC_Unit_Test_Case {
+class BW_Test_Misc_Util extends WP_UnitTestCase {
 
 	/**
 	 * Test not_empty_or_null function.

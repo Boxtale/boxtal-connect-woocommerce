@@ -66,14 +66,19 @@ before_install:
   - composer install --prefer-dist
 
 before_script:
-  - bash test/bin/install-wc-tests.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION
+  - sudo apt-get install apache2
+  - sudo a2enmod actions
+  - sudo a2enmod rewrite
+  - sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+  - sudo service apache2 restart
+  - bash test/bin/build-test.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION
   - bash build/travis.sh before
 
 script:
   - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit; fi
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit; fi
-  - bash build/phpcs.sh
-  - bash test/bin/run-e2e-CI.sh
+  - if [[ $RUN_PHPCS = "1" ]]; then  bash build/phpcs.sh true; fi
+  - bash test/bin/run-e2e-test.sh
 
 after_script:
   - bash build/travis.sh after

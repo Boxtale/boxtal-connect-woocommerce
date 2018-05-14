@@ -1,0 +1,17 @@
+ARG PHP_VERSION
+ARG WP_VERSION
+ARG WC_VERSION
+ARG PORT
+FROM 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT
+
+USER root
+
+RUN /etc/init.d/apache2 start \
+ && /etc/init.d/mysql start \
+ && php wp-cli.phar plugin install envoimoinscher --activate --path=/var/www/html --allow-root
+
+RUN chown -R www-data:www-data /var/www/html/wp-content/plugins/envoimoinscher \
+ && find /var/www/html/wp-content/plugins/envoimoinscher -type d -exec chmod 775 {} \; \
+ && find /var/www/html/wp-content/plugins/envoimoinscher -type f -exec chmod 644 {} \;
+
+USER docker

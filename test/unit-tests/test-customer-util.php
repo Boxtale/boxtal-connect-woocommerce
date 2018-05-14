@@ -11,7 +11,7 @@ use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
 /**
  * Class BW_Test_Customer_Util.
  */
-class BW_Test_Customer_Util extends WC_Unit_Test_Case {
+class BW_Test_Customer_Util extends WP_UnitTestCase {
 
 	/**
 	 * Test getter and setter for first name.

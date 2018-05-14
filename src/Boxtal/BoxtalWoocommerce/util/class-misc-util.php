@@ -87,10 +87,6 @@ class Misc_Util {
 			return false;
 		}
 
-		if ( ! isset( $settings['bw_map_display'] ) || '0' === $settings['bw_map_display'] ) {
-			return false;
-		}
-
 		if ( ! isset( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
 			return false;
 		}

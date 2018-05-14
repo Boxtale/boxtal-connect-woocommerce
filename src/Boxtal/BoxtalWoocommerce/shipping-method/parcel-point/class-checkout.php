@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point;
 
 use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
+use Boxtal\BoxtalWoocommerce\Util\Order_Util;
 
 /**
  * Checkout class.
@@ -42,10 +43,6 @@ class Checkout {
             // phpcs:ignore
 			$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['shipping_method'][0] ) );
 			$settings = Misc_Util::get_settings( $carrier );
-
-			if ( ! isset( $settings['bw_map_display'] ) || '0' === $settings['bw_map_display'] ) {
-				return;
-			}
 
 			if ( ! isset( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
 				return;

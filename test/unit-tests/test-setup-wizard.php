@@ -12,7 +12,7 @@ use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
 /**
  * Class BW_Test_Setup_Wizard.
  */
-class BW_Test_Setup_Wizard extends WC_Unit_Test_Case {
+class BW_Test_Setup_Wizard extends WP_UnitTestCase {
 
 	/**
 	 * Test get connect url.

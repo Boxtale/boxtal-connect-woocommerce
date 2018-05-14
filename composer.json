@@ -19,52 +19,18 @@
     }
   ],
   "require": {
-    "php": ">=5.3"
+    "php": ">=5.3",
+    "boxtal/boxtal-php-poc": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0",
     "wimg/php-compatibility": "^8.0",
     "squizlabs/php_codesniffer": "^2.2 || ^3.0.2",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
-    "wp-coding-standards/wpcs": "^0.14",
-    "wp-cli/wp-cli" : "~0.22",
-    "boxtal/boxtal-php-poc": "dev-master"
+    "wp-coding-standards/wpcs": "^0.14"
   },
   "conflict": {
     "squizlabs/php_codesniffer": "2.6.2"
   },
-  "prefer-stable" : true,
-  "scripts": {
-    "compile": [
-      "gulp css",
-      "gulp js"
-    ],
-    "sync": [
-      "@compile",
-      "sudo -u www-data -H sh -c \"rm -rf /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
-      "sudo -u www-data -H sh -c \"mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
-      "sudo -u www-data -H sh -c \"cp -R src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce\"",
-      "sudo -u www-data -H sh -c \"mkdir /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp\"",
-      "sudo -u www-data -H sh -c \"cp -R vendor/boxtal/boxtal-php-poc/src/* /var/www/html/boxtal-woocommerce/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp\""
-    ],
-    "phpcs": [
-      "vendor/bin/phpcs -s -p ."
-    ],
-    "phpcbf": [
-      "vendor/bin/phpcbf -p ."
-    ],
-    "travis-local" : [
-      "docker stop local_travis && docker rm local_travis",
-      "docker run --name local_travis -dit travisci/ci-garnet:packer-1515445631-7dfb2e1 /sbin/init",
-      "docker exec -it local_travis sh"
-    ]
-  },
-  "extra": {
-    "scripts-description": {
-      "compile": "Compile less files into css folder",
-      "sync": "Sync plugin code with local wp install",
-      "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
-      "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
-    }
-  }
+  "prefer-stable" : true
 }

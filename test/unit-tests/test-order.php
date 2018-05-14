@@ -12,8 +12,18 @@ use Boxtal\BoxtalWoocommerce\Util\Order_Util;
 /**
  * Class BW_Test_Order.
  */
-class BW_Test_Order extends WC_Unit_Test_Case {
+class BW_Test_Order extends WP_UnitTestCase {
 
+	/**
+	 * Set up will run before each test.
+	 */
+	public function setUp() {
+		parent::setUp();
+
+		// reset woocommmerce.
+		include '/tmp/woocommerce/uninstall.php';
+		WC_Install::install();
+	}
 
 	/**
 	 * Test api callback, simple product.

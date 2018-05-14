@@ -11,7 +11,7 @@ use Boxtal\BoxtalWoocommerce\Util\Order_Util;
 /**
  * Class BW_Test_Order_Util.
  */
-class BW_Test_Order_Util extends WC_Unit_Test_Case {
+class BW_Test_Order_Util extends WP_UnitTestCase {
 
 	/**
 	 * Test add product.

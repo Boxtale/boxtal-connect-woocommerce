@@ -1,13 +1,13 @@
 {
-  "url": "http://localhost/boxtal-woocommerce",
+  "url": "http://localhost:80/",
   "users": {
     "admin": {
       "username": "admin",
       "password": "admin"
     },
     "customer": {
-      "username": "",
-      "password": ""
+      "username": "Customer",
+      "password": "password"
     }
   },
   "startBrowserTimeoutMs": 30000,

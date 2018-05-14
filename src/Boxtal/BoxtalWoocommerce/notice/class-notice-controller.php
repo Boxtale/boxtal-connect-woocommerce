@@ -49,11 +49,10 @@ class Notice_Controller {
 		if ( ! empty( $notices ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'notice_scripts' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'notice_styles' ) );
+			add_action( 'wp_ajax_hide_notice', array( $this, 'hide_notice_callback' ) );
 
 			foreach ( $notices as $notice ) {
 				add_action( 'admin_notices', array( $notice, 'render' ) );
-				wp_enqueue_style( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/notices.css', array(), $this->plugin_version );
-				add_action( 'wp_ajax_hide_notice', array( $this, 'hide_notice_callback' ) );
 			}
 		}
 	}

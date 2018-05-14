@@ -1,10 +1,23 @@
 {
   "name": "boxtal-woocommmerce",
   "version": "1.0.0",
-  "license": "MIT",
-  "private": true,
+  "scripts": {
+    "test": "cross-env NODE_CONFIG_DIR='test/e2e/config' BABEL_ENV=commonjs mocha \"test/e2e/tests\" --compilers js:babel-register --recursive"
+  },
+  "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "babel": "^6.5.2",
+    "babel-cli": "^6.14.0",
+    "babel-eslint": "^7.0.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-stage-2": "^6.13.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chromedriver": "^2.38.2",
+    "config": "^1.24.0",
+    "cross-env": "~5.1.1",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-clean-css": "^3.9.3",
     "gulp-concat": "^2.6.1",
@@ -12,7 +25,9 @@
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify-es": "^1.0.1"
-  },
-  "dependencies": {}
+    "gulp-uglify-es": "^1.0.1",
+    "istanbul": "^1.0.0-alpha",
+    "mocha": "^5.1.1",
+    "wc-e2e-page-objects": "0.10.0"
+  }
 }

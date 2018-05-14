@@ -37,8 +37,6 @@ class Settings_Override {
 	 * @void
 	 */
 	public function run() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'shipping_settings_scripts' ) );
-
 		$shipping_methods = WC()->shipping->get_shipping_methods();
 		foreach ( $shipping_methods as $shipping_method ) {
 			add_filter( 'woocommerce_shipping_instance_form_fields_' . $shipping_method->id, array( $this, 'add_form_field' ) );
@@ -67,21 +65,10 @@ class Settings_Override {
 	 * @return array $form_fields
 	 */
 	public function add_form_field( $form_fields ) {
-		$form_fields['bw_map_display']            = array(
-			'title'       => __( 'Parcel point map display', 'boxtal-woocommerce' ),
-			'type'        => 'select',
-			'description' => __( 'Enables parcel point map display in shop.', 'boxtal-woocommerce' ),
-			'default'     => 0,
-			'options'     => array(
-				'0' => __( 'No', 'boxtal-woocommerce' ),
-				'1' => __( 'Yes', 'boxtal-woocommerce' ),
-			),
-			'class'       => 'wc-enhanced-select bw-map-display-dropdown',
-		);
 		$form_fields['bw_parcel_point_operators'] = array(
-			'title'       => __( 'Parcel points to display', 'boxtal-woocommerce' ),
+			'title'       => __( 'Parcel points map display (Boxtal Woocommerce)', 'boxtal-woocommerce' ),
 			'type'        => 'multiselect',
-			'description' => __( 'Choose which parcel points should be displayed for this shipping method.', 'boxtal-woocommerce' ),
+			'description' => __( 'Choose one or more parcel point carriers in order to display a parcel point map for this shipping method. Use ctrl+click to select several carriers.', 'boxtal-woocommerce' ),
 			'options'     => array(
 				'MONR' => __( 'Mondial Relay', 'boxtal-woocommerce' ),
 				'SOGP' => __( 'Relais colis', 'boxtal-woocommerce' ),

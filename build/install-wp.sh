@@ -1,80 +1,45 @@
 #!/usr/bin/env bash
 
-if [ $# -lt 4 ]; then
-	echo "usage: $0 <db-name> <db-user> <db-pass> [destination] [db-host] [wp-version] [wc-version] [port]"
-	exit 1
-fi
-
-echo "starting install"
+echo "starting wordpress install"
 set -ex
 
-DB_NAME=$1
-DB_USER=$2
-DB_PASS=$3
-DEST_DIR=${4-}
-DEST_DIR=$(echo $DEST_DIR | sed -e "s/\/$//")
-DB_HOST=${5-localhost}
-WP_VERSION=${6-latest}
-WC_VERSION=${7-3.3.0}
-INCLUDE_LEGACY=${9-false}
+WP_VERSION=${1-latest}
+WC_VERSION=${2-3.3.5}
+PORT=${3-80}
 
-if [ -z "$8" ]; then
-    if [ -z "$4" ]; then
-        TMPSITEURL="http://localhost"
-    else
-        TMPSITEURL="http://localhost/$4"
-    fi
+if [ $PORT = "80" ]; then
+    TMPSITEURL="http://localhost"
 else
-    if [ -z "$4" ]; then
-        TMPSITEURL="http://localhost:$8"
-    else
-        TMPSITEURL="http://localhost:$8/$4"
-    fi
+    TMPSITEURL="http://localhost:$PORT"
 fi
-TMPSITETITLE="boxtaltest"
+
+TMPSITETITLE="Boxtal Woocommerce test site"
 TMPSITEADMINLOGIN="admin"
 TMPSITEADMINPWD="admin"
 TMPSITEADMINEMAIL="test_wordpress@boxtal.com"
-wp='./vendor/wp-cli/wp-cli/bin/wp'
-productCsvParser='./build/product-csv-parser.php'
-
-check_requirements() {
- echo 'TO DO check requirements like apache, php, mysql, php extensions'
-}
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+wp="php wp-cli.phar"
 
 create_directory() {
-    WP_CORE_DIR=${WP_CORE_DIR-/var/www/html/$DEST_DIR}
+    WP_CORE_DIR=/var/www/html
     sudo rm -rf $WP_CORE_DIR
     sudo mkdir -p $WP_CORE_DIR
     sudo chown -R www-data:www-data $WP_CORE_DIR
     sudo find $WP_CORE_DIR -type d -exec chmod 775 {} \;
 }
 
-download() {
-    if [ `which curl` ]; then
-        curl -s "$1" > "$2";
-    elif [ `which wget` ]; then
-        wget -nv -O "$2" "$1"
-    fi
-}
-
 install_wp() {
     sudo -u www-data -H sh -c "$wp core download --force --version=$WP_VERSION --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp core version --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp core config --dbname=woocommerce --dbuser=dbadmin --dbpass=dbpass --skip-check --path=$WP_CORE_DIR --dbprefix=wp_ --extra-php <<PHP
+/* Change WP_MEMORY_LIMIT to increase the memory limit for public pages. */
+define('WP_MEMORY_LIMIT', '256M');
 
-    # parse DB_HOST for port or socket references
-	local PARTS=(${DB_HOST//\:/ })
-	local DB_HOSTNAME=${PARTS[0]};
-	local DB_SOCK_OR_PORT=${PARTS[1]};
-	local EXTRA=""
-
-	if ! [ -z $DB_HOSTNAME ] ; then
-        EXTRA=" --dbhost=$DB_HOSTNAME"
-	fi
-    sudo -u www-data -H sh -c "$wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS $EXTRA --skip-check --path=$WP_CORE_DIR"
-    sudo -u www-data -H sh -c "echo \"\n define( 'WP_DEBUG', true ); \n \" >> $WP_CORE_DIR/wp-config.php"
+/* Activate debug. */
+define( 'WP_DEBUG', true );
+PHP"
     sudo -u www-data -H sh -c "$wp db reset --yes --path=$WP_CORE_DIR"
-    sudo -u www-data -H sh -c "$wp core install --url=$TMPSITEURL --title=$TMPSITETITLE --admin_user=$TMPSITEADMINLOGIN --admin_email=$TMPSITEADMINEMAIL --admin_password=$TMPSITEADMINPWD --skip-email --path=$WP_CORE_DIR"
+    sudo -u www-data -H sh -c "$wp core install --url=$TMPSITEURL --title=\"$TMPSITETITLE\" --admin_user=$TMPSITEADMINLOGIN --admin_email=$TMPSITEADMINEMAIL --admin_password=$TMPSITEADMINPWD --skip-email --path=$WP_CORE_DIR"
 }
 
 install_wc() {
@@ -121,18 +86,9 @@ wc_setup() {
     sudo -u www-data -H sh -c "$wp theme install storefront --activate --path=$WP_CORE_DIR"
 }
 
-install_legacy() {
-    sudo -u www-data -H sh -c "$wp plugin install envoimoinscher --activate --path=$WP_CORE_DIR"
-}
-
-check_requirements
 create_directory
 install_wp
 install_wc
 set_directory_rights
 install_wc_dummy_data
 wc_setup
-
-if [ "$INCLUDE_LEGACY" = "true" ]; then
-    install_legacy
-fi

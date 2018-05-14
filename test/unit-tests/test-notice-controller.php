@@ -11,7 +11,7 @@ use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
 /**
  * Class BW_Test_Notice_Controller.
  */
-class BW_Test_Notice_Controller extends WC_Unit_Test_Case {
+class BW_Test_Notice_Controller extends WP_UnitTestCase {
 
 	/**
 	 * Test add & remove notice.

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PHP_VERSION=${1-5.6}
+WP_VERSION=${2-latest}
+WC_VERSION=${3-3.3.5}
+PORT=${4-80}
+
+docker build . -f Dockerfile-legacy -t 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce-legacy:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT --build-arg PHP_VERSION=$PHP_VERSION --build-arg WP_VERSION=$WP_VERSION --build-arg WC_VERSION=$WC_VERSION --build-arg PORT=$PORT

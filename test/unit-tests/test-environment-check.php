@@ -12,7 +12,7 @@ use Boxtal\BoxtalWoocommerce\Plugin;
 /**
  * Class BW_Test_Environment_Check.
  */
-class BW_Test_Environment_Check extends WC_Unit_Test_Case {
+class BW_Test_Environment_Check extends WP_UnitTestCase {
 
 	/**
 	 * Test get environment warning.

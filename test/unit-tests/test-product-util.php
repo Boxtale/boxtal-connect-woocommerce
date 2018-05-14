@@ -11,7 +11,7 @@ use Boxtal\BoxtalWoocommerce\Util\Product_Util;
 /**
  * Class BW_Test_Product_Util.
  */
-class BW_Test_Product_Util extends WC_Unit_Test_Case {
+class BW_Test_Product_Util extends WP_UnitTestCase {
 
 	/**
 	 * Test getter for product weight.
