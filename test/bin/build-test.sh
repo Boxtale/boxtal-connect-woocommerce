@@ -21,7 +21,7 @@ WC_DIR='/tmp/woocommerce'
 if [ ${TRAVIS} = "false" ]; then
 	HOME='/home/docker'
 else
-	HOME='/home/travis'
+	HOME='/home/travis/Boxtal/boxtal-woocommerce-poc'
 fi
 
 download() {
@@ -37,7 +37,7 @@ install_wp() {
 		return 0
 	fi
 
-	build/install-wp.sh $WP_VERSION $WC_VERSION 80
+	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION 80
 }
 
 install_db() {
