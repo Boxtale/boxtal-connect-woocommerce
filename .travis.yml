@@ -60,13 +60,13 @@ matrix:
 before_install:
   - sudo add-apt-repository -y ppa:ondrej/php
   - sudo apt-get update
+
+install:
+  - sudo apt-get install apache2 php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
   - sudo a2enmod actions
   - sudo a2enmod rewrite
   - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
   - sudo chown -R travis:travis /var/www/html
-
-install:
-  - sudo apt-get install apache2 php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - composer install --prefer-dist
   - if [[ $RUN_E2E = "1" ]]; then npm install; fi
