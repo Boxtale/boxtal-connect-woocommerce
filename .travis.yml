@@ -64,8 +64,10 @@ before_install:
   - composer self-update
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - composer install --prefer-dist
+  - sudo apt-get update > /dev/null
 
 before_script:
+  - sudo apt-get install -y --force-yes php$(phpenv version-name)-mysql php$(phpenv version-name)-mbstring php$(phpenv version-name)-soap php$(phpenv version-name)-curl php$(phpenv version-name)-dom
   - sudo a2enmod actions
   - sudo a2enmod rewrite
   - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
