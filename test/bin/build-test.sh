@@ -46,8 +46,7 @@ install_db() {
 
 install_wc() {
     rm -rf $WC_DIR
-    mkdir $WC_DIR
-    chown www-data:www-data $WC_DIR
+    mkdir -p $WC_DIR
     git clone --depth=1 --branch=$WC_VERSION https://github.com/woocommerce/woocommerce.git $WC_DIR
 }
 
