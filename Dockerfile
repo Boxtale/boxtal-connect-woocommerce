@@ -72,8 +72,8 @@ RUN npm install -g gulp-cli
 
 COPY . $HOME
 RUN chown -R docker:docker $HOME
-RUN chmod -R +x $HOME/build
-RUN chmod -R +x $HOME/test/bin
+#RUN chmod -R +x $HOME/build
+#RUN chmod -R +x $HOME/test/bin
 
 RUN gulp css
 RUN gulp js
@@ -81,10 +81,10 @@ RUN gulp js
 RUN mkdir $HOME/src/Boxtal/BoxtalPhp \
  && cp -R $HOME/vendor/boxtal/boxtal-php-poc/src/* $HOME/src/Boxtal/BoxtalPhp
 
-RUN mkdir /var/www/html/wp-content/plugins/boxtal-woocommerce \
+RUN mkdir -p /var/www/html/wp-content/plugins/boxtal-woocommerce \
  && cp -R $HOME/src/* /var/www/html/wp-content/plugins/boxtal-woocommerce \
- && chown -R www-data:www-data /var/www/html/wp-content/plugins/boxtal-woocommerce \
- && find /var/www/html/wp-content/plugins/boxtal-woocommerce -type d -exec chmod 775 {} \; \
- && find /var/www/html/wp-content/plugins/boxtal-woocommerce -type f -exec chmod 644 {} \;
+ && chown -R www-data:www-data /var/www/html \
+ && find /var/www/html -type d -exec chmod 775 {} \; \
+ && find /var/www/html -type f -exec chmod 644 {} \;
 
 USER docker
