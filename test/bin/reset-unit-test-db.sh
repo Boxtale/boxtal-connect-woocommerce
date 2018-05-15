@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-DB_NAME=$1
-DB_USER=$2
-DB_PASS=$3
-DB_HOST=$4
+DB_NAME=boxtal_woocommerce_test
+DB_USER=dbadmin
+DB_PASS=dbpass
+DB_HOST=localhost
 
 # parse DB_HOST for port or socket references
 PARTS=(${DB_HOST//\:/ })

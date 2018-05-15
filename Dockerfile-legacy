@@ -8,7 +8,7 @@ USER root
 
 RUN /etc/init.d/apache2 start \
  && /etc/init.d/mysql start \
- && php wp-cli.phar plugin install envoimoinscher --activate --path=/var/www/html --allow-root
+ && php wp-cli.phar plugin install envoimoinscher --activate --allow-root --path=/var/www/html
 
 RUN chown -R www-data:www-data /var/www/html/wp-content/plugins/envoimoinscher \
  && find /var/www/html/wp-content/plugins/envoimoinscher -type d -exec chmod 775 {} \; \
