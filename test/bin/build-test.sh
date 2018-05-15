@@ -32,6 +32,9 @@ install_wp() {
 		return 0
 	fi
 
+pwd
+ls -l $HOME/build
+ls -l $HOME/test/bin
 	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION 80
 }
 
