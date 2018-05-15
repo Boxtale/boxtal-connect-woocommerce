@@ -59,22 +59,23 @@ matrix:
 
 before_install:
   - sudo add-apt-repository -y ppa:ondrej/php
+  - sudo add-apt-repository -y ppa:ondrej/apache2
   - sudo apt-get update
 
 install:
-  - sudo apt-get install apache2 php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
-  - sudo a2enmod actions
-  - sudo a2enmod rewrite
-  - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
-  - sudo chown -R travis:travis /var/www/html
+  - sudo apt-get install apache2 php${TRAVIS_PHP_VERSION} php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - composer install --prefer-dist
   - if [[ $RUN_E2E = "1" ]]; then npm install; fi
 
 before_script:
+  - sudo a2enmod actions
+  - sudo a2enmod rewrite
+  - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
   - sudo service apache2 restart
   - mysql -u root -e "CREATE USER 'dbadmin'@'localhost' IDENTIFIED BY 'dbpass'"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'localhost' WITH GRANT OPTION;"
+  - sudo chown -R travis:travis /var/www/html
   - bash test/bin/build-test.sh $WP_VERSION $WC_VERSION true
   - bash build/travis.sh before
 
