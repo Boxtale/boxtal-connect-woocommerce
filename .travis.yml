@@ -73,7 +73,7 @@ before_install:
   - sudo chown -R travis:travis /var/www/html
 
 install:
-  - sudo apt-get install php$(phpenv version-name)-mysql php$(phpenv version-name)-mbstring php$(phpenv version-name)-soap php$(phpenv version-name)-curl php$(phpenv version-name)-dom
+  - sudo apt-get install php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
   - if [[ $RUN_E2E = "1" ]]; then npm install; fi
 
 before_script:
