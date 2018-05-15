@@ -69,6 +69,7 @@ before_script:
   - sudo a2enmod rewrite
   - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
   - sudo service apache2 restart
+  - sudo chown -R travis:travis /var/www/html
   - bash test/bin/build-test.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION true
   - bash build/travis.sh before
   - if [[ $RUN_E2E = "1" ]]; then npm install; fi
