@@ -26,7 +26,7 @@ clean_wp_dir() {
 }
 
 install_wp() {
-    $wp core download --allow-root --force --version=$WP_VERSION --path=$WP_CORE_DIR
+    $wp core download --force --version=$WP_VERSION --allow-root --path=$WP_CORE_DIR
     $wp core version --allow-root --path=$WP_CORE_DIR
     $wp core config --dbname=woocommerce --dbuser=dbadmin --dbpass=dbpass --skip-check --allow-root --path=$WP_CORE_DIR --dbprefix=wp_ --extra-php <<PHP
 /* Change WP_MEMORY_LIMIT to increase the memory limit for public pages. */

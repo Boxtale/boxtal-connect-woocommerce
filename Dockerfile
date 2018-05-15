@@ -72,8 +72,6 @@ RUN npm install -g gulp-cli
 
 COPY . $HOME
 RUN chown -R docker:docker $HOME
-#RUN chmod -R +x $HOME/build
-#RUN chmod -R +x $HOME/test/bin
 
 RUN gulp css
 RUN gulp js
