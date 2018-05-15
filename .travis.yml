@@ -6,7 +6,6 @@ language: php
 addons:
   chrome: stable
   apt:
-    update: true
     packages:
       - apache2
 
@@ -65,13 +64,12 @@ before_install:
   - composer self-update
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - composer install --prefer-dist
+  - curl https://packages.sury.org/php/apt.gpg | apt-key add - \
+  - sudo echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+  - sudo apt-get update
 
 before_script:
-  - pecl install mysql
-  - pecl install mbstring
-  - pecl install soap
-  - pecl install curl
-  - pecl install dom
+  - sudo apt-get install php-mysql php-mbstring php-soap php-curl php-dom
   - sudo a2enmod actions
   - sudo a2enmod rewrite
   - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
