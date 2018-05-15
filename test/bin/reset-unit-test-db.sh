@@ -22,7 +22,7 @@ if ! [ -z $DB_HOSTNAME ] ; then
 fi
 
 # drop database
-mysqladmin drop -f $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+mysqladmin drop -bf $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 
 # create database
 mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
