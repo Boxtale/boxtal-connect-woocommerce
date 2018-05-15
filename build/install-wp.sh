@@ -40,7 +40,12 @@ PHP
 }
 
 install_wc() {
-    $wp plugin install woocommerce --version=$WC_VERSION --activate --allow-root --path=$WP_CORE_DIR
+    if [ ${WC_VERSION} = "master" ]; then
+        VERSION=""
+    else
+        VERSION="--version=$WC_VERSION"
+    fi
+    $wp plugin install woocommerce $VERSION --activate --allow-root --path=$WP_CORE_DIR
 }
 
 install_wc_dummy_data() {
