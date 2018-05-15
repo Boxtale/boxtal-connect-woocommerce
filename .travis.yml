@@ -63,11 +63,11 @@ before_install:
   - composer install --prefer-dist
 
 before_script:
-  - sudo apt-get update
-  - sudo apt-get install apache2
-  - sudo a2enmod actions
-  - sudo a2enmod rewrite
-  - sudo sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+  - apt-get update
+  - apt-get install apache2
+  - a2enmod actions
+  - a2enmod rewrite
+  - sed -i "172,\$s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
   - service apache2 restart
   - bash test/bin/build-test.sh boxtal_woocommerce_test root '' localhost $WP_VERSION $WC_VERSION true
   - bash build/travis.sh before
