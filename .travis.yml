@@ -46,7 +46,7 @@ matrix:
 #  - php: 5.6
 #    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0
   - php: 5.6
-    env: WP_VERSION=latest WC_VERSION=3.3.5 WP_MULTISITE=0
+    env: WP_VERSION=latest WC_VERSION=3.3.5 WP_MULTISITE=0 RUN_E2E=1
 #  - php: 7.0
 #    env: WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0 PHPUNIT_VERSION="~5.7"
 #  - php: 7.0
@@ -62,8 +62,6 @@ matrix:
 
 before_install:
   - composer self-update
-  - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
-  - composer install --prefer-dist
   - sudo add-apt-repository -y ppa:ondrej/php
   - sudo apt-get update
   - sudo a2enmod actions
@@ -73,6 +71,8 @@ before_install:
 
 install:
   - sudo apt-get install php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
+  - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
+  - composer install --prefer-dist
   - if [[ $RUN_E2E = "1" ]]; then npm install; fi
 
 before_script:
