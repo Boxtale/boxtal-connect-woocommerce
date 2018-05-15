@@ -64,7 +64,7 @@ before_install:
   - composer self-update
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - composer install --prefer-dist
-  - sudo curl https://packages.sury.org/php/apt.gpg | apt-key add - \
+  - sudo curl https://packages.sury.org/php/apt.gpg | sudo apt-key add - \
   - sudo echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
   - sudo apt-get update
   - sudo a2enmod actions
