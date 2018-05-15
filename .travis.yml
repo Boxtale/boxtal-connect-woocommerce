@@ -5,6 +5,9 @@ language: php
 
 addons:
   chrome: stable
+  apt:
+    packages:
+      - apache2
 
 # PHP version used in first build configuration.
 php:
@@ -80,7 +83,7 @@ script:
   - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit; fi
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit; fi
   - if [[ $RUN_PHPCS = "1" ]]; then bash build/phpcs.sh true; fi
-  - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh; fi
+  - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh true; fi
 
 after_script:
   - bash build/travis.sh after
