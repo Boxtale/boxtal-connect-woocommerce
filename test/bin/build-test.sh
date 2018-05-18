@@ -42,6 +42,7 @@ install_wp() {
     chown -R www-data:www-data /var/www/html
     find /var/www/html -type d -exec chmod 775 {} \;
     find /var/www/html -type f -exec chmod 644 {} \;
+    rm -rf $HOME/src/Boxtal/BoxtalPhp
 }
 
 install_db() {
