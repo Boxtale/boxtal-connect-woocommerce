@@ -19,18 +19,6 @@ env:
 
 matrix:
   include:
-  - php: 5.3
-    env: WP_VERSION=4.7 WC_VERSION=3.0.3 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5" RUN_E2E=1
-    dist: precise
-  - php: 5.3
-    env: WP_VERSION=4.7 WC_VERSION=3.3.5 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5" RUN_E2E=1
-    dist: precise
-  - php: 5.3
-    env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5" RUN_E2E=1
-    dist: precise
-  - php: 5.3
-    env: WP_VERSION=latest WC_VERSION=3.3.5 WP_MULTISITE=0 PHPUNIT_VERSION="~4.5" RUN_E2E=1
-    dist: precise
   - php: 5.6
     env: WP_VERSION=4.7 WC_VERSION=3.0.3 WP_MULTISITE=0 RUN_E2E=1
   - php: 5.6
@@ -47,7 +35,7 @@ matrix:
     env: WP_VERSION=latest WC_VERSION=3.0.3 WP_MULTISITE=0 RUN_E2E=1
   - php: 7.0
     env: WP_VERSION=latest WC_VERSION=3.3.5 WP_MULTISITE=0 RUN_E2E=1
-  - php: 7.2.1
+  - php: 7.2
     env: WP_VERSION=latest WC_VERSION=master WP_MULTISITE=0 RUN_CODE_COVERAGE=1 RUN_PHPCS=1
 
 before_install:
