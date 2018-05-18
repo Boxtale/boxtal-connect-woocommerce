@@ -26,7 +26,17 @@ class Shipping_Rate_Util {
 	 * @return array $settings shipping rate settings
 	 */
 	public static function get_settings( $method ) {
-		$settings_key = $method->instance_id ? 'woocommerce_' . $method->method_id . '_' . $method->instance_id . '_settings' : 'woocommerce_' . $method->method_id . '_settings';
-		return get_option( $settings_key );
+        return get_option( self::get_settings_key($method) );
 	}
+
+    /**
+     * Get shipping method settings key from shipping rate.
+     *
+     * @param WC_Shipping_Rate $method woocommerce shipping rate.
+     * @return string $settings_key shipping rate settings key
+     */
+	private static function get_settings_key($method) {
+	    list($method_name, $method_instance_id) = explode(':', $method->id);
+        return 'woocommerce_' . $method_name . '_' . $method_instance_id . '_settings';
+    }
 }

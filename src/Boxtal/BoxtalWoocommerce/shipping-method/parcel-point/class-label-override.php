@@ -38,8 +38,8 @@ class Label_Override {
 	 * @return string $full_label
 	 */
 	public function change_shipping_label( $full_label, $method ) {
-		if ( Misc_Util::should_display_parcel_point_link( $method ) ) {
-			$full_label .= '<br/><span class="bw-select-parcel">' . __( 'Choose a parcel point', 'boxtal-woocommerce' ) . '</span>';
+        if ( Misc_Util::should_display_parcel_point_link( $method ) ) {
+            $full_label .= '<br/><span class="bw-select-parcel">' . __( 'Choose a parcel point', 'boxtal-woocommerce' ) . '</span>';
 			if ( WC()->session ) {
 				$chosen_pickup_point = WC()->session->get( 'bw_pickup_point_name_' . $method->id, false );
 				if ( false !== $chosen_pickup_point ) {

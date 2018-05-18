@@ -58,6 +58,7 @@ COPY build/entrypoint.sh $HOME/build/
 ENTRYPOINT $HOME/build/entrypoint.sh
 RUN composer dump-autoload --optimize
 
+COPY wp-cli.yml $HOME
 COPY build/install-wp.sh $HOME/build/
 RUN /etc/init.d/apache2 start \
  && /etc/init.d/mysql start \

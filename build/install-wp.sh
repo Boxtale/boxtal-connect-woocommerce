@@ -37,6 +37,7 @@ define( 'WP_DEBUG', true );
 PHP
     $wp db reset --yes --allow-root --path=$WP_CORE_DIR
     $wp core install --url=$TMPSITEURL --title="$TMPSITETITLE" --admin_user=$TMPSITEADMINLOGIN --admin_email=$TMPSITEADMINEMAIL --admin_password=$TMPSITEADMINPWD --skip-email --allow-root --path=$WP_CORE_DIR
+    $wp rewrite structure '/%postname%/' --hard --allow-root --path=$WP_CORE_DIR
 }
 
 install_wc() {
@@ -45,8 +46,13 @@ install_wc() {
 
 install_wc_dummy_data() {
     $wp plugin install wordpress-importer --activate --allow-root --path=$WP_CORE_DIR
-    $wp import $WP_CORE_DIR/wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors='create' --allow-root --path=$WP_CORE_DIR
-    echo 'product import success'
+
+    switch_version="3.3.0"
+    if [ "$(printf '%s\n' "$switch_version" "$WC_VERSION" | sort -V | head -n1)" = "$switch_version" ]; then
+        $wp import $WP_CORE_DIR/wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors='create' --allow-root --path=$WP_CORE_DIR
+    else
+        $wp import $WP_CORE_DIR/wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors='create' --allow-root --path=$WP_CORE_DIR
+    fi
 }
 
 wc_setup() {

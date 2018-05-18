@@ -74,20 +74,20 @@ class Misc_Util {
 	 * @return boolean should display link
 	 */
 	public static function should_display_parcel_point_link( $method ) {
-		if ( ! self::is_checkout_url() ) {
-			return false;
-		}
+        if ( ! self::is_checkout_url() ) {
+            return false;
+        }
 
-		if ( ! in_array( $method->id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
-			return false;
-		}
+        if ( ! in_array( $method->id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
+            return false;
+        }
 
-		$settings = Shipping_Rate_Util::get_settings( $method );
-		if ( ! is_array( $settings ) ) {
-			return false;
-		}
+        $settings = Shipping_Rate_Util::get_settings( $method );
+        if ( ! is_array( $settings ) ) {
+            return false;
+        }
 
-		if ( ! isset( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
+        if ( ! isset( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
 			return false;
 		}
 

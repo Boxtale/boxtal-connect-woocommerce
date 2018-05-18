@@ -96,7 +96,12 @@ install_unit_tests() {
     sed $ioption "s|localhost|${DB_HOST}|" "$UNIT_TESTS_DIR"/wp-tests-config.php
 }
 
+activate_plugin() {
+    php wp-cli.phar plugin activate boxtal-woocommerce --allow-root --path=/var/www/html
+}
+
 install_wp
 install_db
 install_wc
 install_unit_tests
+activate_plugin
