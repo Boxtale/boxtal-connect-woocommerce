@@ -81,6 +81,10 @@ wc_setup() {
     $wp option update woocommerce_cheque_settings '{"enabled":"yes","title":"Check payments","description":"Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.","instructions":""}' --format=json --autoload='yes' --allow-root --path=$WP_CORE_DIR
     $wp option update woocommerce_calc_taxes 'yes' --allow-root --path=$WP_CORE_DIR
     $wp option update woocommerce_setup_automated_taxes 'yes' --allow-root --path=$WP_CORE_DIR
+
+    # bug fix https://github.com/woocommerce/woocommerce/pull/18214
+    $wp option update woocommerce_enable_checkout_login_reminder 'no' --allow-root --path=$WP_CORE_DIR
+
     $wp theme install storefront --activate --allow-root --path=$WP_CORE_DIR
 }
 

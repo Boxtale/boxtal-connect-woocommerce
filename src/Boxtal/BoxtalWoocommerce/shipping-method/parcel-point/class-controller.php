@@ -30,7 +30,6 @@ class Controller {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
-		$this->ajax_nonce     = wp_create_nonce( 'boxtale_woocommerce' );
 	}
 
 	/**
@@ -85,7 +84,6 @@ class Controller {
 		wp_enqueue_script( 'bw_gmap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g' );
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_gmap' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
-		wp_localize_script( 'bw_shipping', 'ajaxNonce', $this->ajax_nonce );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
 		wp_localize_script( 'bw_shipping', 'googleKey', 'AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g' );
@@ -106,7 +104,6 @@ class Controller {
 	 * @void
 	 */
 	public function get_points_callback() {
-		check_ajax_referer( 'boxtale_woocommerce', 'security' );
 		header( 'Content-Type: application/json; charset=utf-8' );
 		if ( ! isset( $_REQUEST['carrier'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Unable to find carrier', 'boxtal-woocommerce' ) ) );
@@ -135,7 +132,6 @@ class Controller {
 	 * @void
 	 */
 	public function set_point_callback() {
-		check_ajax_referer( 'boxtale_woocommerce', 'security' );
 		header( 'Content-Type: application/json; charset=utf-8' );
 		if ( ! isset( $_REQUEST['carrier'], $_REQUEST['operator'], $_REQUEST['code'], $_REQUEST['name'] ) ) {
 			wp_send_json_error( array( 'message' => 'could not set point' ) );
@@ -161,8 +157,7 @@ class Controller {
 	 * @void
 	 */
 	public function get_recipient_address_callback() {
-		check_ajax_referer( 'boxtale_woocommerce', 'security' );
-		header( 'Content-Type: application/json; charset=utf-8' );
+        header( 'Content-Type: application/json; charset=utf-8' );
 		$recipient_address = WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() . ' '
 			. WC()->customer->get_shipping_postcode() . ' ' . WC()->customer->get_shipping_city() . ' ' . WC()->customer->get_shipping_country();
 		$recipient_address = preg_replace( '/\s+/', ' ', $recipient_address );

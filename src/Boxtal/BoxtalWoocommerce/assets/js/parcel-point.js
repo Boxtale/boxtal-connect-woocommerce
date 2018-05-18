@@ -145,7 +145,7 @@
                     "application/x-www-form-urlencoded"
                 );
                 httpRequest.responseType = "json";
-                httpRequest.send("action=get_points&carrier=" + encodeURIComponent(carrier) + "&security=" + encodeURIComponent(ajaxNonce));
+                httpRequest.send("action=get_points&carrier=" + encodeURIComponent(carrier));
             });
         },
 
@@ -274,7 +274,7 @@
                     "application/x-www-form-urlencoded"
                 );
                 recipientAddressRequest.responseType = "json";
-                recipientAddressRequest.send("action=get_recipient_address&security=" + encodeURIComponent(ajaxNonce));
+                recipientAddressRequest.send("action=get_recipient_address");
             });
         },
 
@@ -354,7 +354,7 @@
                 );
                 setPointRequest.responseType = "json";
                 setPointRequest.send("action=set_point&carrier="+ encodeURIComponent(carrier) +"&code=" + encodeURIComponent(code)
-                    + "&name=" + encodeURIComponent(name) + "&operator=" + encodeURIComponent(operator) + "&security=" + encodeURIComponent(ajaxNonce));
+                    + "&name=" + encodeURIComponent(name) + "&operator=" + encodeURIComponent(operator));
             });
         },
 

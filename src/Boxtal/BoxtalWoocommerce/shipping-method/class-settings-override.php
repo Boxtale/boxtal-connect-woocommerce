@@ -28,7 +28,6 @@ class Settings_Override {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
-		$this->ajax_nonce     = wp_create_nonce( 'boxtale_woocommerce' );
 	}
 
 	/**

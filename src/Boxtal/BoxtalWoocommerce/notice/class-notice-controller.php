@@ -35,7 +35,7 @@ class Notice_Controller {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
-		$this->ajax_nonce     = wp_create_nonce( 'boxtale_woocommerce' );
+		$this->ajax_nonce     = wp_create_nonce( 'boxtale_woocommerce_notice' );
 	}
 
 	/**
@@ -162,7 +162,7 @@ class Notice_Controller {
 	 * @void
 	 */
 	public function hide_notice_callback() {
-		check_ajax_referer( 'boxtale_woocommerce', 'security' );
+		check_ajax_referer( 'boxtale_woocommerce_notice', 'security' );
 		header( 'Content-Type: application/json; charset=utf-8' );
 		if ( ! isset( $_REQUEST['notice_id'] ) ) {
 			wp_send_json( true );
