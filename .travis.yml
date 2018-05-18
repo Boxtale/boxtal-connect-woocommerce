@@ -60,7 +60,7 @@ before_script:
   - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'localhost' WITH GRANT OPTION;"
   - sudo chown -R travis:travis /var/www/html
   - bash test/bin/build-test.sh $WP_VERSION $WC_VERSION true
-  - bash build/travis.sh before
+  - bash build/travis.sh
 
 script:
   - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit; fi
@@ -69,7 +69,7 @@ script:
   - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh true; fi
 
 after_script:
-  - bash build/travis.sh after
+  - if [[ $RUN_CODE_COVERAGE == 1 ]]; then chmod 777 coverage.xml; fi
   - if [[ $RUN_CODE_COVERAGE == 1 ]]; then wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar; fi
   - if [[ $RUN_CODE_COVERAGE == 1 ]]; then php coveralls.phar --verbose; fi
 
