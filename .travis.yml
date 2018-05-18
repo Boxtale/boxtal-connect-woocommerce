@@ -63,14 +63,14 @@ before_script:
   - bash build/travis.sh
 
 script:
-  - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit; fi
-  - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit; fi
+  - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit -c phpunit.xml; fi
+  - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit -c phpunit.xml; fi
   - if [[ $RUN_PHPCS = "1" ]]; then bash build/phpcs.sh true; fi
   - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh true; fi
 
 after_script:
-  - if [[ $RUN_CODE_COVERAGE == 1 ]]; then chmod 777 coverage.xml; fi
-  - if [[ $RUN_CODE_COVERAGE == 1 ]]; then wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar; fi
+  - if [[ $RUN_CODE_COVERAGE == 1 ]]; then wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar; fi
+  - if [[ $RUN_CODE_COVERAGE == 1 ]]; then chmod +x php-coveralls.phar; fi
   - if [[ $RUN_CODE_COVERAGE == 1 ]]; then php coveralls.phar --verbose; fi
 
 sudo: required
