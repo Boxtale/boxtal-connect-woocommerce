@@ -29,6 +29,7 @@ download() {
 
 install_wp() {
     if [ ${TRAVIS} = "false" ]; then
+        activate_plugin
 		return 0
 	fi
 
@@ -43,7 +44,8 @@ install_wp() {
         sudo chown -R www-data:www-data /var/www/html
         find /var/www/html -type d -exec chmod 775 {} \;
         find /var/www/html -type f -exec chmod 644 {} \;
-        rm -rf $HOME/src/Boxtal/
+        rm -rf $HOME/src/Boxtal/BoxtalPhp
+        activate_plugin
     fi
 }
 
@@ -116,4 +118,3 @@ install_wp
 install_db
 install_wc
 install_unit_tests
-activate_plugin
