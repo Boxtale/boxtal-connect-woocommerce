@@ -63,6 +63,7 @@ before_script:
   - bash build/travis.sh
 
 script:
+  - sudo chmod -R 777 /tmp
   - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit --coverage-clover /tmp/coverage.xml; fi
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit --coverage-clover /tmp/coverage.xml; fi
   - if [[ $RUN_PHPCS = "1" ]]; then bash build/phpcs.sh true; fi
