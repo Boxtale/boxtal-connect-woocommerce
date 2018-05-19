@@ -64,8 +64,8 @@ before_script:
 
 script:
   - sudo chmod -R 777 /tmp
-  - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit --coverage-clover /tmp/coverage.xml; fi
-  - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit --coverage-clover /tmp/coverage.xml; fi
+  - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit -v --debug --coverage-clover /tmp/coverage.xml; fi
+  - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit -v --debug --coverage-clover /tmp/coverage.xml; fi
   - if [[ $RUN_PHPCS = "1" ]]; then bash build/phpcs.sh true; fi
   - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh true; fi
 
