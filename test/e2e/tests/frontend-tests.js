@@ -122,7 +122,6 @@ test.describe(
 
                 const shippingMethods = new ComponentCheckoutShippingMethods(driver);
                 assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
-                assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
 
                 checkoutPage.selectPaymentMethod( 'Check payments' );
                 checkoutPage.placeOrder();
