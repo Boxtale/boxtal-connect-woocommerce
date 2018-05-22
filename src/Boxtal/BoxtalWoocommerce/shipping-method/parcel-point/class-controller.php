@@ -66,7 +66,7 @@ class Controller {
 			),
 			'text'  => array(
 				'openingHours'        => __( 'Opening hours', 'boxtal-woocommerce' ),
-				'chooseParcelPoint'   => __( 'Choose this Parcel Point', 'boxtal-woocommerce' ),
+				'chooseParcelPoint'   => __( 'Choose this parcel point', 'boxtal-woocommerce' ),
 				'yourAddress'         => __( 'Your address:', 'boxtal-woocommerce' ),
 				'closeMap'            => __( 'Close map', 'boxtal-woocommerce' ),
 				'selectedParcelPoint' => __( 'Selected:', 'boxtal-woocommerce' ),
@@ -113,10 +113,10 @@ class Controller {
 		$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
 		$settings = Misc_Util::get_settings( $carrier );
 		if ( ! isset( $settings['bw_parcel_point_operators'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Something is wrong with this carrier\'s settings', 'boxtal-woocommerce' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Something is wrong with this shipping method\'s settings', 'boxtal-woocommerce' ) ) );
 		}
 		if ( empty( $settings['bw_parcel_point_operators'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'No relay operators were defined for this carrier', 'boxtal-woocommerce' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No relay operators were defined for this shipping method', 'boxtal-woocommerce' ) ) );
 		}
 
 		$mock_parcel_points = $this->get_mock_points();

@@ -5,8 +5,8 @@
  * Description: Manage multiple carriers using one single plugin and reduce your shipping costs without commitments or any contract to sign.
  * Author: API Boxtal
  * Author URI: https://www.boxtal.com
- * Text Domain: boxtal
- * Domain Path: /languages
+ * Text Domain: boxtal-woocommerce
+ * Domain Path: /Boxtal/BoxtalWoocommerce/translation
  * Version: 0.1.0
  *
  * @package Boxtal\BoxtalWoocommerce
@@ -21,6 +21,7 @@ use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalWoocommerce\Init\Environment_Check;
 use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
+use Boxtal\BoxtalWoocommerce\Init\Translation;
 use Boxtal\BoxtalWoocommerce\Plugin;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
@@ -42,6 +43,7 @@ function boxtal_woocommerce_init() {
 	$plugin['version']                           = '0.1.0';
 	$plugin['min-wc-version']                    = '2.3.0';
 	$plugin['min-php-version']                   = '5.3.0';
+	$plugin['translation']                       = 'boxtal_woocommerce_init_translation';
 	$plugin['notice']                            = 'boxtal_woocommerce_init_admin_notices';
 	$plugin['check-environment']                 = 'boxtal_woocommerce_check_environment';
 	$plugin['setup-wizard']                      = 'boxtal_woocommerce_setup_wizard';
@@ -52,6 +54,23 @@ function boxtal_woocommerce_init() {
 	$plugin['parcel-point-controller']           = 'boxtal_woocommerce_parcel_point_controller';
 	$plugin['parcel-point-checkout']             = 'boxtal_woocommerce_parcel_point_checkout';
 	$plugin->run();
+}
+
+/**
+ * Initializes translations.
+ *
+ * @param array $plugin plugin array.
+ * @return Translation $object static translation instance.
+ */
+function boxtal_woocommerce_init_translation( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Translation( $plugin );
+	return $object;
 }
 
 
