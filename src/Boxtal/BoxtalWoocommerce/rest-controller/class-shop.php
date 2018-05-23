@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalWoocommerce\Rest_Controller;
 
 use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
+use Boxtal\BoxtalWoocommerce\Util\Api_Util;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
 /**
@@ -54,18 +55,31 @@ class Shop {
 	/**
 	 * Endpoint callback.
 	 *
+	 * @param WP_REST_Request $request request.
 	 * @void
 	 */
-	public function api_callback_handler() {
-		Notice_Controller::remove_notice( 'setup-wizard' );
-		Auth_Util::pair_plugin();
-		Notice_Controller::add_notice(
-			'pairing', array(
-				'status'  => 'success',
-				'message' => __( 'Congratulations! You\'ve successfully paired your site with Boxtal.', 'boxtal-woocommerce' ),
-			)
-		);
-		echo 1;
-		die();
+	public function api_callback_handler( $request ) {
+		$body = Auth_Util::decrypt_body( $request->get_body() );
+
+		if ($body === null) {
+            Api_Util::send_api_response( 401 );
+        }
+
+		$access_key = null;
+		$secret_key = null;
+		if ( is_object( $body ) && property_exists( $body, 'accessKey') && property_exists( $body,'secretKey') ) {
+			$access_key = $body->accessKey;
+			$secret_key = $body->secretKey;
+		}
+
+		if ( null !== $access_key && null !== $secret_key ) {
+			Notice_Controller::remove_notice( 'setup-wizard' );
+			Auth_Util::pair_plugin( $access_key, $secret_key );
+			Notice_Controller::add_notice('pairing', array('result' => 1));
+			Api_Util::send_api_response( 200 );
+		} else {
+            Notice_Controller::add_notice('pairing', array('result' => 0));
+			Api_Util::send_api_response( 400 );
+		}
 	}
 }

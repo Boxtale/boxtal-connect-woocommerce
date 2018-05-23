@@ -19,7 +19,6 @@ namespace Boxtal\BoxtalWoocommerce\Notice;
  */
 class Custom_Notice extends Abstract_Notice {
 
-
 	/**
 	 * Notice message.
 	 *

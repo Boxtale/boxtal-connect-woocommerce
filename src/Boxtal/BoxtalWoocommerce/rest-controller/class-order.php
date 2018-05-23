@@ -7,6 +7,7 @@
 
 namespace Boxtal\BoxtalWoocommerce\Rest_Controller;
 
+use Boxtal\BoxtalWoocommerce\Util\Api_Util;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalWoocommerce\Util\Product_Util;
 use Boxtal\BoxtalWoocommerce\Util\Order_Util;
@@ -46,13 +47,11 @@ class Order {
 	/**
 	 * Call to auth helper class authenticate function.
 	 *
-	 * @param WP_REST_Request $request request.
-	 * @return WP_Error|boolean
+	 * @param \WP_REST_Request $request request.
+	 * @return \WP_Error|boolean
 	 */
 	public function authenticate( $request ) {
-		return true;
-		// phpcs:ignore
-		// return Auth_Util::authenticate( $request );
+		return Auth_Util::authenticate( $request );
 	}
 
 	/**
@@ -62,9 +61,7 @@ class Order {
 	 */
 	public function api_callback_handler() {
 		$response = $this->get_orders();
-		header( 'Content-Type: application/json; charset=utf-8' );
-		echo wp_json_encode( $response );
-		die();
+		Api_Util::send_api_response( 200, $response );
 	}
 
 	/**

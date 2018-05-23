@@ -100,7 +100,12 @@ class Notice_Controller {
 			} else {
 				$classname .= ucwords( str_replace( '-', '_', $key ) ) . '_Notice';
 				if ( class_exists( $classname, true ) ) {
-					$class              = new $classname( $key );
+                    $extra = get_option( 'BW_NOTICE_' . $key );
+                    if ($extra !== false) {
+                        $class = new $classname( $key, $extra );
+                    } else {
+                        $class = new $classname( $key );
+                    }
 					$notice_instances[] = $class;
 				}
 			}
@@ -123,6 +128,9 @@ class Notice_Controller {
 			set_transient( $key, $value, DAY_IN_SECONDS );
 		} else {
 			$key = $type;
+			if (!empty($args)) {
+                update_option( 'BW_NOTICE_' . $key, $args );
+            }
 		}
 		$notices = get_option( 'BW_NOTICES', array() );
 		if ( ! in_array( $key, $notices, true ) ) {

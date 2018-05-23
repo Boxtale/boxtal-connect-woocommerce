@@ -27,7 +27,7 @@ let manager;
 let driver;
 
 test.describe(
-	'Frontend Tests', function () {
+	'Frontend', function () {
 
 		// Set up the driver and manager before testing starts.
 		test.before(
@@ -68,7 +68,7 @@ test.describe(
 		this.timeout( config.get( 'mochaTimeoutMs' ) );
 
 		test.it(
-			'Selects parcel point', () => {
+			'Payment attempt with parcel point selection', () => {
                 const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
                 guest.fromShopAddProductsToCart( 'BW test product' );
 
@@ -103,7 +103,7 @@ test.describe(
 		);
 
         test.it(
-            'Payment without parcel point selection', () => {
+            'Payment attempt without parcel point selection', () => {
                 const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
                 guest.fromShopAddProductsToCart( 'BW test product' );
 

@@ -30,6 +30,7 @@ class Controller {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
+		$this->google_key     = $plugin['google-api-key'];
 	}
 
 	/**
@@ -81,12 +82,12 @@ class Controller {
 				7 => __( 'sunday', 'boxtal-woocommerce' ),
 			),
 		);
-		wp_enqueue_script( 'bw_gmap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g' );
+		wp_enqueue_script( 'bw_gmap', 'https://maps.googleapis.com/maps/api/js?key=' . $this->google_key );
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_gmap' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
-		wp_localize_script( 'bw_shipping', 'googleKey', 'AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g' );
+		wp_localize_script( 'bw_shipping', 'googleKey', $this->google_key );
 	}
 
 	/**

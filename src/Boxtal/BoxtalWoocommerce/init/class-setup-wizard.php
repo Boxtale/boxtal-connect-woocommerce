@@ -13,7 +13,7 @@ use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 /**
  * Setup_Wizard class.
  *
- * Display setupe wizard if needed.
+ * Display setup wizard if needed.
  *
  * @class       Setup_Wizard
  * @package     Boxtal\BoxtalWoocommerce\Init
