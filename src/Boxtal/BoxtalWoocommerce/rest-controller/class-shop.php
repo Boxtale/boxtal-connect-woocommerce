@@ -61,24 +61,26 @@ class Shop {
 	public function api_callback_handler( $request ) {
 		$body = Auth_Util::decrypt_body( $request->get_body() );
 
-		if ($body === null) {
-            Api_Util::send_api_response( 401 );
-        }
+		if ( null === $body ) {
+			Api_Util::send_api_response( 400 );
+		}
 
 		$access_key = null;
 		$secret_key = null;
-		if ( is_object( $body ) && property_exists( $body, 'accessKey') && property_exists( $body,'secretKey') ) {
-			$access_key = $body->accessKey;
+		if ( is_object( $body ) && property_exists( $body, 'accessKey' ) && property_exists( $body, 'secretKey' ) ) {
+			//phpcs:ignore
+		    $access_key = $body->accessKey;
+            //phpcs:ignore
 			$secret_key = $body->secretKey;
 		}
 
 		if ( null !== $access_key && null !== $secret_key ) {
 			Notice_Controller::remove_notice( 'setup-wizard' );
 			Auth_Util::pair_plugin( $access_key, $secret_key );
-			Notice_Controller::add_notice('pairing', array('result' => 1));
+			Notice_Controller::add_notice( 'pairing', array( 'result' => 1 ) );
 			Api_Util::send_api_response( 200 );
 		} else {
-            Notice_Controller::add_notice('pairing', array('result' => 0));
+			Notice_Controller::add_notice( 'pairing', array( 'result' => 0 ) );
 			Api_Util::send_api_response( 400 );
 		}
 	}

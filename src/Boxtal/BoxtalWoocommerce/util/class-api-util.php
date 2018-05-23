@@ -28,10 +28,10 @@ class Api_Util {
 	 */
 	public static function send_api_response( $code, $body = null ) {
 		http_response_code( $code );
-		if ($body !== null) {
+		if ( null !== $body ) {
             // phpcs:ignore
             echo Auth_Util::encrypt_body( $body );
-        }
+		}
 		die();
 	}
 }
