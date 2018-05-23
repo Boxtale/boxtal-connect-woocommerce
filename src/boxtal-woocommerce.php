@@ -23,6 +23,7 @@ use Boxtal\BoxtalWoocommerce\Init\Environment_Check;
 use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
 use Boxtal\BoxtalWoocommerce\Init\Translation;
 use Boxtal\BoxtalWoocommerce\Plugin;
+use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/plugin.php';
@@ -37,22 +38,24 @@ add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
  * @void
  */
 function boxtal_woocommerce_init() {
-	$plugin                                      = new Plugin(); // Create container.
-	$plugin['path']                              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
-	$plugin['url']                               = plugin_dir_url( __FILE__ );
-	$plugin['version']                           = '0.1.0';
-	$plugin['min-wc-version']                    = '2.3.0';
-	$plugin['min-php-version']                   = '5.3.0';
-	$plugin['translation']                       = 'boxtal_woocommerce_init_translation';
-	$plugin['notice']                            = 'boxtal_woocommerce_init_admin_notices';
-	$plugin['check-environment']                 = 'boxtal_woocommerce_check_environment';
-	$plugin['setup-wizard']                      = 'boxtal_woocommerce_setup_wizard';
-	$plugin['rest-controller-order']             = 'boxtal_woocommerce_rest_controller_order';
-	$plugin['rest-controller-shop']              = 'boxtal_woocommerce_rest_controller_shop';
-	$plugin['shipping-method-settings-override'] = 'boxtal_woocommerce_shipping_method_settings_override';
-	$plugin['parcel-point-label-override']       = 'boxtal_woocommerce_parcel_point_label_override';
-	$plugin['parcel-point-controller']           = 'boxtal_woocommerce_parcel_point_controller';
-	$plugin['parcel-point-checkout']             = 'boxtal_woocommerce_parcel_point_checkout';
+	$plugin                         = new Plugin(); // Create container.
+	$plugin['path']                 = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
+	$plugin['url']                  = plugin_dir_url( __FILE__ );
+	$plugin['version']              = '0.1.0';
+	$plugin['min-wc-version']       = '2.3.0';
+	$plugin['min-php-version']      = '5.3.0';
+	$plugin['translation']          = 'boxtal_woocommerce_init_translation';
+	$plugin['notice']               = 'boxtal_woocommerce_init_admin_notices';
+	$plugin['check-environment']    = 'boxtal_woocommerce_check_environment';
+	$plugin['setup-wizard']         = 'boxtal_woocommerce_setup_wizard';
+	$plugin['rest-controller-shop'] = 'boxtal_woocommerce_rest_controller_shop';
+	if ( Auth_Util::is_plugin_paired() ) {
+		$plugin['rest-controller-order']             = 'boxtal_woocommerce_rest_controller_order';
+		$plugin['shipping-method-settings-override'] = 'boxtal_woocommerce_shipping_method_settings_override';
+		$plugin['parcel-point-label-override']       = 'boxtal_woocommerce_parcel_point_label_override';
+		$plugin['parcel-point-controller']           = 'boxtal_woocommerce_parcel_point_controller';
+		$plugin['parcel-point-checkout']             = 'boxtal_woocommerce_parcel_point_checkout';
+	}
 	$plugin->run();
 }
 

@@ -112,6 +112,7 @@ install_unit_tests() {
 
 activate_plugin() {
     php wp-cli.phar plugin activate boxtal-woocommerce --allow-root --path=/var/www/html
+    php wp-cli.phar option update BW_PLUGIN_SETUP 'yes' --allow-root --path=/var/www/html
 }
 
 install_wp

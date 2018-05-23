@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalWoocommerce\Init;
 
 use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
+use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
 /**
  * Setup_Wizard class.
@@ -27,7 +28,7 @@ class Setup_Wizard {
 	 * @void
 	 */
 	public function run() {
-		if ( false === get_option( 'BW_PLUGIN_SETUP' ) ) {
+		if ( ! Auth_Util::is_plugin_paired() ) {
 			Notice_Controller::add_notice( 'setup-wizard' );
 		}
 	}

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal woocommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-22 13:19+0200\n"
-"PO-Revision-Date: 2018-05-22 14:28+0200\n"
+"POT-Creation-Date: 2018-05-23 11:29+0200\n"
+"PO-Revision-Date: 2018-05-23 11:30+0200\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -14,13 +14,38 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Loco-Source-Locale: fr_FR\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_n_noop:1,2;_x:1,2c;esc_attr_e\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_n_noop:1,2;_x:1,2c;esc_attr_e;"
+"esc_html_e\n"
 "X-Loco-Parser: loco_parse_po\n"
 "X-Loco-Target-Locale: fr_FR\n"
-"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: ../init/class-environment-check.php:63
+#: Boxtal/BoxtalWoocommerce/assets/views/html-custom-notice.php:17
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-notice.php:17
+msgid "Hide this notice"
+msgstr "Ne plus afficher ce message"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-notice.php:14
+#: Boxtal/BoxtalWoocommerce/rest-controller/class-shop.php:65
+msgid "Congratulations! You've successfully paired your site with Boxtal."
+msgstr ""
+"Félicitations ! La liaison de votre site avec Boxtal a été réalisée avec "
+"succès."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-setup-wizard-notice.php:14
+msgid ""
+"Boxtal Woocommerce install is complete. Run the setup wizard to connect your "
+"shop."
+msgstr ""
+"L'installation de Boxtal Woocommerce est terminée. Lancez l'assistant de "
+"configuration pour connecter votre boutique."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-setup-wizard-notice.php:17
+msgid "Run the Setup Wizard"
+msgstr "Lancer l’assistant de configuration"
+
+#: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:63
 #, php-format
 msgid ""
 "Boxtal Woocommerce - The minimum PHP version required for this plugin is "
@@ -29,12 +54,12 @@ msgstr ""
 "Boxtal Woocommerce - La version PHP minimale requise pour ce plugin est "
 "%1$s. Vous utilisez la version %2$s."
 
-#: ../init/class-environment-check.php:69
+#: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:69
 msgid "Boxtal Woocommerce requires WooCommerce to be activated to work."
 msgstr ""
 "Boxtal Woocommerce nécessite l'activation de Woocommerce pour fonctionner."
 
-#: ../init/class-environment-check.php:74
+#: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:74
 #, php-format
 msgid ""
 "Boxtal Woocommerce - The minimum WooCommerce version required for this "
@@ -43,17 +68,11 @@ msgstr ""
 "Boxtal Woocommerce - La version minimale de Woocommerce requise pour ce "
 "plugin est %1$s. Vous utilisez la version %2$s."
 
-#: ../rest-controller/class-shop.php:65
-msgid "Congratulations! You've successfully paired your site with Boxtal."
-msgstr ""
-"Félicitations ! La liaison de votre site avec Boxtal a été réalisée avec "
-"succès."
-
-#: ../shipping-method/class-settings-override.php:68
+#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:68
 msgid "Parcel points map display (Boxtal Woocommerce)"
 msgstr "Affichage de la carte des points relais (Boxtal Woocommerce)"
 
-#: ../shipping-method/class-settings-override.php:70
+#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:70
 msgid ""
 "Choose one or more parcel point carriers in order to display a parcel point "
 "map for this shipping method. Use ctrl+click to select several carriers."
@@ -62,101 +81,101 @@ msgstr ""
 "relais pour cette méthode de livraison. Utilisez ctrl+clic pour sélectionner "
 "plusieurs transporteurs."
 
-#: ../shipping-method/class-settings-override.php:72
+#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:72
 msgid "Mondial Relay"
 msgstr "Mondial Relay"
 
-#: ../shipping-method/class-settings-override.php:73
+#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:73
 msgid "Relais colis"
 msgstr "Relais colis"
 
-#: ../shipping-method/parcel-point/class-checkout.php:55
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-checkout.php:55
 msgid "Please select a parcel point"
 msgstr "Veuillez choisir un point relais"
 
-#: ../shipping-method/parcel-point/class-checkout.php:58
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-checkout.php:58
 msgid "Could not set parcel point. Woocommerce sessions are not enabled!"
 msgstr ""
 "Impossible de sauvegarder le point relais. Les sessions Woocommerce ne sont "
 "pas activées !"
 
-#: ../shipping-method/parcel-point/class-controller.php:63
-#: ../shipping-method/parcel-point/class-controller.php:110
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:63
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:110
 msgid "Unable to find carrier"
 msgstr "Impossible de trouver le transporteur"
 
-#: ../shipping-method/parcel-point/class-controller.php:64
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:64
 msgid "Google maps API quota exceeded"
 msgstr "Quota API Google maps dépassé"
 
-#: ../shipping-method/parcel-point/class-controller.php:65
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:65
 msgid "Could not find address"
 msgstr "Impossible de trouver l'adresse"
 
-#: ../shipping-method/parcel-point/class-controller.php:68
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:68
 msgid "Opening hours"
 msgstr "Horaires d'ouverture"
 
-#: ../shipping-method/parcel-point/class-controller.php:69
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:69
 msgid "Choose this parcel point"
 msgstr "Choisir ce point relais"
 
-#: ../shipping-method/parcel-point/class-controller.php:70
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:70
 msgid "Your address:"
 msgstr "Votre adresse :"
 
-#: ../shipping-method/parcel-point/class-controller.php:71
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:71
 msgid "Close map"
 msgstr "Fermer la carte"
 
-#: ../shipping-method/parcel-point/class-controller.php:72
-#: ../shipping-method/parcel-point/class-label-override.php:46
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:72
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:46
 msgid "Selected:"
 msgstr "Sélectionné :"
 
-#: ../shipping-method/parcel-point/class-controller.php:75
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:75
 msgid "monday"
 msgstr "lundi"
 
-#: ../shipping-method/parcel-point/class-controller.php:76
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:76
 msgid "tuesday"
 msgstr "mardi"
 
-#: ../shipping-method/parcel-point/class-controller.php:77
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:77
 msgid "wednesday"
 msgstr "mercredi"
 
-#: ../shipping-method/parcel-point/class-controller.php:78
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:78
 msgid "thursday"
 msgstr "jeudi"
 
-#: ../shipping-method/parcel-point/class-controller.php:79
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:79
 msgid "friday"
 msgstr "vendredi"
 
-#: ../shipping-method/parcel-point/class-controller.php:80
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:80
 msgid "saturday"
 msgstr "samedi"
 
-#: ../shipping-method/parcel-point/class-controller.php:81
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:81
 msgid "sunday"
 msgstr "dimanche"
 
-#: ../shipping-method/parcel-point/class-controller.php:116
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:116
 msgid "Something is wrong with this shipping method's settings"
 msgstr "Il y a un problème de configuration avec cette méthode de livraison"
 
-#: ../shipping-method/parcel-point/class-controller.php:119
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:119
 msgid "No relay operators were defined for this shipping method"
 msgstr ""
 "Aucun transporteur point relais n'est configuré pour cette méthode de "
 "livraison"
 
-#: ../shipping-method/parcel-point/class-controller.php:125
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:125
 msgid "Could not find any parcel point for this address"
 msgstr "Impossible de trouver des points relais pour cette adresse"
 
-#: ../shipping-method/parcel-point/class-label-override.php:42
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:42
 msgid "Choose a parcel point"
 msgstr "Choisissez un point relais"
 
@@ -191,12 +210,6 @@ msgstr "Choisissez un point relais"
 #~ "L’installation de l’extension EnvoiMoinsCher est terminée. Lancez "
 #~ "l’assistant de configuration pour créer un compte EnvoiMoinsCher et/ou "
 #~ "générer vos clés API."
-
-#~ msgid "Run the Setup Wizard"
-#~ msgstr "Lancer l’assistant de configuration"
-
-#~ msgid "Hide this notice"
-#~ msgstr "Ne plus afficher ce message"
 
 #~ msgid "Processing orders"
 #~ msgstr "Traitement des commandes"

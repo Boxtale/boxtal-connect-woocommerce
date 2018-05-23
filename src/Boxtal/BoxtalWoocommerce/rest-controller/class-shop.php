@@ -58,7 +58,7 @@ class Shop {
 	 */
 	public function api_callback_handler() {
 		Notice_Controller::remove_notice( 'setup-wizard' );
-		update_option( 'BW_PLUGIN_SETUP', true );
+		Auth_Util::pair_plugin();
 		Notice_Controller::add_notice(
 			'pairing', array(
 				'status'  => 'success',

@@ -34,4 +34,22 @@ class Auth_Util {
 		}
 		return new \WP_Error( 401, 'Could not decrypt request' );
 	}
+
+	/**
+	 * Is plugin paired.
+	 *
+	 * @return boolean
+	 */
+	public static function is_plugin_paired() {
+		return 'yes' === get_option( 'BW_PLUGIN_SETUP' );
+	}
+
+	/**
+	 * Pair plugin.
+	 *
+	 * @void
+	 */
+	public static function pair_plugin() {
+		update_option( 'BW_PLUGIN_SETUP', 'yes' );
+	}
 }
