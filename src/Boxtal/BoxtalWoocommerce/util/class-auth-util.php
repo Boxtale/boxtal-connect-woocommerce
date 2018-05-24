@@ -19,7 +19,6 @@ namespace Boxtal\BoxtalWoocommerce\Util;
  */
 class Auth_Util {
 
-
 	/**
 	 * API request validation.
 	 *
@@ -86,8 +85,8 @@ class Auth_Util {
 		if ( is_array( $body ) ) {
 			$body = wp_json_encode( $body );
 		}
-		if ( openssl_public_encrypt( $body, $encrypted, $public_key, OPENSSL_PKCS1_OAEP_PADDING ) ) {
-			return $encrypted;
+		if ( openssl_public_encrypt( $body, $encrypted, $public_key ) ) {
+			return base64_encode( $encrypted );
 		}
 		return null;
 	}
