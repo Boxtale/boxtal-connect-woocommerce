@@ -30,6 +30,31 @@
                     var noticeId = notice.getAttribute("rel");
                     httpRequest.send("action=hide_notice&notice_id=" + encodeURIComponent(noticeId) + "&security=" + encodeURIComponent(ajax_nonce));
                 });
+
+                self.on("body", "click", "#bw-pairing-update-validate", function() {
+                    var httpRequest = new XMLHttpRequest();
+                    var notice = this;
+                    httpRequest.onreadystatechange = function(data) {
+                        if (httpRequest.readyState === 4) {
+                            if (httpRequest.status === 200) {
+                                notice.closest(".bw-notice").style.display = 'none';
+                            } else {
+                                console.log("Error: " + httpRequest.status);
+                            }
+                        }
+                    };
+                    httpRequest.open("POST", ajaxurl);
+                    httpRequest.setRequestHeader(
+                        "Content-Type",
+                        "application/x-www-form-urlencoded"
+                    );
+                    httpRequest.responseType = "json";
+                    let input = "";
+                    for (let i = 0; i < 6; i++) {
+                        input += document.querySelector("input[name=bw-digit-" + i + "]").value;
+                    }
+                    httpRequest.send("action=pairing_update_validate&input=" + encodeURIComponent(input) + "&security=" + encodeURIComponent(ajax_nonce));
+                });
             }
         },
 

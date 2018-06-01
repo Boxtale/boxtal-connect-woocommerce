@@ -14,17 +14,18 @@
  * @package Boxtal\BoxtalWoocommerce
  */
 
+use Boxtal\BoxtalWoocommerce\Init\Component;
+use Boxtal\BoxtalWoocommerce\Init\Environment_Check;
+use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
+use Boxtal\BoxtalWoocommerce\Init\Translation;
 use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
+use Boxtal\BoxtalWoocommerce\Plugin;
+use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
+use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Checkout;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Controller;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Label_Override;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Settings_Override;
-use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
-use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
-use Boxtal\BoxtalWoocommerce\Init\Environment_Check;
-use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
-use Boxtal\BoxtalWoocommerce\Init\Translation;
-use Boxtal\BoxtalWoocommerce\Plugin;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
@@ -48,11 +49,12 @@ function boxtal_woocommerce_init() {
 	$plugin['min-php-version']      = '5.3.0';
 	$plugin['google-api-key']       = 'AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g';
 	$plugin['translation']          = 'boxtal_woocommerce_init_translation';
+	$plugin['component']            = 'boxtal_woocommerce_init_admin_components';
 	$plugin['notice']               = 'boxtal_woocommerce_init_admin_notices';
 	$plugin['check-environment']    = 'boxtal_woocommerce_check_environment';
 	$plugin['setup-wizard']         = 'boxtal_woocommerce_setup_wizard';
 	$plugin['rest-controller-shop'] = 'boxtal_woocommerce_rest_controller_shop';
-	if ( Auth_Util::is_plugin_paired() ) {
+	if ( Auth_Util::can_use_plugin() ) {
 		$plugin['rest-controller-order']             = 'boxtal_woocommerce_rest_controller_order';
 		$plugin['shipping-method-settings-override'] = 'boxtal_woocommerce_shipping_method_settings_override';
 		$plugin['parcel-point-label-override']       = 'boxtal_woocommerce_parcel_point_label_override';
@@ -77,6 +79,23 @@ function boxtal_woocommerce_init_translation( $plugin ) {
 
 	$object = new Translation( $plugin );
 	return $object;
+}
+
+/**
+ * Initializes common admin components.
+ *
+ * @param array $plugin plugin array.
+ * @return Translation $object static translation instance.
+ */
+function boxtal_woocommerce_init_admin_components( $plugin ) {
+    static $object;
+
+    if ( null !== $object ) {
+        return $object;
+    }
+
+    $object = new Component( $plugin );
+    return $object;
 }
 
 

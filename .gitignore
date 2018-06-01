@@ -5,4 +5,5 @@ coverage.xml
 tmp/
 src/Boxtal/BoxtalWoocommerce/assets/css
 src/Boxtal/BoxtalWoocommerce/assets/js/*.min.js
+src/Boxtal/BoxtalWoocommerce/translation/*.mo
 node_modules/

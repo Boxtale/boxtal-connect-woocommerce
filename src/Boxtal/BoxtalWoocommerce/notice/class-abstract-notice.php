@@ -32,7 +32,7 @@ abstract class Abstract_Notice {
 	 *
 	 * @var string
 	 */
-	protected $type;
+	public $type;
 
 	/**
 	 * Notice autodestruct.
