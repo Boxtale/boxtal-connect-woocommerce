@@ -6,6 +6,7 @@
  */
 
 namespace Boxtal\BoxtalWoocommerce\Notice;
+
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalPhp\RestClient;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
@@ -57,9 +58,9 @@ class Notice_Controller {
 			foreach ( $notices as $notice ) {
 				add_action( 'admin_notices', array( $notice, 'render' ) );
 
-				if ('pairing-update' === $notice->type) {
-                    add_action( 'wp_ajax_pairing_update_validate', array( $this, 'pairing_update_validate_callback' ) );
-                }
+				if ( 'pairing-update' === $notice->type ) {
+					add_action( 'wp_ajax_pairing_update_validate', array( $this, 'pairing_update_validate_callback' ) );
+				}
 			}
 		}
 	}
@@ -187,31 +188,32 @@ class Notice_Controller {
 		wp_send_json( true );
 	}
 
-    /**
-     * Ajax callback. Validate pairing update.
-     *
-     * @void
-     */
-    public function pairing_update_validate_callback() {
-        check_ajax_referer( 'boxtale_woocommerce_notice', 'security' );
-        header( 'Content-Type: application/json; charset=utf-8' );
-        if ( ! isset( $_REQUEST['approve'] ) ) {
-            wp_send_json_error('missing input');
-        }
-        $approve = sanitize_text_field( wp_unslash( $_REQUEST['approve'] ) );
+	/**
+	 * Ajax callback. Validate pairing update.
+	 *
+	 * @void
+	 */
+	public function pairing_update_validate_callback() {
+		check_ajax_referer( 'boxtale_woocommerce_notice', 'security' );
+		header( 'Content-Type: application/json; charset=utf-8' );
+		if ( ! isset( $_REQUEST['approve'] ) ) {
+			wp_send_json_error( 'missing input' );
+		}
+		$approve = sanitize_text_field( wp_unslash( $_REQUEST['approve'] ) );
 
-        $lib = new ApiClient(Auth_Util::get_access_key(), Auth_Util::get_secret_key());
-        $response = $lib->restClient->request(RestClient::$PATCH, get_option('BW_PAIRING_UPDATE'), array('approve' => $approve));
+		$lib = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
+		//phpcs:ignore
+		$response = $lib->restClient->request( RestClient::$PATCH, get_option( 'BW_PAIRING_UPDATE' ), array( 'approve' => $approve ) );
 
-        if (!$response->isError()) {
-            Auth_Util::end_pairing_update();
-            Notice_Controller::remove_notice( 'pairing-update' );
-            Notice_Controller::add_notice( 'pairing', array( 'result' => 1 ) );
-            wp_send_json( true );
-        } else {
-            wp_send_json_error('pairing validation failed');
-        }
-    }
+		if ( ! $response->isError() ) {
+			Auth_Util::end_pairing_update();
+			Notice_Controller::remove_notice( 'pairing-update' );
+			Notice_Controller::add_notice( 'pairing', array( 'result' => 1 ) );
+			wp_send_json( true );
+		} else {
+			wp_send_json_error( 'pairing validation failed' );
+		}
+	}
 
 	/**
 	 * Remove all notices.

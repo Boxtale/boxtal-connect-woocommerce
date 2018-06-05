@@ -44,14 +44,14 @@ class Auth_Util {
 		return false !== self::get_access_key() && false !== self::get_secret_key();
 	}
 
-    /**
-     * Can use plugin.
-     *
-     * @return boolean
-     */
-    public static function can_use_plugin() {
-        return false !== self::is_plugin_paired() && false === get_option( 'BW_PAIRING_UPDATE' );
-    }
+	/**
+	 * Can use plugin.
+	 *
+	 * @return boolean
+	 */
+	public static function can_use_plugin() {
+		return false !== self::is_plugin_paired() && false === get_option( 'BW_PAIRING_UPDATE' );
+	}
 
 	/**
 	 * Pair plugin.
@@ -65,24 +65,24 @@ class Auth_Util {
 		update_option( 'BW_SECRET_KEY', $secret_key );
 	}
 
-    /**
-     * Start pairing update (puts plugin on hold).
-     *
-     * @param string $callback_url callback url.
-     * @void
-     */
-    public static function start_pairing_update($callback_url) {
-        update_option( 'BW_PAIRING_UPDATE', $callback_url );
-    }
+	/**
+	 * Start pairing update (puts plugin on hold).
+	 *
+	 * @param string $callback_url callback url.
+	 * @void
+	 */
+	public static function start_pairing_update( $callback_url ) {
+		update_option( 'BW_PAIRING_UPDATE', $callback_url );
+	}
 
-    /**
-     * End pairing update (release plugin).
-     *
-     * @void
-     */
-    public static function end_pairing_update() {
-        delete_option( 'BW_PAIRING_UPDATE' );
-    }
+	/**
+	 * End pairing update (release plugin).
+	 *
+	 * @void
+	 */
+	public static function end_pairing_update() {
+		delete_option( 'BW_PAIRING_UPDATE' );
+	}
 
 	/**
 	 * Request body decryption.
@@ -119,21 +119,21 @@ class Auth_Util {
 		return null;
 	}
 
-    /**
-     * Get access key.
-     *
-     * @return string
-     */
+	/**
+	 * Get access key.
+	 *
+	 * @return string
+	 */
 	public static function get_access_key() {
-        return get_option('BW_ACCESS_KEY');
-    }
+		return get_option( 'BW_ACCESS_KEY' );
+	}
 
-    /**
-     * Get secret key.
-     *
-     * @return string
-     */
-    public static function get_secret_key() {
-        return get_option('BW_SECRET_KEY');
-    }
+	/**
+	 * Get secret key.
+	 *
+	 * @return string
+	 */
+	public static function get_secret_key() {
+		return get_option( 'BW_SECRET_KEY' );
+	}
 }

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="bw-notice bw-warning">
-    <?php esc_html_e('Security alert: someone is trying to pair your site with Boxtal. Was it you?', 'boxtal-woocommerce' ); ?>
-    <?php echo sprintf(__('%s', 'boxtal-woocommerce' ), '<button class="button-secondary bw-pairing-update-validate" bw-pairing-update-validate="1" href="#">' . __('yes', 'boxtal-woocommerce') . '</button>' ); ?>
-    <?php echo sprintf(__('%s', 'boxtal-woocommerce' ), '<button class="button-secondary bw-pairing-update-validate" bw-pairing-update-validate="0" href="#">' . __('no', 'boxtal-woocommerce') . '</button>' ); ?>
+	<?php esc_html_e( 'Security alert: someone is trying to pair your site with Boxtal. Was it you?', 'boxtal-woocommerce' ); ?>
+	<button class="button-secondary bw-pairing-update-validate" bw-pairing-update-validate="1" href="#"><?php esc_html_e( 'yes', 'boxtal-woocommerce' ); ?></button>
+	<button class="button-secondary bw-pairing-update-validate" bw-pairing-update-validate="0" href="#"><?php esc_html_e( 'no', 'boxtal-woocommerce' ); ?></button>
 </div>

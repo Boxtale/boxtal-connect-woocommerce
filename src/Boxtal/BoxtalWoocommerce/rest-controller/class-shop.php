@@ -65,39 +65,38 @@ class Shop {
 			Api_Util::send_api_response( 400 );
 		}
 
-		$access_key = null;
-		$secret_key = null;
-        $callback_url = null;
+		$access_key   = null;
+		$secret_key   = null;
+		$callback_url = null;
 		if ( is_object( $body ) && property_exists( $body, 'accessKey' ) && property_exists( $body, 'secretKey' ) ) {
 			//phpcs:ignore
 		    $access_key = $body->accessKey;
             //phpcs:ignore
 			$secret_key = $body->secretKey;
 
-
-            if ( property_exists( $body, 'pairCallbackUrl' ) ) {
+			if ( property_exists( $body, 'pairCallbackUrl' ) ) {
                 //phpcs:ignore
                 $callback_url = $body->pairCallbackUrl;
-            }
+			}
 		}
 
 		if ( null !== $access_key && null !== $secret_key ) {
-			if (!Auth_Util::is_plugin_paired()) { // initial pairing
-                Auth_Util::pair_plugin( $access_key, $secret_key );
-                Notice_Controller::remove_notice( 'setup-wizard' );
-                Notice_Controller::add_notice( 'pairing', array( 'result' => 1 ) );
-                Api_Util::send_api_response( 200 );
-            } else { // pairing update
-                if ( null !== $callback_url ) {
-                    Auth_Util::pair_plugin( $access_key, $secret_key );
-                    Notice_Controller::remove_notice( 'pairing' );
-                    Auth_Util::start_pairing_update($callback_url);
-                    Notice_Controller::add_notice('pairing-update');
-                    Api_Util::send_api_response(200);
-                } else {
-                    Api_Util::send_api_response(403);
-                }
-            }
+			if ( ! Auth_Util::is_plugin_paired() ) { // initial pairing.
+				Auth_Util::pair_plugin( $access_key, $secret_key );
+				Notice_Controller::remove_notice( 'setup-wizard' );
+				Notice_Controller::add_notice( 'pairing', array( 'result' => 1 ) );
+				Api_Util::send_api_response( 200 );
+			} else { // pairing update.
+				if ( null !== $callback_url ) {
+					Auth_Util::pair_plugin( $access_key, $secret_key );
+					Notice_Controller::remove_notice( 'pairing' );
+					Auth_Util::start_pairing_update( $callback_url );
+					Notice_Controller::add_notice( 'pairing-update' );
+					Api_Util::send_api_response( 200 );
+				} else {
+					Api_Util::send_api_response( 403 );
+				}
+			}
 		} else {
 			Notice_Controller::add_notice( 'pairing', array( 'result' => 0 ) );
 			Api_Util::send_api_response( 400 );

@@ -92,6 +92,7 @@ class Order {
 				$product_id             = ( '0' !== $variation_id && 0 !== $variation_id ) ? $variation_id : $item['product_id'];
 				$product['weight']      = false !== Product_Util::get_product_weight( $product_id ) ? (float) Product_Util::get_product_weight( $product_id ) : null;
 				$product['quantity']    = (int) $item['qty'];
+				$product['price']       = Product_Util::get_product_price( $product_id );
 				$product['description'] = esc_html( Product_Util::get_product_description( $item ) );
 				$products[]             = $product;
 			}

@@ -37,6 +37,20 @@ class Product_Util {
 	}
 
 	/**
+	 * Get WC product price from product id.
+	 *
+	 * @param integer $product_id woocommerce product id.
+	 * @float
+	 */
+	public static function get_product_price( $product_id ) {
+		if ( isset( $product_id ) && ! empty( $product_id ) ) {
+			$product = self::get_product( $product_id );
+			return self::get_price( $product );
+		}
+		return false;
+	}
+
+	/**
 	 * Get product description.
 	 *
 	 * @param WC_Order_Item $item woocommerce order item.
@@ -109,17 +123,30 @@ class Product_Util {
 	}
 
 	/**
-	 * Set WC product variation weight.
+	 * Get WC product price.
 	 *
-	 * @param WC variation $variation woocommerce product variation.
-	 * @param float        $weight desired weight.
+	 * @param WC_Product_Simple $product woocommerce product.
+	 * @return float
+	 */
+	public static function get_price( $product ) {
+		if ( method_exists( $product, 'get_price' ) ) {
+			return (float) $product->get_price();
+		}
+		return (float) $product->price;
+	}
+
+	/**
+	 * Set WC product regular price.
+	 *
+	 * @param WC_Product_Simple $product woocommerce product.
+	 * @param float             $price desired price.
 	 * @void
 	 */
-	public static function set_variation_weight( $variation, $weight ) {
-		if ( method_exists( $variation, 'set_weight' ) ) {
-			$variation->set_weight( $weight );
+	public static function set_regular_price( $product, $price ) {
+		if ( method_exists( $product, 'set_regular_price' ) ) {
+			$product->set_regular_price( $price );
 		} else {
-			update_post_meta( $variation['variation_id'], '_weight', $weight );
+			update_post_meta( $product->id, '_price', $price );
 		}
 	}
 
@@ -161,21 +188,6 @@ class Product_Util {
 			$product->set_name( $name );
 		} else {
 			update_post_meta( $product->id, '_name', $name );
-		}
-	}
-
-	/**
-	 * Set WC product variation name.
-	 *
-	 * @param WC variation $variation woocommerce product variation.
-	 * @param string       $name desired name.
-	 * @void
-	 */
-	public static function set_variation_name( $variation, $name ) {
-		if ( method_exists( $variation, 'set_name' ) ) {
-			$variation->set_name( $name );
-		} else {
-			update_post_meta( $variation['variation_id'], '_name', $name );
 		}
 	}
 

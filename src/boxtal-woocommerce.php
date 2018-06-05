@@ -41,14 +41,15 @@ add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
  * @void
  */
 function boxtal_woocommerce_init() {
-	$plugin                         = new Plugin(); // Create container.
-	$plugin['path']                 = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
-	$plugin['url']                  = plugin_dir_url( __FILE__ );
-	$plugin['version']              = '0.1.0';
-	$plugin['min-wc-version']       = '2.3.0';
-	$plugin['min-php-version']      = '5.3.0';
-	$plugin['google-api-key']       = 'AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g';
-	$plugin['translation']          = 'boxtal_woocommerce_init_translation';
+	$plugin                    = new Plugin(); // Create container.
+	$plugin['path']            = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
+	$plugin['url']             = plugin_dir_url( __FILE__ );
+	$plugin['version']         = '0.1.0';
+	$plugin['min-wc-version']  = '2.3.0';
+	$plugin['min-php-version'] = '5.3.0';
+	$plugin['google-api-key']  = 'AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g';
+	$plugin['translation']     = 'boxtal_woocommerce_init_translation';
+	//phpcs:ignore
 	// $plugin['component']            = 'boxtal_woocommerce_init_admin_components';
 	$plugin['notice']               = 'boxtal_woocommerce_init_admin_notices';
 	$plugin['check-environment']    = 'boxtal_woocommerce_check_environment';
@@ -88,14 +89,14 @@ function boxtal_woocommerce_init_translation( $plugin ) {
  * @return Translation $object static translation instance.
  */
 function boxtal_woocommerce_init_admin_components( $plugin ) {
-    static $object;
+	static $object;
 
-    if ( null !== $object ) {
-        return $object;
-    }
+	if ( null !== $object ) {
+		return $object;
+	}
 
-    $object = new Component( $plugin );
-    return $object;
+	$object = new Component( $plugin );
+	return $object;
 }
 
 

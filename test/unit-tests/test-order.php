@@ -28,6 +28,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 
 		$product = WC_Helper_Product::create_simple_product();
 		Product_Util::set_weight( $product, 2.5 );
+		Product_Util::set_regular_price( $product, 15 );
 		Product_Util::set_name( $product, 'simple product' );
 		Product_Util::save( $product );
 
@@ -71,6 +72,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 						0 => array(
 							'weight'      => 2.5,
 							'quantity'    => 4,
+							'price'       => 15.0,
 							'description' => 'simple product',
 						),
 					),
@@ -97,13 +99,16 @@ class BW_Test_Order extends WP_UnitTestCase {
 
 		$product = WC_Helper_Product::create_variation_product();
 		Product_Util::set_weight( $product, 2.5 );
+		Product_Util::set_regular_price( $product, 12 );
 		Product_Util::set_name( $product, 'variation product' );
 		Product_Util::save( $product );
 
-		$variations = $product->get_available_variations();
-		$variation  = array_shift( $variations );
-		Product_Util::set_variation_weight( $variation, 6 );
+		$variations        = $product->get_available_variations();
+		$variation         = array_shift( $variations );
 		$variation_product = Product_Util::get_product( $variation['variation_id'] );
+		Product_Util::set_regular_price( $variation_product, 14 );
+		Product_Util::set_weight( $variation_product, 6 );
+		Product_Util::save( $variation_product );
 
 		Order_Util::add_product( $order, $variation_product, 5 );
 		Order_Util::set_shipping_first_name( $order, 'Jon' );
@@ -148,6 +153,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 						0 => array(
 							'weight'      => 6.0,
 							'quantity'    => 5,
+							'price'       => 14.0,
 							'description' => $product_description,
 						),
 					),
