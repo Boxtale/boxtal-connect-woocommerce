@@ -5,7 +5,7 @@ sudo a2enmod rewrite
 sudo service apache2 start
 
 if ! [ -z "$WP_SITEURL" ]; then
-    wp='./vendor/wp-cli/wp-cli/bin/wp'
+    wp='php wp-cli.phar'
     WP_CORE_DIR=/var/www/html
     sudo -u www-data -H sh -c "$wp option update siteurl $WP_SITEURL --path=$WP_CORE_DIR"
     sudo -u www-data -H sh -c "$wp option update home $WP_SITEURL --path=$WP_CORE_DIR"

@@ -35,7 +35,7 @@ class Order {
 			'rest_api_init', function() {
 				register_rest_route(
 					'boxtal-woocommerce/v1', '/order', array(
-						'methods'             => 'PUT',
+						'methods'             => 'PATCH',
 						'callback'            => array( $this, 'api_callback_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)

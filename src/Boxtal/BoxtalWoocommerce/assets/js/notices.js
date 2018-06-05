@@ -4,14 +4,14 @@
     Components.notices = {
         trigger: '.bw-notice',
 
-        init: function () {
-            var triggers = document.querySelectorAll(this.trigger);
-            var self = this;
+        init: function() {
+            const triggers = document.querySelectorAll(this.trigger);
+            const self = this;
 
             if (triggers.length) {
                 self.on("body", "click", ".bw-hide-notice", function() {
-                    var httpRequest = new XMLHttpRequest();
-                    var notice = this;
+                    const httpRequest = new XMLHttpRequest();
+                    const notice = this;
                     httpRequest.onreadystatechange = function(data) {
                         if (httpRequest.readyState === 4) {
                             if (httpRequest.status === 200) {
@@ -27,14 +27,14 @@
                         "application/x-www-form-urlencoded"
                     );
                     httpRequest.responseType = "json";
-                    var noticeId = notice.getAttribute("rel");
+                    const noticeId = notice.getAttribute("rel");
                     httpRequest.send("action=hide_notice&notice_id=" + encodeURIComponent(noticeId) + "&security=" + encodeURIComponent(ajax_nonce));
                 });
 
-                self.on("body", "click", "#bw-pairing-update-validate", function() {
-                    var httpRequest = new XMLHttpRequest();
-                    var notice = this;
-                    httpRequest.onreadystatechange = function(data) {
+                self.on("body", "click", ".bw-pairing-update-validate", function() {
+                    const httpRequest = new XMLHttpRequest();
+                    const notice = this;
+                    httpRequest.onreadystatechange = function() {
                         if (httpRequest.readyState === 4) {
                             if (httpRequest.status === 200) {
                                 notice.closest(".bw-notice").style.display = 'none';
@@ -49,25 +49,22 @@
                         "application/x-www-form-urlencoded"
                     );
                     httpRequest.responseType = "json";
-                    let input = "";
-                    for (let i = 0; i < 6; i++) {
-                        input += document.querySelector("input[name=bw-digit-" + i + "]").value;
-                    }
-                    httpRequest.send("action=pairing_update_validate&input=" + encodeURIComponent(input) + "&security=" + encodeURIComponent(ajax_nonce));
+                    const approve = notice.getAttribute("bw-pairing-update-validate");
+                    httpRequest.send("action=pairing_update_validate&approve=" + encodeURIComponent(approve) + "&security=" + encodeURIComponent(ajax_nonce));
                 });
             }
         },
 
         on: function(elSelector, eventName, selector, fn) {
-            var element = document.querySelector(elSelector);
+            const element = document.querySelector(elSelector);
 
             element.addEventListener(eventName, function(event) {
-                var possibleTargets = element.querySelectorAll(selector);
-                var target = event.target;
+                const possibleTargets = element.querySelectorAll(selector);
+                const target = event.target;
 
-                for (var i = 0, l = possibleTargets.length; i < l; i++) {
-                    var el = target;
-                    var p = possibleTargets[i];
+                for (let i = 0, l = possibleTargets.length; i < l; i++) {
+                    let el = target;
+                    const p = possibleTargets[i];
 
                     while(el && el !== element) {
                         if (el === p) {

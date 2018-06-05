@@ -195,13 +195,13 @@ class Notice_Controller {
     public function pairing_update_validate_callback() {
         check_ajax_referer( 'boxtale_woocommerce_notice', 'security' );
         header( 'Content-Type: application/json; charset=utf-8' );
-        if ( ! isset( $_REQUEST['input'] ) ) {
+        if ( ! isset( $_REQUEST['approve'] ) ) {
             wp_send_json_error('missing input');
         }
-        $input = sanitize_text_field( wp_unslash( $_REQUEST['input'] ) );
+        $approve = sanitize_text_field( wp_unslash( $_REQUEST['approve'] ) );
 
         $lib = new ApiClient(Auth_Util::get_access_key(), Auth_Util::get_secret_key());
-        $response = $lib->restClient->request(RestClient::$POST, get_option('BW_PAIRING_UPDATE'), array('input' => $input));
+        $response = $lib->restClient->request(RestClient::$PATCH, get_option('BW_PAIRING_UPDATE'), array('approve' => $approve));
 
         if (!$response->isError()) {
             Auth_Util::end_pairing_update();
