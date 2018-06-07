@@ -1,35 +1,27 @@
 (function () {
-    var Components = {};
+    const Components = {};
 
     Components.parcelPointLinks = {
         trigger: '.bw-select-parcel',
         mapContainer: null,
         map: null,
-        infoWindow: null,
         markers: [],
         bounds: null,
 
         init: function () {
-            var self = this;
+            const self = this;
             self.on("body", "click", self.trigger, function() {
                 self.mapContainer = document.querySelector('#bw-map');
                 if (!self.mapContainer) {
                     self.initMap();
                 }
 
-                var options = {
-                    zoom: 11,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                self.map = new google.maps.Map(document.getElementById("bw-map-canvas"), options);
-                self.infoWindow = new google.maps.InfoWindow();
-                self.bounds = new google.maps.LatLngBounds();
-                google.maps.event.trigger(self.map, 'resize');
+                self.bounds = L.latLngBounds();
 
                 self.on("body", "click", ".bw-parcel-point-button", function() {
                     self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-name"), this.getAttribute("data-operator"))
                         .then(function(name) {
-                            var target = document.querySelector(".bw-parcel-client");
+                            let target = document.querySelector(".bw-parcel-client");
                             if (!target) {
                                 self.initSelectedParcelPoint();
                                 target = document.querySelector(".bw-parcel-client");
@@ -41,37 +33,31 @@
                             self.showError(err);
                         });
                 });
-
-
-                google.maps.event.addListener(self.map, "click", function() {
-                    self.infoWindow.close();
-                });
-
                 self.openMap();
                 self.getPoints();
             });
         },
 
         initMap: function() {
-            var self = this;
-            var mapClose = document.createElement("div");
+            const self = this;
+            const mapClose = document.createElement("div");
             mapClose.setAttribute("class", "bw-close");
             mapClose.setAttribute("title", translations.text.closeMap);
             mapClose.addEventListener("click", function() {
                 self.closeMap()
             });
 
-            var mapCanvas = document.createElement("div");
+            const mapCanvas = document.createElement("div");
             mapCanvas.setAttribute("id", "bw-map-canvas");
 
-            var mapContainer = document.createElement("div");
+            const mapContainer = document.createElement("div");
             mapContainer.setAttribute("id", "bw-map-container");
             mapContainer.appendChild(mapCanvas);
 
-            var mapPPContainer = document.createElement("div");
+            const mapPPContainer = document.createElement("div");
             mapPPContainer.setAttribute("id", "bw-pp-container");
 
-            var mapInner = document.createElement("div");
+            const mapInner = document.createElement("div");
             mapInner.setAttribute("id", "bw-map-inner");
             mapInner.appendChild(mapClose);
             mapInner.appendChild(mapContainer);
@@ -81,11 +67,19 @@
             self.mapContainer.setAttribute("id", "bw-map");
             self.mapContainer.appendChild(mapInner);
             document.body.appendChild(self.mapContainer);
+
+            self.map = L.map("bw-map-canvas");
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attributionControl: false,
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoiYXJuYXVkZHV0YW50IiwiYSI6ImNqaTQ4a29lZDAwbjYzd3FnY25mN2ZiMngifQ.zSJIBlY4vIBREcS5MJY47w'
+            }).addTo(self.map);
         },
 
         openMap: function() {
             this.mapContainer.classList.add("bw-modal-show");
-            var offset = window.pageYOffset + (window.innerHeight - this.mapContainer.offsetHeight)/2;
+            let offset = window.pageYOffset + (window.innerHeight - this.mapContainer.offsetHeight)/2;
             if (offset < window.pageYOffset) {
                 offset = window.pageYOffset;
             }
@@ -94,15 +88,14 @@
 
         closeMap: function() {
             this.mapContainer.classList.remove("bw-modal-show");
-            this.infoWindow.close();
             this.clearMarkers();
         },
 
         initSelectedParcelPoint: function() {
-            var selectPointLink = document.querySelector(".bw-select-parcel");
-            var selectParcelPointContent = document.createElement("span");
+            const selectPointLink = document.querySelector(".bw-select-parcel");
+            const selectParcelPointContent = document.createElement("span");
             selectParcelPointContent.setAttribute("class", "bw-parcel-client");
-            var selectParcelPoint = document.createElement("span");
+            const selectParcelPoint = document.createElement("span");
             selectParcelPoint.innerHTML = translations.text.selectedParcelPoint + " ";
             selectParcelPoint.appendChild(selectParcelPointContent);
             selectPointLink.parentNode.insertBefore(selectParcelPoint, selectPointLink.nextSibling);
@@ -110,7 +103,7 @@
         },
 
         getPoints: function() {
-            var self = this;
+            const self = this;
 
             Promise.all([self.getParcelPoints(), self.getRecipient()]).then(function(valArray) {
                 self.addParcelPointMarkers(valArray[0]);
@@ -123,14 +116,14 @@
         },
 
         getParcelPoints: function() {
-            var self = this;
+            const self = this;
             return new Promise(function(resolve, reject) {
-                var carrier = self.getSelectedCarrier();
+                const carrier = self.getSelectedCarrier();
                 if (!carrier) {
                     reject(translations.error.carrierNotFound);
                 }
-                var httpRequest = new XMLHttpRequest();
-                httpRequest.onreadystatechange = function(data) {
+                const httpRequest = new XMLHttpRequest();
+                httpRequest.onreadystatechange = function() {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.response.success === false) {
                             reject(httpRequest.response.data.message);
@@ -150,29 +143,28 @@
         },
 
         addParcelPointMarkers: function(parcelPoints) {
-            var self = this;
-            for (var i = 0; i < parcelPoints.length; i++) {
+            for (let i = 0; i < parcelPoints.length; i++) {
                 parcelPoints[i].index = i;
-                self.addParcelPointMarker(parcelPoints[i]);
+                this.addParcelPointMarker(parcelPoints[i]);
             }
         },
 
         addParcelPointMarker: function(point) {
-            var info ="<div class='bw-marker-popup'><b>"+point.name+'</b><br/>'+
+            let info ="<div class='bw-marker-popup'><b>"+point.name+'</b><br/>'+
                 '<a href="#" class="bw-parcel-point-button" data-code="'+point.code+'" data-name="'+point.name+'" data-operator="'+point.operator+'"><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
-                point.address+', '+point.zipcode+' '+point.city+'<br/>'+"<b>" + translations.text.openingHours +
+                point.address+", "+point.zipcode+" "+point.city+"<br/>"+"<b>" + translations.text.openingHours +
                 "</b><br/>"+'<div class="bw-parcel-point-schedule">';
 
-            for (var i = 0, l = point.schedule.length; i < l; i++) {
-                var day = point.schedule[i];
+            for (let i = 0, l = point.schedule.length; i < l; i++) {
+                const day = point.schedule[i];
 
                 if ((typeof(day.firstPeriodOpeningTime)==="undefined") || (typeof(day.firstPeriodClosingTime)==="undefined") ||
                     (typeof(day.secondPeriodOpeningTime)==="undefined") || (typeof(day.secondPeriodClosingTime)==="undefined")) {
                     continue;
                 }
 
-                var am = day.firstPeriodOpeningTime !== null && day.firstPeriodClosingTime !== null;
-                var pm = day.secondPeriodOpeningTime !== null && day.secondPeriodClosingTime !== null;
+                const am = day.firstPeriodOpeningTime !== null && day.firstPeriodClosingTime !== null;
+                const pm = day.secondPeriodOpeningTime !== null && day.secondPeriodClosingTime !== null;
                 if (am || pm) {
                     info += '<span class="bw-parcel-point-day">'+translations.day[day.weekday]+'</span>';
                     if (am) {
@@ -188,44 +180,38 @@
             }
             info += '</div>';
 
-            var bwMarker = {
-                url: imgDir + "markers/"+(point.index + 1)+".png",
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(13, 37),
-                scaledSize: new google.maps.Size(26, 37)
-            };
+            const popup = L.popup()
+                .setContent(info);
 
-            var latLng = new google.maps.LatLng(parseFloat(point.latitude),parseFloat(point.longitude));
+            const marker = L.marker(
+                [parseFloat(point.latitude), parseFloat(point.longitude)],
+                {
+                    icon: L.icon({
+                        iconUrl: imgDir + "markers/"+(point.index + 1)+".png",
+                        iconSize: [26, 37],
+                        iconAnchor: [13, 37],
+                        popupAnchor: [0, -37],
+                    }),
+                    riseOnHover: true,
+                    title: point.name
+                }
+            ).bindPopup(popup).addTo(this.map);
 
-            var marker = new google.maps.Marker({
-                map: this.map,
-                position: latLng,
-                icon: bwMarker,
-                title: point.name
-            });
             this.markers.push(marker);
-            marker.set("content", info);
-            this.bounds.extend(marker.getPosition());
 
-            this.addMarkerEvent(marker, point.code);
+            this.addRightColMarkerEvent(marker, point.code);
+
+            this.bounds.extend(marker.getLatLng());
         },
 
-        addMarkerEvent: function(marker, code) {
-            var self = this;
-            google.maps.event.addListener(marker, "click", function() {
-                self.infoWindow.close();
-                self.infoWindow.setContent(this.get("content"));
-                self.infoWindow.open(self.map,this);
-            });
-            self.on("body", "click", ".bw-show-info-" + code, function(){
-                self.infoWindow.close();
-                self.infoWindow.setContent(marker.get("content"));
-                self.infoWindow.open(self.map,marker);
+        addRightColMarkerEvent: function(marker, code) {
+            this.on("body", "click", ".bw-show-info-" + code, function(){
+                marker.openPopup();
             });
         },
 
         formatHours: function(time) {
-            var explode = time.split(':');
+            const explode = time.split(':');
             if (explode.length == 3) {
                 time = explode[0]+':'+explode[1];
             }
@@ -234,31 +220,28 @@
 
         getRecipient: function() {
             return new Promise(function(resolve, reject) {
-                var recipientAddressRequest = new XMLHttpRequest();
-                recipientAddressRequest.onreadystatechange = function(data) {
+                const recipientAddressRequest = new XMLHttpRequest();
+                recipientAddressRequest.onreadystatechange = function() {
                     if (recipientAddressRequest.readyState === 4) {
                         if (recipientAddressRequest.response.success === false) {
                             reject(recipientAddressRequest.response.data.message);
                         } else {
-                            var geocoderRequest = new XMLHttpRequest();
-                            geocoderRequest.onreadystatechange = function(data) {
+                            const geocoderRequest = new XMLHttpRequest();
+                            geocoderRequest.onreadystatechange = function() {
                                 if (geocoderRequest.readyState === 4) {
-                                    if (geocoderRequest.response.status === "OK") {
-                                        resolve(geocoderRequest.response.results[0]);
-                                    } else {
-                                        switch (geocoderRequest.response.status) {
-                                            case "OVER_QUERY_LIMIT":
-                                                reject(translations.error.googleQuotaExceeded);
-                                                break;
-
-                                            default:
-                                                reject(translations.error.addressNotFound);
-                                                break;
+                                    if (geocoderRequest.status === 200) {
+                                        if (geocoderRequest.response[0]) {
+                                            resolve(geocoderRequest.response[0]);
+                                        } else {
+                                            reject(translations.error.addressNotFound);
                                         }
+
+                                    } else {
+                                        reject(translations.error.mapServerError);
                                     }
                                 }
                             };
-                            geocoderRequest.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(recipientAddressRequest.response) + "&key=" + googleKey);
+                            geocoderRequest.open("GET", " https://nominatim.openstreetmap.org/search?format=json&" + Object.entries(recipientAddressRequest.response).map(e => e.join('=')).join('&'));
                             geocoderRequest.setRequestHeader(
                                 "Content-Type",
                                 "application/x-www-form-urlencoded"
@@ -279,29 +262,23 @@
         },
 
         addRecipientMarker: function(point) {
-            var self = this;
+            const self = this;
 
-            var bwMarkerRecipient = {
-                url: imgDir + "marker-recipient.png",
-                anchor: new google.maps.Point(13, 37),
-                scaledSize: new google.maps.Size(26, 37)
-            };
+            const marker = L.marker(
+                [parseFloat(point.lat), parseFloat(point.lon)],
+                {
+                    icon: L.icon({
+                        iconUrl: imgDir + "marker-recipient.png",
+                        iconSize: [26, 37],
+                        iconAnchor: [13, 37]
+                    })
+                }
+            ).addTo(self.map);
 
-            var latLng = new google.maps.LatLng(parseFloat(point.geometry.location.lat),parseFloat(point.geometry.location.lng));
-
-            var marker = new google.maps.Marker({
-                map: this.map,
-                position: latLng,
-                icon: bwMarkerRecipient,
-                title: translations.text.yourAddress
-            });
             self.markers.push(marker);
-            self.bounds.extend(marker.getPosition());
 
-            self.map.setCenter(marker.getPosition());
-            google.maps.event.addDomListener(window, "resize", function() {
-                self.map.setCenter(marker.getPosition());
-            });
+            self.map.setView([parseFloat(point.lat), parseFloat(point.lon)], 11);
+            self.bounds.extend(marker.getLatLng());
         },
 
         setMapBounds: function() {
@@ -309,14 +286,13 @@
                 this.map.setZoom(15);
             }
             this.map.fitBounds(this.bounds);
-            google.maps.event.trigger(this.map, "resize");
         },
 
         fillParcelPointPanel: function(parcelPoints) {
-            var html = '';
+            let html = '';
             html += '<table><tbody>';
-            for (var i = 0; i < parcelPoints.length; i++) {
-                var point = parcelPoints[i];
+            for (let i = 0; i < parcelPoints.length; i++) {
+                const point = parcelPoints[i];
                 html += '<tr>';
                 html += '<td><img src="' + imgDir + 'markers/'+(i+1)+'.png" />';
                 html += '<div class="bw-parcel-point-title"><a class="bw-show-info-' + point.code + '">' + point.name + '</a></div><br/>';
@@ -331,14 +307,14 @@
         },
 
         selectPoint: function(code, name, operator) {
-            var self = this;
+            const self = this;
             return new Promise(function(resolve, reject) {
-                var carrier = self.getSelectedCarrier();
+                const carrier = self.getSelectedCarrier();
                 if (!carrier) {
                     reject(translations.error.carrierNotFound);
                 }
-                var setPointRequest = new XMLHttpRequest();
-                setPointRequest.onreadystatechange = function(data) {
+                const setPointRequest = new XMLHttpRequest();
+                setPointRequest.onreadystatechange = function() {
                     if (setPointRequest.readyState === 4) {
                         if (setPointRequest.response.success === false) {
                             reject(setPointRequest.response.data.message);
@@ -359,17 +335,19 @@
         },
 
         clearMarkers: function() {
-            for (var i = 0; i < this.markers.length; i++) {
-                this.markers[i].setMap(null);
+            for (let i = 0; i < this.markers.length; i++) {
+                this.markers[i].remove();
             }
         },
 
         getSelectedCarrier: function() {
-            var carrier;
-            if (jQuery('input[type="hidden"].shipping_method').length === 1) {
-                carrier = jQuery('input[type="hidden"].shipping_method').attr('value');
+            let carrier;
+            const uniqueCarrier = document.querySelector('input[type="hidden"].shipping_method');
+            if (uniqueCarrier) {
+                carrier = uniqueCarrier.getAttribute('value');
             } else {
-                carrier = jQuery('input.shipping_method:checked').attr('value');
+                const selectedCarrier = document.querySelector('input.shipping_method:checked');
+                carrier = selectedCarrier.getAttribute('value');
             }
             return carrier;
         },
@@ -380,15 +358,15 @@
         },
 
         on: function(elSelector, eventName, selector, fn) {
-            var element = document.querySelector(elSelector);
+            const element = document.querySelector(elSelector);
 
             element.addEventListener(eventName, function(event) {
-                var possibleTargets = element.querySelectorAll(selector);
-                var target = event.target;
+                const possibleTargets = element.querySelectorAll(selector);
+                const target = event.target;
 
-                for (var i = 0, l = possibleTargets.length; i < l; i++) {
-                    var el = target;
-                    var p = possibleTargets[i];
+                for (let i = 0, l = possibleTargets.length; i < l; i++) {
+                    let el = target;
+                    const p = possibleTargets[i];
 
                     while(el && el !== element) {
                         if (el === p) {

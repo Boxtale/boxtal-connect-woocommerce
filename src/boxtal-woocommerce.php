@@ -47,7 +47,6 @@ function boxtal_woocommerce_init() {
 	$plugin['version']         = '0.1.0';
 	$plugin['min-wc-version']  = '2.3.0';
 	$plugin['min-php-version'] = '5.3.0';
-	$plugin['google-api-key']  = 'AIzaSyB6bvHDFhRV9PdJuMJhKsby2gmLmQa1R6g';
 	$plugin['translation']     = 'boxtal_woocommerce_init_translation';
 	//phpcs:ignore
 	// $plugin['component']            = 'boxtal_woocommerce_init_admin_components';

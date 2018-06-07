@@ -30,7 +30,6 @@ class Controller {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
-		$this->google_key     = $plugin['google-api-key'];
 	}
 
 	/**
@@ -61,9 +60,9 @@ class Controller {
 
 		$translations = array(
 			'error' => array(
-				'carrierNotFound'     => __( 'Unable to find carrier', 'boxtal-woocommerce' ),
-				'googleQuotaExceeded' => __( 'Google maps API quota exceeded', 'boxtal-woocommerce' ),
-				'addressNotFound'     => __( 'Could not find address', 'boxtal-woocommerce' ),
+				'carrierNotFound' => __( 'Unable to find carrier', 'boxtal-woocommerce' ),
+				'addressNotFound' => __( 'Could not find address', 'boxtal-woocommerce' ),
+				'mapServerError'  => __( 'Could not connect to map server', 'boxtal-woocommerce' ),
 			),
 			'text'  => array(
 				'openingHours'        => __( 'Opening hours', 'boxtal-woocommerce' ),
@@ -82,12 +81,11 @@ class Controller {
 				7 => __( 'sunday', 'boxtal-woocommerce' ),
 			),
 		);
-		wp_enqueue_script( 'bw_gmap', 'https://maps.googleapis.com/maps/api/js?key=' . $this->google_key );
-		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_gmap' ), $this->plugin_version );
+		wp_enqueue_script( 'bw_leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js' );
+		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_leaflet' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
-		wp_localize_script( 'bw_shipping', 'googleKey', $this->google_key );
 	}
 
 	/**
@@ -96,6 +94,7 @@ class Controller {
 	 * @void
 	 */
 	public function parcel_point_styles() {
+		wp_enqueue_style( 'bw_leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css' );
 		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
 	}
 
@@ -167,9 +166,12 @@ class Controller {
 	public function get_recipient_address_callback() {
         // phpcs:ignore
 		header( 'Content-Type: application/json; charset=utf-8' );
-		$recipient_address = WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() . ' '
-			. WC()->customer->get_shipping_postcode() . ' ' . WC()->customer->get_shipping_city() . ' ' . WC()->customer->get_shipping_country();
-		$recipient_address = preg_replace( '/\s+/', ' ', $recipient_address );
+		$recipient_address = array(
+			'street'       => rawurlencode( trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ) ),
+			'city'         => rawurlencode( trim( WC()->customer->get_shipping_city() ) ),
+			'postalcode'   => rawurlencode( trim( WC()->customer->get_shipping_postcode() ) ),
+			'countrycodes' => rawurlencode( strtolower( WC()->customer->get_shipping_country() ) ),
+		);
 		wp_send_json( $recipient_address );
 	}
 
