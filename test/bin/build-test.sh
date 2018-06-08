@@ -3,6 +3,7 @@
 WP_VERSION=${1-latest}
 WC_VERSION=${2-"2.6.14"}
 TRAVIS=${3-false}
+MULTISITE=${4-0}
 
 DB_NAME=boxtal_woocommerce_test
 DB_USER=dbadmin
@@ -10,8 +11,10 @@ DB_PASS=dbpass
 DB_HOST=localhost
 WP_CORE_DIR='/var/www/html'
 UNIT_TESTS_DIR='/tmp/unit-tests'
-E2E_TESTS_DIR='/tmp/e2e-tests'
 WC_DIR='/tmp/woocommerce'
+MULTISITE_PRIMARY_URL='http://localhost'
+MULTISITE_ALTERNATE_URL='http://localhost/alternate'
+wp="php wp-cli.phar"
 
 if [ ${TRAVIS} = "false" ]; then
 	HOME='/home/docker'
@@ -29,11 +32,16 @@ download() {
 
 install_wp() {
     if [ ${TRAVIS} = "false" ]; then
-        activate_plugin
+        if [[ $MULTISITE = "1" ]]; then
+            activate_plugin_multisite
+        else
+            activate_plugin_simple
+        fi
 		return 0
 	fi
 
 	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION 80
+
 	if [[ $RUN_E2E = "1" ]]; then
         gulp css
         gulp js
@@ -45,8 +53,19 @@ install_wp() {
         sudo find /var/www/html -type d -exec chmod 775 {} \;
         sudo find /var/www/html -type f -exec chmod 644 {} \;
         rm -rf $HOME/src/Boxtal/BoxtalPhp
-        activate_plugin
     fi
+
+	if [[ $MULTISITE = "1" ]]; then
+	    $HOME/build/install-multisite.sh
+
+	    if [[ $RUN_E2E = "1" ]]; then
+            activate_plugin_multisite
+	    fi
+	else
+	    if [[ $RUN_E2E = "1" ]]; then
+            activate_plugin_simple
+	    fi
+	fi
 }
 
 install_db() {
@@ -110,10 +129,19 @@ install_unit_tests() {
     sed $ioption "s|localhost|${DB_HOST}|" "$UNIT_TESTS_DIR"/wp-tests-config.php
 }
 
-activate_plugin() {
-    php wp-cli.phar plugin activate boxtal-woocommerce --allow-root --path=/var/www/html
-    php wp-cli.phar option update BW_ACCESS_KEY 'access' --allow-root --path=/var/www/html
-    php wp-cli.phar option update BW_SECRET_KEY 'secret' --allow-root --path=/var/www/html
+activate_plugin_simple() {
+    $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR
+    $wp option update BW_ACCESS_KEY 'access' --allow-root --path=$WP_CORE_DIR
+    $wp option update BW_SECRET_KEY 'secret' --allow-root --path=$WP_CORE_DIR
+}
+
+activate_plugin_multisite() {
+    $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
+    $wp option update BW_ACCESS_KEY 'access' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
+    $wp option update BW_SECRET_KEY 'secret' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
+    $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
+    $wp option update BW_ACCESS_KEY 'access' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
+    $wp option update BW_SECRET_KEY 'secret' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
 }
 
 install_wp
