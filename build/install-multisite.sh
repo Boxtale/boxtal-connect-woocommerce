@@ -19,7 +19,7 @@ deactivate_plugins() {
 }
 
 core_configuration() {
-    $wp core multisite-install --title="$TMPSITETITLE" --admin_user=$TMPSITEADMINLOGIN --admin_password=$TMPSITEADMINPWD --admin_email=$TMPSITEADMINEMAIL --allow-root --path=$WP_CORE_DIR
+    $wp core multisite-convert --title="$TMPSITETITLE" --base=$TMPSITEURL --allow-root --path=$WP_CORE_DIR
     $wp site create --slug=$TMPSITESLUG --allow-root --path=$WP_CORE_DIR
     rm -rf $WP_CORE_DIR/.htaccess
     cp build/multisite-htaccess.txt $WP_CORE_DIR/.htaccess
