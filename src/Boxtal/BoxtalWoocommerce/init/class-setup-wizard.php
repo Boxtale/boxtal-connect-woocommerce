@@ -31,7 +31,7 @@ class Setup_Wizard {
 		if ( ! Auth_Util::is_plugin_paired() ) {
 			Notice_Controller::add_notice( 'setup-wizard' );
 		} else {
-		    Notice_Controller::remove_notice( 'setup-wizard' );
-        }
+			Notice_Controller::remove_notice( 'setup-wizard' );
+		}
 	}
 }
