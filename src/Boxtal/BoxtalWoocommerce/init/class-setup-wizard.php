@@ -30,6 +30,8 @@ class Setup_Wizard {
 	public function run() {
 		if ( ! Auth_Util::is_plugin_paired() ) {
 			Notice_Controller::add_notice( 'setup-wizard' );
-		}
+		} else {
+		    Notice_Controller::remove_notice( 'setup-wizard' );
+        }
 	}
 }

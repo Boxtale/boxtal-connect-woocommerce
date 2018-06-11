@@ -81,7 +81,7 @@ test.describe(
                 assert.eventually.ok( billingDetails.setEmail( 'jon.snow@got.com' ) );
                 assert.eventually.ok( billingDetails.setPhone( '123456789' ) );
                 assert.eventually.ok( billingDetails.selectCountry( 'france', 'France' ) );
-                assert.eventually.ok( billingDetails.setAddress1( 'place de l\'opéra' ) );
+                assert.eventually.ok( billingDetails.setAddress1( '4 boulevard des Capucines' ) );
                 assert.eventually.ok( billingDetails.setCity( 'Paris' ) );
                 assert.eventually.ok( billingDetails.setZip( '75009' ) );
 
@@ -116,7 +116,7 @@ test.describe(
                 assert.eventually.ok( billingDetails.setEmail( 'jon.snow@got.com' ) );
                 assert.eventually.ok( billingDetails.setPhone( '123456789' ) );
                 assert.eventually.ok( billingDetails.selectCountry( 'france', 'France' ) );
-                assert.eventually.ok( billingDetails.setAddress1( 'place de l\'opéra' ) );
+                assert.eventually.ok( billingDetails.setAddress1( '4 boulevard des Capucines' ) );
                 assert.eventually.ok( billingDetails.setCity( 'Paris' ) );
                 assert.eventually.ok( billingDetails.setZip( '75009' ) );
 

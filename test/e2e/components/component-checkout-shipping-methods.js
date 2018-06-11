@@ -27,18 +27,21 @@ export default class ComponentCheckoutShippingMethods extends ComponentCheckout 
     selectParcelPoint() {
         const self = this;
         return self.driver.findElement(PARCEL_POINT_LINK_SELECTOR).then((el) => {
-            return el.click().then( () => {
-                return helper.waitTillPresentAndDisplayed(self.driver, PARCEL_POINT_MAP_SELECTOR).then(
-                    () => {return self.driver.findElement(FIRST_PARCEL_POINT_SELECTOR).then(
-                        (parcelPointButton) => {return parcelPointButton.click().then(
-                            () => {return true;},
-                            () => {return false;}
-                        );},
-                        () => {return false;}
-                    );},
-                    () => {return false;}
-                );
-            }, () => {return false;});
+            return el.click().then(
+                () => {
+                    return helper.waitTillPresentAndDisplayed(self.driver, PARCEL_POINT_MAP_SELECTOR).then(
+                        () => {
+                            return helper.waitTillPresentAndDisplayed(self.driver, FIRST_PARCEL_POINT_SELECTOR).then(
+                                () => {
+                                    return self.driver.findElement(FIRST_PARCEL_POINT_SELECTOR).then(
+                                        (parcelPointButton) => {
+                                            return parcelPointButton.click().then(
+                                                () => {return true;},
+                                                () => {return false;});
+                                        }, () => {return false;});
+                                }, () => {return false;});
+                        }, () => {return false;});
+                }, () => {return false;});
         }, () => {return false;});
     }
 }
