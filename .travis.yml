@@ -44,7 +44,6 @@ before_install:
   - sudo add-apt-repository -y ppa:ondrej/php
   - sudo add-apt-repository -y ppa:ondrej/apache2
   - sudo apt-get update
-  - echo "test"
 
 install:
   - sudo apt-get install apache2 php${TRAVIS_PHP_VERSION} php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
@@ -66,10 +65,12 @@ before_script:
   - bash build/travis.sh
 
 script:
-  - if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then phpunit -v --debug; fi
-  - if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "1" ]]; then phpunit -c phpunit-multisite.xml -v --debug; fi
-  - if [[ $PHPUNIT_VERSION != "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then vendor/bin/phpunit -v --debug; fi
-  - if [[ $PHPUNIT_VERSION != "travis" ]] && [[ $WP_MULTISITE = "1" ]]; then vendor/bin/phpunit -c phpunit-multisite.xml -v --debug; fi
+  - if [[ $PHPUNIT_VERSION == "travis" ]]; then phpunit -v --debug; fi
+  - if [[ $PHPUNIT_VERSION != "travis" ]]; then vendor/bin/phpunit -v --debug; fi
+  #- if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then phpunit -v --debug; fi
+  #- if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "1" ]]; then phpunit -c phpunit-multisite.xml -v --debug; fi
+  #- if [[ $PHPUNIT_VERSION != "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then vendor/bin/phpunit -v --debug; fi
+  #- if [[ $PHPUNIT_VERSION != "travis" ]] && [[ $WP_MULTISITE = "1" ]]; then vendor/bin/phpunit -c phpunit-multisite.xml -v --debug; fi
   - if [[ $RUN_PHPCS = "1" ]]; then bash build/phpcs.sh true; fi
   - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh true $WP_MULTISITE; fi
 
