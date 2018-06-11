@@ -19,10 +19,10 @@ deactivate_plugins() {
 }
 
 core_configuration() {
-    chmod 777 $WP_CORE_DIR/wp-config.php
+    sudo chmod 777 $WP_CORE_DIR/wp-config.php
     $wp core multisite-convert --title="$TMPSITETITLE" --base=$TMPSITEURL --allow-root --path=$WP_CORE_DIR
     $wp site create --slug=$TMPSITESLUG --allow-root --path=$WP_CORE_DIR
-    chmod 644 $WP_CORE_DIR/wp-config.php
+    sudo chmod 644 $WP_CORE_DIR/wp-config.php
     rm -rf $WP_CORE_DIR/.htaccess
     cp build/multisite-htaccess.txt $WP_CORE_DIR/.htaccess
 }
