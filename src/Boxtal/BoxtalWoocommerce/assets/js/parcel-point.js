@@ -68,12 +68,12 @@
             self.mapContainer.appendChild(mapInner);
             document.body.appendChild(self.mapContainer);
 
-            self.map = L.map("bw-map-canvas");
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            self.map = L.map("bw-map-canvas", {
+                crs: L.CRS.EPSG3857
+            });
+            L.tileLayer('http://api.boxtal.org/styles/klokantech-basic/{z}/{x}/{y}.png', {
                 attributionControl: false,
-                maxZoom: 18,
-                id: 'mapbox.streets',
-                accessToken: 'pk.eyJ1IjoiYXJuYXVkZHV0YW50IiwiYSI6ImNqaTQ4a29lZDAwbjYzd3FnY25mN2ZiMngifQ.zSJIBlY4vIBREcS5MJY47w'
+                maxZoom: 18
             }).addTo(self.map);
         },
 
