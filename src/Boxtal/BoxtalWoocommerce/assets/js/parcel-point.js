@@ -71,7 +71,7 @@
             self.map = L.map("bw-map-canvas", {
                 crs: L.CRS.EPSG3857
             });
-            L.tileLayer('http://api.boxtal.org/styles/klokantech-basic/{z}/{x}/{y}.png', {
+            L.tileLayer(mapUrl, {
                 attributionControl: false,
                 maxZoom: 18
             }).addTo(self.map);
@@ -108,7 +108,9 @@
             Promise.all([self.getParcelPoints(), self.getRecipient()]).then(function(valArray) {
                 self.addParcelPointMarkers(valArray[0]);
                 self.fillParcelPointPanel(valArray[0]);
-                self.addRecipientMarker(valArray[1]);
+                if (valArray[1]) {
+                    self.addRecipientMarker(valArray[1]);
+                }
                 self.setMapBounds();
             }).catch(function(err) {
                 self.showError(err);
@@ -222,32 +224,11 @@
             return new Promise(function(resolve, reject) {
                 const recipientAddressRequest = new XMLHttpRequest();
                 recipientAddressRequest.onreadystatechange = function() {
-                    if (recipientAddressRequest.readyState === 4) {
-                        if (recipientAddressRequest.response.success === false) {
-                            reject(recipientAddressRequest.response.data.message);
+                    if (4 === recipientAddressRequest.readyState) {
+                        if (false === recipientAddressRequest.response.success) {
+                            resolve(null);
                         } else {
-                            const geocoderRequest = new XMLHttpRequest();
-                            geocoderRequest.onreadystatechange = function() {
-                                if (geocoderRequest.readyState === 4) {
-                                    if (geocoderRequest.status === 200) {
-                                        if (geocoderRequest.response[0]) {
-                                            resolve(geocoderRequest.response[0]);
-                                        } else {
-                                            reject(translations.error.addressNotFound);
-                                        }
-
-                                    } else {
-                                        reject(translations.error.mapServerError);
-                                    }
-                                }
-                            };
-                            geocoderRequest.open("GET", " https://nominatim.openstreetmap.org/search?format=json&" + Object.entries(recipientAddressRequest.response).map(e => e.join('=')).join('&'));
-                            geocoderRequest.setRequestHeader(
-                                "Content-Type",
-                                "application/x-www-form-urlencoded"
-                            );
-                            geocoderRequest.responseType = "json";
-                            geocoderRequest.send(null);
+                            resolve(recipientAddressRequest.response);
                         }
                     }
                 };

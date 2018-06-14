@@ -105,6 +105,11 @@ class Misc_Util {
 			return false;
 		}
 
+		$session_map_url = WC()->session->get( 'bw_map_url', false );
+		if ( ! $session_map_url ) {
+			return false;
+		}
+
 		return true;
 	}
 

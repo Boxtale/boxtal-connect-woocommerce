@@ -7,6 +7,9 @@
 
 namespace Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point;
 
+use Boxtal\BoxtalPhp\ApiClient;
+use Boxtal\BoxtalPhp\RestClient;
+use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
 
 /**
@@ -30,6 +33,7 @@ class Controller {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
+		$this->map_url        = null;
 	}
 
 	/**
@@ -38,6 +42,7 @@ class Controller {
 	 * @void
 	 */
 	public function run() {
+		add_action( 'woocommerce_before_checkout_form', array( $this, 'get_map_url' ) );
 		add_action( 'woocommerce_after_checkout_form', array( $this, 'parcel_point_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
 		add_action( 'wp_ajax_get_points', array( $this, 'get_points_callback' ) );
@@ -46,6 +51,23 @@ class Controller {
 		add_action( 'wp_ajax_nopriv_set_point', array( $this, 'set_point_callback' ) );
 		add_action( 'wp_ajax_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
 		add_action( 'wp_ajax_nopriv_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
+	}
+
+	/**
+	 * Get map url.
+	 *
+	 * @void
+	 */
+	public function get_map_url() {
+		if ( ! Misc_Util::is_checkout_url() ) {
+			return;
+		}
+
+		$this->map_url = 'http://api.boxtal.org/styles/klokantech-basic/{z}/{x}/{y}.png';
+		if ( WC()->session ) {
+			WC()->session->set( 'bw_map_url', $this->map_url );
+		}
+
 	}
 
 	/**
@@ -86,6 +108,7 @@ class Controller {
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
+		wp_localize_script( 'bw_shipping', 'mapUrl', $this->map_url );
 	}
 
 	/**
@@ -167,12 +190,30 @@ class Controller {
         // phpcs:ignore
 		header( 'Content-Type: application/json; charset=utf-8' );
 		$recipient_address = array(
-			'street'       => rawurlencode( trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ) ),
-			'city'         => rawurlencode( trim( WC()->customer->get_shipping_city() ) ),
-			'postalcode'   => rawurlencode( trim( WC()->customer->get_shipping_postcode() ) ),
-			'countrycodes' => rawurlencode( strtolower( WC()->customer->get_shipping_country() ) ),
+			'street'       => trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ),
+			'city'         => trim( WC()->customer->get_shipping_city() ),
+			'postalcode'   => trim( WC()->customer->get_shipping_postcode() ),
+			'countrycodes' => strtolower( WC()->customer->get_shipping_country() ),
 		);
-		wp_send_json( $recipient_address );
+		$lib               = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
+		$params            = $recipient_address;
+		$params['format']  = 'json';
+		//phpcs:disable
+		$response          = $lib->restClient->request(
+			RestClient::$GET, 'https://nominatim.openstreetmap.org/search', $params, array(
+				'Content-Type' => 'application/x-www-form-urlencoded',
+				'User-Agent'   => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36',
+			)
+		);
+        //phpcs:enable
+		$latlong = json_decode( $response->response );
+		if ( $latlong && isset( $latlong[0]->lat, $latlong[0]->lon ) ) {
+			$recipient_address['lat'] = $latlong[0]->lat;
+			$recipient_address['lon'] = $latlong[0]->lon;
+			wp_send_json( $recipient_address );
+		} else {
+			wp_send_json_error();
+		}
 	}
 
 	/**
