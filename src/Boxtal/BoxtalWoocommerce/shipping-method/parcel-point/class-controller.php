@@ -200,10 +200,14 @@ class Controller {
 		$params['format']  = 'json';
 		//phpcs:disable
 		$response          = $lib->restClient->request(
-			RestClient::$GET, 'https://nominatim.openstreetmap.org/search', $params, array(
+			RestClient::$GET,
+            'https://nominatim.openstreetmap.org/search',
+            $params,
+            array(
 				'Content-Type' => 'application/x-www-form-urlencoded',
 				'User-Agent'   => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36',
-			)
+			),
+            1
 		);
         //phpcs:enable
 		$latlong = json_decode( $response->response );
