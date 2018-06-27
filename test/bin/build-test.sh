@@ -40,7 +40,7 @@ install_wp() {
 		return 0
 	fi
 
-	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION 80
+	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION
 
 	if [[ $RUN_E2E = "1" ]]; then
         gulp css

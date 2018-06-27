@@ -24,11 +24,53 @@ use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 class Notice_Controller {
 
 	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $update = 'update';
+
+	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $setup_wizard = 'setup-wizard';
+
+	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $setup_failure = 'setup-failure';
+
+	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $pairing = 'pairing';
+
+	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $pairing_update = 'pairing-update';
+
+	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $custom = 'custom';
+
+	/**
 	 * Array of notices - name => callback.
 	 *
 	 * @var array
 	 */
-	private static $core_notices = array( 'update', 'setup-wizard', 'pairing', 'pairing-update' );
+	private static $core_notices = array( 'update', 'setup-wizard', 'pairing', 'pairing-update', 'setup-failure' );
 
 	/**
 	 * Construct function.
@@ -48,7 +90,7 @@ class Notice_Controller {
 	 * @void
 	 */
 	public function run() {
-		$notices = self::get_notices();
+		$notices = self::get_notice_instances();
 
 		if ( ! empty( $notices ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'notice_scripts' ) );
@@ -85,12 +127,12 @@ class Notice_Controller {
 	}
 
 	/**
-	 * Get notices.
+	 * Get notice instances.
 	 *
 	 * @return mixed $notices instances of notice.
 	 */
-	public static function get_notices() {
-		$notices          = get_option( 'BW_NOTICES', array() );
+	public static function get_notice_instances() {
+		$notices          = self::get_notice_keys();
 		$notice_instances = array();
 		foreach ( $notices as $key ) {
 			$classname = 'Boxtal\BoxtalWoocommerce\Notice\\';
@@ -119,6 +161,15 @@ class Notice_Controller {
 			}
 		}
 		return $notice_instances;
+	}
+
+	/**
+	 * Get notice keys.
+	 *
+	 * @return array of notice keys.
+	 */
+	public static function get_notice_keys() {
+		return get_option( 'BW_NOTICES', array() );
 	}
 
 	/**
@@ -154,7 +205,7 @@ class Notice_Controller {
 	 * @void
 	 */
 	public static function remove_notice( $key ) {
-		$notices = get_option( 'BW_NOTICES', array() );
+		$notices = self::get_notice_keys();
         // phpcs:ignore
 		if ( ( $index = array_search( $key, $notices, true ) ) !== false ) {
 			unset( $notices[ $index ] );
@@ -165,11 +216,27 @@ class Notice_Controller {
 	/**
 	 * Whether there are active notices.
 	 *
-	 * @void
+	 * @return boolean
 	 */
 	public static function has_notices() {
-		$notices = self::get_notices();
+		$notices = self::get_notice_keys();
 		return ! empty( $notices );
+	}
+
+	/**
+	 * Whether given notice is active.
+	 *
+	 * @param string $notice notice id.
+	 * @return boolean
+	 */
+	public static function has_notice( $notice ) {
+		$notices = self::get_notice_keys();
+		foreach ( $notices as $notice_key ) {
+			if ( $notice === $notice_key ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -207,8 +274,8 @@ class Notice_Controller {
 
 		if ( ! $response->isError() ) {
 			Auth_Util::end_pairing_update();
-			Notice_Controller::remove_notice( 'pairing-update' );
-			Notice_Controller::add_notice( 'pairing', array( 'result' => 1 ) );
+			Notice_Controller::remove_notice( self::$pairing_update );
+			Notice_Controller::add_notice( self::$pairing, array( 'result' => 1 ) );
 			wp_send_json( true );
 		} else {
 			wp_send_json_error( 'pairing validation failed' );

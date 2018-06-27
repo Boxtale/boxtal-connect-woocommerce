@@ -85,7 +85,7 @@ class Environment_Check {
 	 */
 	public function boxtal_woocommerce_display_environment_warning() {
 		Notice_Controller::add_notice(
-			'custom', array(
+			Notice_Controller::$custom, array(
 				'status'  => 'warning',
 				'message' => $this->environment_warning,
 			)

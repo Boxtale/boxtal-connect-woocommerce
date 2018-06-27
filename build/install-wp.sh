@@ -5,14 +5,8 @@ set -ex
 
 WP_VERSION=${1-latest}
 WC_VERSION=${2-3.3.5}
-PORT=${3-80}
 
-if [ $PORT = "80" ]; then
-    TMPSITEURL="http://localhost"
-else
-    TMPSITEURL="http://localhost:$PORT"
-fi
-
+TMPSITEURL="http://localhost"
 TMPSITETITLE="Boxtal Woocommerce test site"
 TMPSITEADMINLOGIN="admin"
 TMPSITEADMINPWD="admin"

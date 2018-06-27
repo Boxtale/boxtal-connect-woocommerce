@@ -49,11 +49,6 @@ class Checkout {
 			}
 
 			if ( WC()->session ) {
-				$session_map_url = WC()->session->get( 'bw_map_url', false );
-				if ( ! $session_map_url ) {
-					return;
-				}
-
 				$session_parcel_point_code     = WC()->session->get( 'bw_parcel_point_code_' . $carrier, false );
 				$session_parcel_point_operator = WC()->session->get( 'bw_parcel_point_operator_' . $carrier, false );
 				if ( ! $session_parcel_point_code || ! $session_parcel_point_operator ) {

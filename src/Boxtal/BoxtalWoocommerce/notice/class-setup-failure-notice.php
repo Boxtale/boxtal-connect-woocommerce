@@ -1,23 +1,25 @@
 <?php
 /**
- * Contains code for the pairing update notice class.
+ * Contains code for the setup failure notice class.
  *
  * @package     Boxtal\BoxtalWoocommerce\Notice
  */
 
 namespace Boxtal\BoxtalWoocommerce\Notice;
 
+use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
+
 /**
- * Pairing update notice class.
+ * Setup failure notice class.
  *
- * Enables pairing update validation.
+ * Setup failure notice used to display setup error.
  *
- * @class       Pairing_Update_Notice
+ * @class       Setup_Failure_Notice
  * @package     Boxtal\BoxtalWoocommerce\Notice
  * @category    Class
  * @author      API Boxtal
  */
-class Pairing_Update_Notice extends Abstract_Notice {
+class Setup_Failure_Notice extends Abstract_Notice {
 
 	/**
 	 * Construct function.
@@ -27,8 +29,8 @@ class Pairing_Update_Notice extends Abstract_Notice {
 	 */
 	public function __construct( $key ) {
 		parent::__construct( $key );
-		$this->type         = 'pairing-update';
+		$this->type         = 'setup-wizard';
 		$this->autodestruct = false;
-		$this->template     = 'html-pairing-update-notice';
+		$this->template     = 'html-setup-failure-notice';
 	}
 }

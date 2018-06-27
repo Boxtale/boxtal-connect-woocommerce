@@ -67,7 +67,7 @@ class Order {
 	/**
 	 * Get Woocommerce orders.
 	 *
-	 * @return WC_Order[] $result
+	 * @return array $result
 	 */
 	public function get_orders() {
 		$result = array();

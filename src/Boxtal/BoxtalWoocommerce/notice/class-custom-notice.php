@@ -46,5 +46,6 @@ class Custom_Notice extends Abstract_Notice {
 		$this->autodestruct = isset( $args['autodestruct'] ) ? $args['autodestruct'] : true;
 		$this->status       = isset( $args['status'] ) ? $args['status'] : 'info';
 		$this->message      = isset( $args['message'] ) ? $args['message'] : '';
+		$this->template     = 'html-custom-notice';
 	}
 }

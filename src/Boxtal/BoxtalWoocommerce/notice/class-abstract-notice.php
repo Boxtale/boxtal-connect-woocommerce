@@ -35,6 +35,13 @@ abstract class Abstract_Notice {
 	public $type;
 
 	/**
+	 * Notice template.
+	 *
+	 * @var string
+	 */
+	public $template;
+
+	/**
 	 * Notice autodestruct.
 	 *
 	 * @var boolean
@@ -59,7 +66,7 @@ abstract class Abstract_Notice {
 	public function render() {
 		$notice = $this;
 		if ( $notice->is_valid() ) {
-			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-' . $this->type . '-notice.php';
+			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $this->template . '.php';
 			if ( $notice->autodestruct ) {
 				$notice->remove();
 			}

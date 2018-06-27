@@ -20,13 +20,6 @@ namespace Boxtal\BoxtalWoocommerce\Notice;
 class Pairing_Notice extends Abstract_Notice {
 
 	/**
-	 * Whether pairing was a success or not.
-	 *
-	 * @var boolean
-	 */
-	protected $result;
-
-	/**
 	 * Construct function.
 	 *
 	 * @param string $key key for notice.
@@ -37,6 +30,6 @@ class Pairing_Notice extends Abstract_Notice {
 		parent::__construct( $key );
 		$this->type         = 'pairing';
 		$this->autodestruct = false;
-		$this->result       = $args['result'];
+		$this->template     = $args['result'] ? 'html-pairing-success-notice' : 'html-pairing-failure-notice';
 	}
 }

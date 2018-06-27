@@ -1,8 +1,7 @@
 ARG PHP_VERSION
 ARG WP_VERSION
 ARG WC_VERSION
-ARG PORT
-FROM 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION-$PORT
+FROM 890731937511.dkr.ecr.eu-west-1.amazonaws.com/boxtal-woocommerce:$PHP_VERSION-$WP_VERSION-$WC_VERSION
 
 USER root
 

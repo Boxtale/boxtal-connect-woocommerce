@@ -42,7 +42,6 @@ class Controller {
 	 * @void
 	 */
 	public function run() {
-		add_action( 'woocommerce_before_checkout_form', array( $this, 'get_map_url' ) );
 		add_action( 'woocommerce_after_checkout_form', array( $this, 'parcel_point_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
 		add_action( 'wp_ajax_get_points', array( $this, 'get_points_callback' ) );
@@ -59,15 +58,7 @@ class Controller {
 	 * @void
 	 */
 	public function get_map_url() {
-		if ( ! Misc_Util::is_checkout_url() ) {
-			return;
-		}
-
-		$this->map_url = 'http://api.boxtal.org/styles/klokantech-basic/{z}/{x}/{y}.png';
-		if ( WC()->session ) {
-			WC()->session->set( 'bw_map_url', $this->map_url );
-		}
-
+		return get_option( 'BW_MAP_URL', '' );
 	}
 
 	/**
@@ -108,7 +99,7 @@ class Controller {
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
-		wp_localize_script( 'bw_shipping', 'mapUrl', $this->map_url );
+		wp_localize_script( 'bw_shipping', 'mapUrl', $this->get_map_url() );
 	}
 
 	/**
@@ -211,7 +202,7 @@ class Controller {
 		);
         //phpcs:enable
 		$latlong = json_decode( $response->response );
-		if ( $latlong && isset( $latlong[0]->lat, $latlong[0]->lon ) ) {
+		if ( $latlong && isset( $latlong[0] ) && property_exists( $latlong[0], 'lat' ) && property_exists( $latlong[0], 'lon' ) ) {
 			$recipient_address['lat'] = $latlong[0]->lat;
 			$recipient_address['lon'] = $latlong[0]->lon;
 			wp_send_json( $recipient_address );

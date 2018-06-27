@@ -45,7 +45,7 @@ function boxtal_woocommerce_init() {
 	$plugin['path']            = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 	$plugin['url']             = plugin_dir_url( __FILE__ );
 	$plugin['version']         = '0.1.0';
-	$plugin['min-wc-version']  = '2.3.0';
+	$plugin['min-wc-version']  = '3.0.0';
 	$plugin['min-php-version'] = '5.3.0';
 	$plugin['translation']     = 'boxtal_woocommerce_init_translation';
 	//phpcs:ignore

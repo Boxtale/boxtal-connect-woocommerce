@@ -22,25 +22,11 @@ use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
 class Setup_Wizard_Notice extends Abstract_Notice {
 
 	/**
-	 * Base connect link.
+	 * Signup link.
 	 *
-	 * @var string $base_connect_link url.
+	 * @var string $signup_link url.
 	 */
-	public $base_connect_link;
-
-	/**
-	 * Connect link.
-	 *
-	 * @var string $connect_link url.
-	 */
-	public $connect_link;
-
-	/**
-	 * Return url.
-	 *
-	 * @var string $return_url.
-	 */
-	public $return_url;
+	public $signup_link;
 
 	/**
 	 * Construct function.
@@ -52,9 +38,8 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 		parent::__construct( $key );
 		$this->type         = 'setup-wizard';
 		$this->autodestruct = false;
-		$this->set_base_connect_link( 'http://localhost:4200/app/connect-shop' );
-		$this->return_url   = get_dashboard_url();
-		$this->connect_link = $this->get_connect_url();
+		$this->signup_link  = $this->get_connect_url();
+		$this->template     = 'html-setup-wizard-notice';
 	}
 
 	/**
@@ -63,7 +48,7 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 	 * @return string connect link
 	 */
 	public function get_connect_url() {
-		$connect_url = $this->base_connect_link;
+		$signup_link = get_option( 'BW_SIGNUP_URL' );
 		$admins      = get_super_admins();
 		if ( is_array( $admins ) && count( $admins ) > 0 ) {
 			$admin_user_login = array_shift( $admins );
@@ -73,8 +58,8 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 			$admin_user_id = 1;
 		}
 
-		$customer     = new \WC_Customer( $admin_user_id );
-		$params       = array(
+		$customer = new \WC_Customer( $admin_user_id );
+		$params   = array(
 			'firstName'   => Customer_Util::get_first_name( $customer ),
 			'lastName'    => Customer_Util::get_last_name( $customer ),
 			'email'       => Customer_Util::get_email( $customer ),
@@ -85,31 +70,9 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 			'state'       => Customer_Util::get_billing_state( $customer ),
 			'country'     => Customer_Util::get_billing_country( $customer ),
 			'shopUrl'     => get_option( 'siteurl' ),
-			'returnUrl'   => $this->return_url,
+			'returnUrl'   => get_dashboard_url(),
 			'connectType' => 'woocommerce',
-			'locale'      => get_locale(),
 		);
-		$connect_url .= '?' . http_build_query( $params );
-		return $connect_url;
-	}
-
-	/**
-	 * Build connect link.
-	 *
-	 * @param string $url base connect link.
-	 * @void
-	 */
-	public function set_base_connect_link( $url ) {
-		$this->base_connect_link = $url;
-	}
-
-	/**
-	 * Set return url.
-	 *
-	 * @param string $url new return url.
-	 * @void
-	 */
-	public function set_return_url( $url ) {
-		$this->return_url = $url;
+		return $signup_link . '?' . http_build_query( $params );
 	}
 }
