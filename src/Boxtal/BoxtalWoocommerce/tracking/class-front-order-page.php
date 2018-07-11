@@ -63,9 +63,11 @@ class Front_Order_Page {
 		wp_localize_script( 'bw_front_tracking', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 
 		$translations = array(
-			'order_sent_in_1_shipment'  => __( 'Your order has been sent in 1 shipment', 'boxtal-woocommerce' ),
+			'order_sent_in_1_shipment'  => __( 'Your order has been sent in 1 shipment.', 'boxtal-woocommerce' ),
 			/* translators: 1) int number of shipments */
-			'order_sent_in_n_shipments' => __( 'Your order has been sent in %s shipments', 'boxtal-woocommerce' ),
+			'order_sent_in_n_shipments' => __( 'Your order has been sent in %s shipments.', 'boxtal-woocommerce' ),
+			'shipment_ref' => __( 'Shipment reference %s', 'boxtal-woocommerce' ),
+			'no_tracking_event_for_shipment' => __( 'No tracking event for this shipment yet.', 'boxtal-woocommerce' ),
 		);
 		wp_localize_script( 'bw_front_tracking', 'translations', $translations );
 	}

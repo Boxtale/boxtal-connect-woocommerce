@@ -41,15 +41,30 @@
         },
 
         updateTrackingBlock: function(target, carriers) {
-            console.log(carriers);
-
             let block = "";
             if (1 === carriers.length) {
                 block = "<p>" + translations.order_sent_in_1_shipment + "</p>";
             } else {
-                block = "<p>" + translations.order_sent_in_n_shipments + "</p>";
+                block = "<p>" + translations.order_sent_in_n_shipments.replace('%s', carriers.length) + "</p>";
             }
-            target.innerHTML(block);
+            for (let i = 0; i < carriers.length; i++) {
+                block += this.buildShipmentTracking(carriers[i]);
+            }
+            target.innerHTML = block;
+        },
+
+        buildShipmentTracking: function(shipment) {
+            let block = "";
+            block += "<h4>" + translations.shipment_ref.replace("%s", "<a href='"+shipment.tracking_url+"' target='_blank'>"+shipment.reference+"</a>") + "</h4>";
+            if (0 === shipment.tracking_events.length) {
+                block += "<p>" + translations.no_tracking_event_for_shipment + "</p>";
+            } else {
+                for (let i = 0; i < shipment.tracking_events.length; i++) {
+                    const trackingEvent = shipment.tracking_events[i];
+                    block += "<p>" + trackingEvent.date + " " + trackingEvent.message + "</p>";
+                }
+            }
+            return block;
         },
 
         on: function(elSelector, eventName, selector, fn) {

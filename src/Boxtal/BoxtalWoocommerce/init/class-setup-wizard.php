@@ -46,7 +46,7 @@ class Setup_Wizard {
             //phpcs:enable
 
 			if ( ! $response->isError() ) {
-				$res = json_decode( $response->response );
+				$res = $response->response;
 				if ( property_exists( $res, 'mapsEndpointUrl' ) && property_exists( $res, 'signupPageUrl' ) ) {
                     //phpcs:ignore
                     update_option( 'BW_MAP_URL', $res->mapsEndpointUrl );

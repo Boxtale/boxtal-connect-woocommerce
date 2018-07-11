@@ -93,6 +93,7 @@ class Controller {
 			foreach ( $shipments as $shipment ) {
 				$tracking[] = array(
 					'reference'       => $shipment['carrier_reference'],
+					'tracking_url'       => $shipment['carrier_tracking_url'],
 					'tracking_events' => $this->get_carrier_tracking( $shipment['carrier_reference'] ),
 				);
 			}
