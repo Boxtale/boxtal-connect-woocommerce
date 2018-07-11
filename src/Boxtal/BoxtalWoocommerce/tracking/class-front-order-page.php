@@ -39,7 +39,7 @@ class Front_Order_Page {
 	 * @void
 	 */
 	public function run() {
-		add_filter( 'woocommerce_order_details_after_order_table', array( $this, 'add_tracking_to_order_page' ), 10, 2 );
+		add_filter( 'woocommerce_order_details_after_order_table', array( $this, 'add_tracking_to_front_order_page' ), 10, 2 );
 	}
 
 	/**
@@ -48,11 +48,15 @@ class Front_Order_Page {
 	 * @param \WC_Order $order woocommerce order.
 	 * @void
 	 */
-	public function add_tracking_to_order_page( $order ) {
-        $controller = new Controller(array('url' => $this->plugin_url, 'version' => $this->plugin_version));
-        $controller->tracking_scripts( Order_Util::get_id( $order ) );
-        $controller->tracking_styles();
-        $hideTitle = false;
-		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-order-tracking.php';
+	public function add_tracking_to_front_order_page( $order ) {
+		$controller = new Controller(
+			array(
+				'url'     => $this->plugin_url,
+				'version' => $this->plugin_version,
+			)
+		);
+		$controller->tracking_styles();
+		$tracking = $controller->get_order_tracking( Order_Util::get_id( $order ) );
+		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-front-order-tracking.php';
 	}
 }

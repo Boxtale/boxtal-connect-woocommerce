@@ -297,12 +297,12 @@ function boxtal_woocommerce_front_order_page( $plugin ) {
  * @return Admin_Order_Page $object static Admin_Order_Page instance.
  */
 function boxtal_woocommerce_admin_order_page( $plugin ) {
-    static $object;
+	static $object;
 
-    if ( null !== $object ) {
-        return $object;
-    }
+	if ( null !== $object ) {
+		return $object;
+	}
 
-    $object = new Admin_Order_Page( $plugin );
-    return $object;
+	$object = new Admin_Order_Page( $plugin );
+	return $object;
 }
