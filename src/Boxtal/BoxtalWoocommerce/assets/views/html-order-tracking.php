@@ -11,7 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div class="bw-order-tracking">
-	<h2><?php esc_html_e( 'Order tracking', 'boxtal-woocommerce' ); ?></h2>
+    <?php if(true !== $hideTitle): ?>
+	    <h2><?php esc_html_e( 'Order tracking', 'boxtal-woocommerce' ); ?></h2>
+    <?php endif; ?>
 
 	<div class="bw-loading">
 		<div class="bw-loader"></div>

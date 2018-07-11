@@ -25,6 +25,7 @@ use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Checkout;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Label_Override;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Settings_Override;
+use Boxtal\BoxtalWoocommerce\Tracking\Admin_Order_Page;
 use Boxtal\BoxtalWoocommerce\Tracking\Front_Order_Page;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
@@ -57,6 +58,7 @@ function boxtal_woocommerce_init() {
 	if ( Auth_Util::can_use_plugin() ) {
 		$plugin['tracking-controller']               = 'boxtal_woocommerce_tracking_controller';
 		$plugin['front-order-page']                  = 'boxtal_woocommerce_front_order_page';
+		$plugin['admin-order-page']                  = 'boxtal_woocommerce_admin_order_page';
 		$plugin['rest-controller-order']             = 'boxtal_woocommerce_rest_controller_order';
 		$plugin['shipping-method-settings-override'] = 'boxtal_woocommerce_shipping_method_settings_override';
 		$plugin['parcel-point-label-override']       = 'boxtal_woocommerce_parcel_point_label_override';
@@ -275,7 +277,7 @@ function boxtal_woocommerce_tracking_controller( $plugin ) {
  * Front order page.
  *
  * @param array $plugin plugin array.
- * @return Translation $object static translation instance.
+ * @return Front_Order_Page $object static Front_Order_Page instance.
  */
 function boxtal_woocommerce_front_order_page( $plugin ) {
 	static $object;
@@ -286,4 +288,21 @@ function boxtal_woocommerce_front_order_page( $plugin ) {
 
 	$object = new Front_Order_Page( $plugin );
 	return $object;
+}
+
+/**
+ * Admin order page.
+ *
+ * @param array $plugin plugin array.
+ * @return Admin_Order_Page $object static Admin_Order_Page instance.
+ */
+function boxtal_woocommerce_admin_order_page( $plugin ) {
+    static $object;
+
+    if ( null !== $object ) {
+        return $object;
+    }
+
+    $object = new Admin_Order_Page( $plugin );
+    return $object;
 }

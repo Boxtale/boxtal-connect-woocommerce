@@ -145,4 +145,39 @@ class Controller {
 			),
 		);
 	}
+
+    /**
+     * Enqueue tracking scripts
+     *
+     * @param string $order_id order id.
+     * @void
+     */
+    public function tracking_scripts( $order_id = null ) {
+        wp_enqueue_script( 'bw_front_tracking', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/tracking.min.js', array(), $this->plugin_version );
+        if ( null !== $order_id ) {
+            wp_localize_script( 'bw_front_tracking', 'orderId', '' . $order_id );
+        } else {
+            $order = Order_Util::admin_get_order();
+            wp_localize_script( 'bw_front_tracking', 'orderId', Order_Util::get_id( $order ) );
+        }
+        wp_localize_script( 'bw_front_tracking', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+
+        $translations = array(
+            'order_sent_in_1_shipment'  => __( 'Your order has been sent in 1 shipment.', 'boxtal-woocommerce' ),
+            /* translators: 1) int number of shipments */
+            'order_sent_in_n_shipments' => __( 'Your order has been sent in %s shipments.', 'boxtal-woocommerce' ),
+            'shipment_ref' => __( 'Shipment reference %s', 'boxtal-woocommerce' ),
+            'no_tracking_event_for_shipment' => __( 'No tracking event for this shipment yet.', 'boxtal-woocommerce' ),
+        );
+        wp_localize_script( 'bw_front_tracking', 'translations', $translations );
+    }
+
+    /**
+     * Enqueue tracking styles
+     *
+     * @void
+     */
+    public function tracking_styles() {
+        wp_enqueue_style( 'bw_front_tracking', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/tracking.css', array(), $this->plugin_version );
+    }
 }
