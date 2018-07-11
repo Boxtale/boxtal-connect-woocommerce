@@ -101,22 +101,88 @@ class Auth_Util {
 	}
 
 	/**
-	 * Request body decryption.
+	 * Request body encryption.
 	 *
-	 * @param mixed $body encrypted body.
-	 * @return mixed
+	 * @param mixed $body body.
+	 * @return string
 	 */
 	public static function encrypt_body( $body ) {
+		$key = self::get_random_key();
+		if ( null === $key ) {
+			return null;
+		}
+
+		return wp_json_encode(
+			array(
+				'encryptedKey'  => Misc_Util::base64_or_null( self::encrypt_public_key( $key ) ),
+				'encryptedData' => Misc_Util::base64_or_null( self::encrypt_rc4( ( is_array( $body ) ? wp_json_encode( $body ) : $body ), $key ) ),
+			)
+		);
+	}
+
+	/**
+	 * Get random encryption key.
+	 *
+	 * @return array bytes array
+	 */
+	public static function get_random_key() {
+        //phpcs:ignore
+        $random_key = openssl_random_pseudo_bytes(200);
+		if ( false === $random_key ) {
+			return null;
+		}
+		return bin2hex( $random_key );
+	}
+
+	/**
+	 * Encrypt with public key.
+	 *
+	 * @param string $str string to encrypt.
+	 * @return array bytes array
+	 */
+	public static function encrypt_public_key( $str ) {
         // phpcs:ignore
         $public_key = file_get_contents(realpath(plugin_dir_path(__DIR__)) . DIRECTORY_SEPARATOR . 'resource' . DIRECTORY_SEPARATOR . 'publickey');
 		$encrypted  = '';
-		if ( is_array( $body ) ) {
-			$body = wp_json_encode( $body );
-		}
-		if ( openssl_public_encrypt( $body, $encrypted, $public_key ) ) {
-			return base64_encode( $encrypted );
+		if ( openssl_public_encrypt( $str, $encrypted, $public_key ) ) {
+			return $encrypted;
 		}
 		return null;
+	}
+
+	/**
+	 * RC4 symmetric cipher encryption/decryption
+	 *
+	 * @param string $str string to be encrypted/decrypted.
+	 * @param array  $key secret key for encryption/decryption.
+	 * @return array bytes array
+	 */
+	public static function encrypt_rc4( $str, $key ) {
+		$s = array();
+		for ( $i = 0; $i < 256; $i++ ) {
+			$s[ $i ] = $i;
+		}
+		$j = 0;
+		for ( $i = 0; $i < 256; $i++ ) {
+			$j       = ( $j + $s[ $i ] + ord( $key[ $i % strlen( $key ) ] ) ) % 256;
+			$x       = $s[ $i ];
+			$s[ $i ] = $s[ $j ];
+			$s[ $j ] = $x;
+		}
+		$i      = 0;
+		$j      = 0;
+		$res    = '';
+		$length = strlen( $str );
+		for ( $y = 0; $y < $length; $y++ ) {
+		    //phpcs:ignore
+			$i       = ( $i + 1 ) % 256;
+			$j       = ( $j + $s[ $i ] ) % 256;
+			$x       = $s[ $i ];
+			$s[ $i ] = $s[ $j ];
+			$s[ $j ] = $x;
+			$res    .= $str[ $y ] ^ chr( $s[ ( $s[ $i ] + $s[ $j ] ) % 256 ] );
+		}
+		return $res;
 	}
 
 	/**

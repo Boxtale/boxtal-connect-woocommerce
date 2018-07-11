@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point;
 
 use Boxtal\BoxtalPhp\ApiClient;
+use Boxtal\BoxtalPhp\ApiResponse;
 use Boxtal\BoxtalPhp\RestClient;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
@@ -67,7 +68,7 @@ class Controller {
 	 * @void
 	 */
 	public function parcel_point_scripts() {
-		if ( ! Misc_Util::is_checkout_url() ) {
+		if ( ! Misc_Util::is_checkout_page() ) {
 			return;
 		}
 
@@ -85,13 +86,13 @@ class Controller {
 				'selectedParcelPoint' => __( 'Selected:', 'boxtal-woocommerce' ),
 			),
 			'day'   => array(
-				1 => __( 'monday', 'boxtal-woocommerce' ),
-				2 => __( 'tuesday', 'boxtal-woocommerce' ),
-				3 => __( 'wednesday', 'boxtal-woocommerce' ),
-				4 => __( 'thursday', 'boxtal-woocommerce' ),
-				5 => __( 'friday', 'boxtal-woocommerce' ),
-				6 => __( 'saturday', 'boxtal-woocommerce' ),
-				7 => __( 'sunday', 'boxtal-woocommerce' ),
+				'MONDAY'    => __( 'monday', 'boxtal-woocommerce' ),
+				'TUESDAY'   => __( 'tuesday', 'boxtal-woocommerce' ),
+				'WEDNESDAY' => __( 'wednesday', 'boxtal-woocommerce' ),
+				'THURSDAY'  => __( 'thursday', 'boxtal-woocommerce' ),
+				'FRIDAY'    => __( 'friday', 'boxtal-woocommerce' ),
+				'SATURDAY'  => __( 'saturday', 'boxtal-woocommerce' ),
+				'SUNDAY'    => __( 'sunday', 'boxtal-woocommerce' ),
 			),
 		);
 		wp_enqueue_script( 'bw_leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js' );
@@ -133,13 +134,18 @@ class Controller {
 			wp_send_json_error( array( 'message' => __( 'No relay operators were defined for this shipping method', 'boxtal-woocommerce' ) ) );
 		}
 
-		$mock_parcel_points = $this->get_mock_points();
+		$address  = $this->get_recipient_address();
+		$response = $this->get_points( $address, $settings['bw_parcel_point_operators'] );
 
-		if ( empty( $mock_parcel_points ) ) {
+		if ( $response->isError() ) {
+			wp_send_json_error( array( 'message' => __( 'Something went wrong, could not retrieve parcel points', 'boxtal-woocommerce' ) ) );
+		}
+
+		if ( ! ( is_object( $response->response ) && property_exists( $response->response, 'parcelPoints' ) && ! empty( $response->response->parcelPoints ) ) ) {
 			wp_send_json_error( array( 'message' => __( 'Could not find any parcel point for this address', 'boxtal-woocommerce' ) ) );
 		}
 
-		wp_send_json( $mock_parcel_points );
+		wp_send_json( $response->response );
 	}
 
 	/**
@@ -150,7 +156,7 @@ class Controller {
 	public function set_point_callback() {
 		header( 'Content-Type: application/json; charset=utf-8' );
         // phpcs:ignore
-        if ( ! isset( $_REQUEST['carrier'], $_REQUEST['operator'], $_REQUEST['code'], $_REQUEST['name'] ) ) {
+        if ( ! isset( $_REQUEST['carrier'], $_REQUEST['operator'], $_REQUEST['code'], $_REQUEST['label'] ) ) {
 			wp_send_json_error( array( 'message' => 'could not set point' ) );
 		}
         // phpcs:ignore
@@ -160,11 +166,11 @@ class Controller {
         // phpcs:ignore
         $code     = sanitize_text_field( wp_unslash( $_REQUEST['code'] ) );
         // phpcs:ignore
-        $name     = sanitize_text_field( wp_unslash( $_REQUEST['name'] ) );
+        $label     = sanitize_text_field( wp_unslash( $_REQUEST['label'] ) );
 		if ( WC()->session ) {
 			WC()->session->set( 'bw_parcel_point_code_' . $carrier, $code );
 			WC()->session->set( 'bw_parcel_point_operator_' . $carrier, $operator );
-			WC()->session->set( 'bw_parcel_point_name_' . $carrier, $name );
+			WC()->session->set( 'bw_parcel_point_name_' . $carrier, $label );
 		} else {
 			wp_send_json_error( array( 'message' => 'could not set point. Woocommerce sessions are not enabled!' ) );
 		}
@@ -173,342 +179,28 @@ class Controller {
 	}
 
 	/**
-	 * Get recipient address callback.
+	 * Get recipient address.
 	 *
-	 * @void
+	 * @return array recipient address
 	 */
-	public function get_recipient_address_callback() {
-        // phpcs:ignore
-		header( 'Content-Type: application/json; charset=utf-8' );
-		$recipient_address = array(
-			'street'       => trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ),
-			'city'         => trim( WC()->customer->get_shipping_city() ),
-			'postalcode'   => trim( WC()->customer->get_shipping_postcode() ),
-			'countrycodes' => strtolower( WC()->customer->get_shipping_country() ),
+	public function get_recipient_address() {
+		return array(
+			'street'   => trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ),
+			'city'     => trim( WC()->customer->get_shipping_city() ),
+			'postcode' => trim( WC()->customer->get_shipping_postcode() ),
+			'country'  => strtolower( WC()->customer->get_shipping_country() ),
 		);
-		$lib               = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
-		$params            = $recipient_address;
-		$params['format']  = 'json';
-		//phpcs:disable
-		$response          = $lib->restClient->request(
-			RestClient::$GET,
-            'https://nominatim.openstreetmap.org/search',
-            $params,
-            array(
-				'Content-Type' => 'application/x-www-form-urlencoded',
-				'User-Agent'   => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36',
-			),
-            1
-		);
-        //phpcs:enable
-		$latlong = json_decode( $response->response );
-		if ( $latlong && isset( $latlong[0] ) && property_exists( $latlong[0], 'lat' ) && property_exists( $latlong[0], 'lon' ) ) {
-			$recipient_address['lat'] = $latlong[0]->lat;
-			$recipient_address['lon'] = $latlong[0]->lon;
-			wp_send_json( $recipient_address );
-		} else {
-			wp_send_json_error();
-		}
 	}
 
 	/**
-	 * Get mock parcel points.
+	 * Get parcel points.
 	 *
-	 * @return array $mock_parcel_points mock parcel points
+	 * @param array $address recipient address.
+	 * @param array $operators parcel point operators.
+	 * @return ApiResponse $parcel_points mock parcel points
 	 */
-	private function get_mock_points() {
-		$mock_schedule = array(
-			array(
-				'weekday'                 => 1,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '21:00:00',
-				'secondPeriodOpeningTime' => null,
-				'secondPeriodClosingTime' => null,
-			),
-			array(
-				'weekday'                 => 2,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '21:00:00',
-				'secondPeriodOpeningTime' => null,
-				'secondPeriodClosingTime' => null,
-			),
-			array(
-				'weekday'                 => 3,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '21:00:00',
-				'secondPeriodOpeningTime' => null,
-				'secondPeriodClosingTime' => null,
-			),
-			array(
-				'weekday'                 => 4,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '21:00:00',
-				'secondPeriodOpeningTime' => null,
-				'secondPeriodClosingTime' => null,
-			),
-			array(
-				'weekday'                 => 5,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '21:00:00',
-				'secondPeriodOpeningTime' => null,
-				'secondPeriodClosingTime' => null,
-			),
-			array(
-				'weekday'                 => 6,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '21:00:00',
-				'secondPeriodOpeningTime' => '14:00:00',
-				'secondPeriodClosingTime' => '17:00:00',
-			),
-			array(
-				'weekday'                 => 7,
-				'firstPeriodOpeningTime'  => '10:00:00',
-				'firstPeriodClosingTime'  => '12:00:00',
-				'secondPeriodOpeningTime' => '14:00:00',
-				'secondPeriodClosingTime' => '17:00:00',
-			),
-		);
-		return array(
-			array(
-				'code'      => '058017',
-				'name'      => 'SARL PARADIS',
-				'address'   => '75 BOULEVARD MAGENTA',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8754406',
-				'longitude' => '02.3564377',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '077445',
-				'name'      => 'GLADYS',
-				'address'   => '98 RUE DU FBG POISSONNIERE',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8782653',
-				'longitude' => '02.3494753',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '043290',
-				'name'      => 'PRESSING/BLANCHISSERIE',
-				'address'   => '3 PASSAGE DES PETITES ECURIES',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8731282',
-				'longitude' => '02.3520973',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '022063',
-				'name'      => 'UNIVERS LINE',
-				'address'   => '101 RUE LA FAYETTE',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8776200',
-				'longitude' => '02.3501408',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '001107',
-				'name'      => '75 MULTIMEDIA',
-				'address'   => '29 BOULEVARD DE MAGENTA',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8711706',
-				'longitude' => '02.3602504',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '001228',
-				'name'      => 'EUROPE MULTI SERVICES',
-				'address'   => '157 FBG SAINT DENIS',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8789755',
-				'longitude' => '02.3567096',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '002939',
-				'name'      => 'AMS BATIMENT SERVICES',
-				'address'   => '57 RUE DE PARADIS',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8756056',
-				'longitude' => '02.3486373',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '040797',
-				'name'      => 'ITELNET',
-				'address'   => '70 RUE FAUBOURG POISSONNIERE',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8761143',
-				'longitude' => '02.3486736',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '001765',
-				'name'      => 'GSM SOLUTIONS',
-				'address'   => '185-187 RUE SAINT MAUR',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8711206',
-				'longitude' => '02.3723242',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => '000512',
-				'name'      => 'MA TELECOM',
-				'address'   => '24 RUE DU BUISSON SAINT LOUIS',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8727068',
-				'longitude' => '02.3744086',
-				'operator'  => 'MONR',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1284',
-				'name'      => 'MEGNA',
-				'address'   => '71 RUE DU FAUBOURG SAINT MARTIN',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8722',
-				'longitude' => '2.35724',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1177',
-				'name'      => 'OPTISOINS',
-				'address'   => '77 RUE DU FAUBOURG SAINT DENIS',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8731',
-				'longitude' => '2.35442',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1219',
-				'name'      => 'KM RALPH BEAUTE',
-				'address'   => '7 PASSAGE DU PRADO',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8701',
-				'longitude' => '2.35366',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1186',
-				'name'      => 'MINI MARKET',
-				'address'   => '101 RUE DU FAUBOURG SAINT MARTIN',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8686',
-				'longitude' => '2.35825',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1045',
-				'name'      => 'ALIMENTATION GENERALE',
-				'address'   => '7-9 RUE DE LANCRY',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8691',
-				'longitude' => '2.36001',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1119',
-				'name'      => 'ARMOZO',
-				'address'   => '60 RUE MESLAY',
-				'city'      => 'PARIS',
-				'zipcode'   => '75003',
-				'country'   => 'FR',
-				'latitude'  => '48.8686',
-				'longitude' => '2.35579',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1160',
-				'name'      => 'INFORMATIQUE',
-				'address'   => '34 RUE DU FAUBOURG SAINT MARTIN',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8684',
-				'longitude' => '2.35903',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1111',
-				'name'      => 'PRODUITS EXOTIQUES',
-				'address'   => '56 RUE NOTRE DAME DE NAZARETH',
-				'city'      => 'PARIS',
-				'zipcode'   => '75003',
-				'country'   => 'FR',
-				'latitude'  => '48.8677',
-				'longitude' => '2.35726',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C1165',
-				'name'      => 'PARADIS INFORMATIQUE',
-				'address'   => '75 BOULEVARD DE MAGENTA',
-				'city'      => 'PARIS',
-				'zipcode'   => '75010',
-				'country'   => 'FR',
-				'latitude'  => '48.8757',
-				'longitude' => '2.35647',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-			array(
-				'code'      => 'C10A3',
-				'name'      => 'POINT FORT FICHET',
-				'address'   => '17 RUE DES FONTAINES DU TEMPLE',
-				'city'      => 'PARIS',
-				'zipcode'   => '75003',
-				'country'   => 'FR',
-				'latitude'  => '48.8657',
-				'longitude' => '2.35871',
-				'operator'  => 'SOGP',
-				'schedule'  => $mock_schedule,
-			),
-		);
+	private function get_points( $address, $operators ) {
+		$lib = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
+		return $lib->getParcelPoints( $address, $operators );
 	}
 }

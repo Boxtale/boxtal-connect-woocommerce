@@ -23,9 +23,9 @@ use Boxtal\BoxtalWoocommerce\Plugin;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Checkout;
-use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Controller;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Label_Override;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Settings_Override;
+use Boxtal\BoxtalWoocommerce\Tracking\Front_Order_Page;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
@@ -55,6 +55,8 @@ function boxtal_woocommerce_init() {
 	$plugin['setup-wizard']         = 'boxtal_woocommerce_setup_wizard';
 	$plugin['rest-controller-shop'] = 'boxtal_woocommerce_rest_controller_shop';
 	if ( Auth_Util::can_use_plugin() ) {
+		$plugin['tracking-controller']               = 'boxtal_woocommerce_tracking_controller';
+		$plugin['front-order-page']                  = 'boxtal_woocommerce_front_order_page';
 		$plugin['rest-controller-order']             = 'boxtal_woocommerce_rest_controller_order';
 		$plugin['shipping-method-settings-override'] = 'boxtal_woocommerce_shipping_method_settings_override';
 		$plugin['parcel-point-label-override']       = 'boxtal_woocommerce_parcel_point_label_override';
@@ -231,7 +233,7 @@ function boxtal_woocommerce_parcel_point_controller( $plugin ) {
 		return $object;
 	}
 
-	$object = new Controller( $plugin );
+	$object = new Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Controller( $plugin );
 	return $object;
 }
 
@@ -249,5 +251,39 @@ function boxtal_woocommerce_parcel_point_checkout( $plugin ) {
 	}
 
 	$object = new Checkout( $plugin );
+	return $object;
+}
+
+/**
+ * Tracking controller.
+ *
+ * @param array $plugin plugin array.
+ * @return Controller $object static controller instance.
+ */
+function boxtal_woocommerce_tracking_controller( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Boxtal\BoxtalWoocommerce\Tracking\Controller( $plugin );
+	return $object;
+}
+
+/**
+ * Front order page.
+ *
+ * @param array $plugin plugin array.
+ * @return Translation $object static translation instance.
+ */
+function boxtal_woocommerce_front_order_page( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Front_Order_Page( $plugin );
 	return $object;
 }

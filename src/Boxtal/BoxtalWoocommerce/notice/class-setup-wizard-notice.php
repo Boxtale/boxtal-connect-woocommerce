@@ -38,16 +38,16 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 		parent::__construct( $key );
 		$this->type         = 'setup-wizard';
 		$this->autodestruct = false;
-		$this->signup_link  = $this->get_connect_url();
+		$this->signup_link  = $this->get_signup_url();
 		$this->template     = 'html-setup-wizard-notice';
 	}
 
 	/**
-	 * Build connect link.
+	 * Build signup link.
 	 *
-	 * @return string connect link
+	 * @return string signup link
 	 */
-	public function get_connect_url() {
+	public function get_signup_url() {
 		$signup_link = get_option( 'BW_SIGNUP_URL' );
 		$admins      = get_super_admins();
 		if ( is_array( $admins ) && count( $admins ) > 0 ) {
@@ -60,18 +60,9 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 
 		$customer = new \WC_Customer( $admin_user_id );
 		$params   = array(
-			'firstName'   => Customer_Util::get_first_name( $customer ),
-			'lastName'    => Customer_Util::get_last_name( $customer ),
-			'email'       => Customer_Util::get_email( $customer ),
-			'phone'       => Customer_Util::get_billing_phone( $customer ),
-			'address'     => trim( Customer_Util::get_billing_address_1( $customer ) . ' ' . Customer_Util::get_billing_address_2( $customer ) ),
-			'city'        => Customer_Util::get_billing_city( $customer ),
-			'postcode'    => Customer_Util::get_billing_postcode( $customer ),
-			'state'       => Customer_Util::get_billing_state( $customer ),
-			'country'     => Customer_Util::get_billing_country( $customer ),
-			'shopUrl'     => get_option( 'siteurl' ),
-			'returnUrl'   => get_dashboard_url(),
-			'connectType' => 'woocommerce',
+			'email'    => Customer_Util::get_email( $customer ),
+			'shopUrl'  => get_option( 'siteurl' ),
+			'shopType' => 'woocommerce',
 		);
 		return $signup_link . '?' . http_build_query( $params );
 	}

@@ -22,7 +22,7 @@ class Order_Util {
 	/**
 	 * Add product to WC order.
 	 *
-	 * @param WC_Order          $order woocommerce order.
+	 * @param \WC_Order         $order woocommerce order.
 	 * @param WC_Product_Simple $product woocommerce product.
 	 * @param integer           $quantity quantity.
 	 * @void
@@ -46,9 +46,9 @@ class Order_Util {
 	}
 
 	/**
-	 * Get shipping first name of WC order.
+	 * Get id of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $id order id
 	 */
 	public static function get_id( $order ) {
@@ -61,7 +61,7 @@ class Order_Util {
 	/**
 	 * Get shipping first name of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $firstname order shipping first name
 	 */
 	public static function get_shipping_first_name( $order ) {
@@ -74,8 +74,8 @@ class Order_Util {
 	/**
 	 * Set shipping first name of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $name desired first name.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $name desired first name.
 	 * @void
 	 */
 	public static function set_shipping_first_name( $order, $name ) {
@@ -89,7 +89,7 @@ class Order_Util {
 	/**
 	 * Get shipping last name of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $lastname order shipping last name
 	 */
 	public static function get_shipping_last_name( $order ) {
@@ -102,8 +102,8 @@ class Order_Util {
 	/**
 	 * Set shipping last name of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $name desired last name.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $name desired last name.
 	 * @void
 	 */
 	public static function set_shipping_last_name( $order, $name ) {
@@ -117,7 +117,7 @@ class Order_Util {
 	/**
 	 * Get shipping company of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $company order shipping company
 	 */
 	public static function get_shipping_company( $order ) {
@@ -130,8 +130,8 @@ class Order_Util {
 	/**
 	 * Set shipping company of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $name desired company name.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $name desired company name.
 	 * @void
 	 */
 	public static function set_shipping_company( $order, $name ) {
@@ -145,7 +145,7 @@ class Order_Util {
 	/**
 	 * Get shipping address 1 of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $address1 order shipping address 1
 	 */
 	public static function get_shipping_address_1( $order ) {
@@ -158,8 +158,8 @@ class Order_Util {
 	/**
 	 * Set shipping address 1 of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $address desired address 1.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $address desired address 1.
 	 * @void
 	 */
 	public static function set_shipping_address_1( $order, $address ) {
@@ -173,7 +173,7 @@ class Order_Util {
 	/**
 	 * Get shipping address 2 of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $address2 order shipping address 2
 	 */
 	public static function get_shipping_address_2( $order ) {
@@ -186,8 +186,8 @@ class Order_Util {
 	/**
 	 * Set shipping address 2 of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $address desired address 2.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $address desired address 2.
 	 * @void
 	 */
 	public static function set_shipping_address_2( $order, $address ) {
@@ -201,7 +201,7 @@ class Order_Util {
 	/**
 	 * Get shipping city of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $city order shipping city
 	 */
 	public static function get_shipping_city( $order ) {
@@ -214,8 +214,8 @@ class Order_Util {
 	/**
 	 * Set shipping city of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $city desired city.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $city desired city.
 	 * @void
 	 */
 	public static function set_shipping_city( $order, $city ) {
@@ -229,7 +229,7 @@ class Order_Util {
 	/**
 	 * Get shipping state of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $state order shipping state
 	 */
 	public static function get_shipping_state( $order ) {
@@ -242,8 +242,8 @@ class Order_Util {
 	/**
 	 * Set shipping state of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $state desired state.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $state desired state.
 	 * @void
 	 */
 	public static function set_shipping_state( $order, $state ) {
@@ -257,7 +257,7 @@ class Order_Util {
 	/**
 	 * Get shipping postcode of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $postcode order shipping postcode
 	 */
 	public static function get_shipping_postcode( $order ) {
@@ -270,8 +270,8 @@ class Order_Util {
 	/**
 	 * Set shipping postcode of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $postcode desired postcode.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $postcode desired postcode.
 	 * @void
 	 */
 	public static function set_shipping_postcode( $order, $postcode ) {
@@ -285,7 +285,7 @@ class Order_Util {
 	/**
 	 * Get shipping country of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $country order shipping country
 	 */
 	public static function get_shipping_country( $order ) {
@@ -298,8 +298,8 @@ class Order_Util {
 	/**
 	 * Set shipping country of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $country desired postcode.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $country desired postcode.
 	 * @void
 	 */
 	public static function set_shipping_country( $order, $country ) {
@@ -313,7 +313,7 @@ class Order_Util {
 	/**
 	 * Get billing email of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $country order billing email
 	 */
 	public static function get_billing_email( $order ) {
@@ -326,8 +326,8 @@ class Order_Util {
 	/**
 	 * Set billing email of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $email desired email.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $email desired email.
 	 * @void
 	 */
 	public static function set_billing_email( $order, $email ) {
@@ -341,7 +341,7 @@ class Order_Util {
 	/**
 	 * Get billing phone of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @return string $country order billing phone
 	 */
 	public static function get_billing_phone( $order ) {
@@ -354,8 +354,8 @@ class Order_Util {
 	/**
 	 * Set billing phone of WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $phone desired phone.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $phone desired phone.
 	 * @void
 	 */
 	public static function set_billing_phone( $order, $phone ) {
@@ -369,7 +369,7 @@ class Order_Util {
 	/**
 	 * Save WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
+	 * @param \WC_Order $order woocommerce order.
 	 * @void
 	 */
 	public static function save( $order ) {
@@ -381,9 +381,9 @@ class Order_Util {
 	/**
 	 * Add meta data to WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $key key of meta data.
-	 * @param string   $data data to be added.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $key key of meta data.
+	 * @param string    $data data to be added.
 	 * @void
 	 */
 	public static function add_meta_data( $order, $key, $data ) {
@@ -397,8 +397,8 @@ class Order_Util {
 	/**
 	 * Get meta data to WC order.
 	 *
-	 * @param WC_Order $order woocommerce order.
-	 * @param string   $key key of meta data.
+	 * @param \WC_Order $order woocommerce order.
+	 * @param string    $key key of meta data.
 	 * @void
 	 */
 	public static function get_meta( $order, $key ) {
@@ -406,5 +406,35 @@ class Order_Util {
 			return $order->get_meta( $key );
 		}
 		return get_post_meta( $order->id, $key, true );
+	}
+
+	/**
+	 * Get order in admin context.
+	 *
+	 * @return \WC_Order $order woocommerce order
+	 */
+	public static function admin_get_order() {
+		global $the_order, $post;
+		if ( ! is_object( $the_order ) ) {
+			if ( function_exists( 'wc_get_order' ) ) {
+				$order = wc_get_order( $post->ID );
+			} else {
+				// fix for WC < 2.5.
+				if ( WC()->order_factory !== false ) {
+					$order = WC()->order_factory->get_order( $post->ID );
+				} else {
+					global $theorder;
+
+					if ( ! is_object( $theorder ) ) {
+						$theorder = new \WC_Order( $post->ID );
+					}
+
+					$order = $theorder;
+				}
+			}
+		} else {
+			$order = $the_order;
+		}
+		return $order;
 	}
 }

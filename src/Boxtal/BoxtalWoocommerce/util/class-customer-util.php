@@ -76,6 +76,34 @@ class Customer_Util {
 	}
 
 	/**
+	 * Get WC customer company.
+	 *
+	 * @param WC_Customer $customer woocommerce customer.
+	 * @return string customer billing company.
+	 */
+	public static function get_billing_company( $customer ) {
+		if ( method_exists( $customer, 'get_billing_company' ) ) {
+			return $customer->get_billing_company();
+		}
+		return $customer->billing_company;
+	}
+
+	/**
+	 * Set WC customer company.
+	 *
+	 * @param WC_Customer $customer woocommerce customer.
+	 * @param string      $company desired company.
+	 * @void.
+	 */
+	public static function set_billing_company( $customer, $company ) {
+		if ( method_exists( $customer, 'set_billing_company' ) ) {
+			$customer->set_billing_company( $company );
+		} else {
+			$customer->billing_company = $company;
+		}
+	}
+
+	/**
 	 * Get WC customer email.
 	 *
 	 * @param WC_Customer $customer woocommerce customer.

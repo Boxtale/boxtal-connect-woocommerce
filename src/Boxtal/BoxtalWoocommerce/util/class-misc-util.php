@@ -29,6 +29,16 @@ class Misc_Util {
 	}
 
 	/**
+	 * Return base64 encoded value if not null.
+	 *
+	 * @param mixed $value value to be encoded.
+	 * @return mixed $value
+	 */
+	public static function base64_or_null( $value ) {
+		return null === $value ? null : base64_encode( $value );
+	}
+
+	/**
 	 * Get checkout url.
 	 *
 	 * @return string checkout url
@@ -49,11 +59,11 @@ class Misc_Util {
 	}
 
 	/**
-	 * Is checkout url.
+	 * Is checkout page.
 	 *
-	 * @return boolean is checkout url
+	 * @return boolean is checkout page
 	 */
-	public static function is_checkout_url() {
+	public static function is_checkout_page() {
 		if ( in_the_loop() ) {
 			return (int) get_option( 'woocommerce_checkout_page_id' ) === get_the_ID();
 		}
@@ -70,11 +80,12 @@ class Misc_Util {
 	/**
 	 * Should display parcel point link.
 	 *
-	 * @param WC_Shipping_Rate $method woocommmerce shipping rate.
+	 * @param \WC_Shipping_Rate $method woocommmerce shipping rate.
 	 * @return boolean should display link
 	 */
 	public static function should_display_parcel_point_link( $method ) {
-		if ( ! self::is_checkout_url() ) {
+
+		if ( ! self::is_checkout_page() ) {
 			return false;
 		}
 
@@ -102,11 +113,6 @@ class Misc_Util {
 		}
 
 		if ( $address_fields['shipping_postcode']['required'] && ! WC()->customer->get_shipping_postcode() ) {
-			return false;
-		}
-
-		$session_map_url = WC()->session->get( 'bw_map_url', false );
-		if ( ! $session_map_url ) {
 			return false;
 		}
 

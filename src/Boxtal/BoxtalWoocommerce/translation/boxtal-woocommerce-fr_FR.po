@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal woocommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-23 11:29+0200\n"
-"PO-Revision-Date: 2018-05-23 11:30+0200\n"
+"POT-Creation-Date: 2018-07-06 10:55+0200\n"
+"PO-Revision-Date: 2018-07-06 10:56+0200\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -22,28 +22,55 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: Boxtal/BoxtalWoocommerce/assets/views/html-custom-notice.php:17
-#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-notice.php:17
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-success-notice.php:19
 msgid "Hide this notice"
 msgstr "Ne plus afficher ce message"
 
-#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-notice.php:14
-#: Boxtal/BoxtalWoocommerce/rest-controller/class-shop.php:65
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-failure-notice.php:15
+msgid ""
+"Pairing with Boxtal is not complete. Please check your WooCommerce connector "
+"in your boxtal account for a more complete diagnostic."
+msgstr ""
+"La connexion avec Boxtal est incomplète. Veuillez vérifier votre connecteur "
+"WooCommerce dans votre compte Boxtal pour un diagnostic plus complet."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-success-notice.php:16
 msgid "Congratulations! You've successfully paired your site with Boxtal."
 msgstr ""
 "Félicitations ! La liaison de votre site avec Boxtal a été réalisée avec "
 "succès."
 
-#: Boxtal/BoxtalWoocommerce/assets/views/html-setup-wizard-notice.php:14
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-update-notice.php:15
 msgid ""
-"Boxtal Woocommerce install is complete. Run the setup wizard to connect your "
-"shop."
+"Security alert: someone is trying to pair your site with Boxtal. Was it you?"
 msgstr ""
-"L'installation de Boxtal Woocommerce est terminée. Lancez l'assistant de "
-"configuration pour connecter votre boutique."
+"Alerte de sécurité: quelqu'un essaie de connecter ce site à Boxtal. Etes-"
+"vous à l'origine de cette action ?"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-update-notice.php:16
+msgid "yes"
+msgstr "oui"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-update-notice.php:17
+msgid "no"
+msgstr "non"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-setup-failure-notice.php:15
+msgid ""
+"There was a problem initializing the Boxtal WooCommerce plugin. You should "
+"deactivate it and contact our suppor team."
+msgstr ""
+"Un problème est survenu lors de l'initialisation du module Boxtal "
+"Woocommerce. Vous devriez le désactiver et contacter notre équipe support."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-setup-wizard-notice.php:14
+msgid "Run the setup wizard to connect your shop to Boxtal."
+msgstr ""
+"Lancez l’assistant de configuration pour connecter votre boutique à Boxtal."
 
 #: Boxtal/BoxtalWoocommerce/assets/views/html-setup-wizard-notice.php:17
-msgid "Run the Setup Wizard"
-msgstr "Lancer l’assistant de configuration"
+msgid "Connect my shop"
+msgstr "Je connecte ma boutique"
 
 #: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:63
 #, php-format
@@ -99,85 +126,98 @@ msgstr ""
 "Impossible de sauvegarder le point relais. Les sessions Woocommerce ne sont "
 "pas activées !"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:63
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:110
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:76
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:124
 msgid "Unable to find carrier"
 msgstr "Impossible de trouver le transporteur"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:64
-msgid "Google maps API quota exceeded"
-msgstr "Quota API Google maps dépassé"
-
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:65
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:77
 msgid "Could not find address"
 msgstr "Impossible de trouver l'adresse"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:68
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:78
+msgid "Could not connect to map server"
+msgstr "Impossible de se connecter au serveur de carte"
+
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:81
 msgid "Opening hours"
 msgstr "Horaires d'ouverture"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:69
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:82
 msgid "Choose this parcel point"
 msgstr "Choisir ce point relais"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:70
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:83
 msgid "Your address:"
 msgstr "Votre adresse :"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:71
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:84
 msgid "Close map"
 msgstr "Fermer la carte"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:72
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:85
 #: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:46
 msgid "Selected:"
 msgstr "Sélectionné :"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:75
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:88
 msgid "monday"
 msgstr "lundi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:76
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:89
 msgid "tuesday"
 msgstr "mardi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:77
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:90
 msgid "wednesday"
 msgstr "mercredi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:78
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:91
 msgid "thursday"
 msgstr "jeudi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:79
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:92
 msgid "friday"
 msgstr "vendredi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:80
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:93
 msgid "saturday"
 msgstr "samedi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:81
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:94
 msgid "sunday"
 msgstr "dimanche"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:116
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:130
 msgid "Something is wrong with this shipping method's settings"
 msgstr "Il y a un problème de configuration avec cette méthode de livraison"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:119
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:133
 msgid "No relay operators were defined for this shipping method"
 msgstr ""
 "Aucun transporteur point relais n'est configuré pour cette méthode de "
 "livraison"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:125
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:139
 msgid "Could not find any parcel point for this address"
 msgstr "Impossible de trouver des points relais pour cette adresse"
 
 #: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:42
 msgid "Choose a parcel point"
 msgstr "Choisissez un point relais"
+
+#~ msgid ""
+#~ "Boxtal Woocommerce install is complete. Run the setup wizard to connect "
+#~ "your shop."
+#~ msgstr ""
+#~ "L'installation de Boxtal Woocommerce est terminée. Lancez l'assistant de "
+#~ "configuration pour connecter votre boutique."
+
+#~ msgid "Run the Setup Wizard"
+#~ msgstr "Lancer l’assistant de configuration"
+
+#~ msgid "Google maps API quota exceeded"
+#~ msgstr "Quota API Google maps dépassé"
 
 #~ msgid "Something is wrong with this carrier's settings"
 #~ msgstr "Il y a un problème de configuration avec ce transporteur"

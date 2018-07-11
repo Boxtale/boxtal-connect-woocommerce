@@ -36,7 +36,31 @@ class Order {
 				register_rest_route(
 					'boxtal-woocommerce/v1', '/order', array(
 						'methods'             => 'PATCH',
-						'callback'            => array( $this, 'api_callback_handler' ),
+						'callback'            => array( $this, 'retrieve_orders_handler' ),
+						'permission_callback' => array( $this, 'authenticate' ),
+					)
+				);
+			}
+		);
+
+		add_action(
+			'rest_api_init', function() {
+				register_rest_route(
+					'boxtal-woocommerce/v1', '/order/(?P<order_id>[*]+)', array(
+						'methods'             => 'PATCH',
+						'callback'            => array( $this, 'update_order_handler' ),
+						'permission_callback' => array( $this, 'authenticate' ),
+					)
+				);
+			}
+		);
+
+		add_action(
+			'rest_api_init', function() {
+				register_rest_route(
+					'boxtal-woocommerce/v1', '/order/(?P<order_id>[*]+)/tracking', array(
+						'methods'             => 'POST',
+						'callback'            => array( $this, 'tracking_event_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)
 				);
@@ -55,11 +79,11 @@ class Order {
 	}
 
 	/**
-	 * Endpoint callback.
+	 * Retrieve orders callback.
 	 *
 	 * @void
 	 */
-	public function api_callback_handler() {
+	public function retrieve_orders_handler() {
 		$response = $this->get_orders();
 		Api_Util::send_api_response( 200, $response );
 	}
@@ -115,5 +139,58 @@ class Order {
 			);
 		}
 		return $result;
+	}
+
+	/**
+	 * Update order callback.
+	 *
+	 * @param WP_REST_Request $request request.
+	 * @void
+	 */
+	public function update_order_handler( $request ) {
+
+		$body = Auth_Util::decrypt_body( $request->get_body() );
+
+		if ( ! is_array( $body ) || ! isset( $request['order_id'] ) ) {
+			Api_Util::send_api_response( 400 );
+		}
+
+		if ( count( $body ) > 0 ) {
+			update_post_meta( $request['order_id'], 'bw_shipments', $body );
+		}
+
+		Api_Util::send_api_response( 200 );
+	}
+
+	/**
+	 * Tracking event handler callback.
+	 *
+	 * @param WP_REST_Request $request request.
+	 * @void
+	 */
+	public function tracking_event_handler( $request ) {
+
+		if ( ! isset( $request['order_id'] ) ) {
+			Api_Util::send_api_response( 400 );
+		}
+
+		$body = Auth_Util::decrypt_body( $request->get_body() );
+		if ( ! ( is_object( $body ) && property_exists( $body, 'carrierReference' )
+			&& property_exists( $body, 'trackingDate' ) && property_exists( $body, 'trackingCode' ) ) ) {
+			Api_Util::send_api_response( 400 );
+		}
+
+		//phpcs:disable
+		update_option(
+			'BW_TRACKING_EVENT', array(
+				'order_id'          => $request['order_id'],
+				'carrier_reference' => $body->carrierReference,
+				'date'              => $body->trackingDate,
+				'code'              => $body->trackingCode,
+			)
+		);
+        //phpcs:enable
+
+		Api_Util::send_api_response( 200 );
 	}
 }

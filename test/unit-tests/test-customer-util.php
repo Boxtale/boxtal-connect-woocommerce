@@ -32,6 +32,15 @@ class BW_Test_Customer_Util extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test getter and setter for company.
+	 */
+	public function test_company() {
+		$customer = new \WC_Customer();
+		Customer_Util::set_billing_company( $customer, 'Stark inc' );
+		$this->assertEquals( Customer_Util::get_billing_company( $customer ), 'Stark inc' );
+	}
+
+	/**
 	 * Test getter and setter for email.
 	 */
 	public function test_email() {

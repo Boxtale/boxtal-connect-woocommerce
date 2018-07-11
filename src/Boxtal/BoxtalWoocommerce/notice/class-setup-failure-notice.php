@@ -29,7 +29,7 @@ class Setup_Failure_Notice extends Abstract_Notice {
 	 */
 	public function __construct( $key ) {
 		parent::__construct( $key );
-		$this->type         = 'setup-wizard';
+		$this->type         = 'setup-failure';
 		$this->autodestruct = false;
 		$this->template     = 'html-setup-failure-notice';
 	}
