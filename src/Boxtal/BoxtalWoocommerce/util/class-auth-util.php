@@ -7,6 +7,9 @@
 
 namespace Boxtal\BoxtalWoocommerce\Util;
 
+use Boxtal\BoxtalPhp\ApiClient;
+use Boxtal\BoxtalPhp\RestClient;
+
 /**
  * Auth util class.
  *
@@ -202,4 +205,26 @@ class Auth_Util {
 	public static function get_secret_key() {
 		return get_option( 'BW_SECRET_KEY' );
 	}
+
+	/**
+	 * Get auth token.
+	 *
+	 * @return string
+	 */
+	public static function get_maps_token() {
+	    $token = get_transient('bw_token');
+	    if (false === $token) {
+            $lib = new ApiClient( self::get_access_key(), self::get_secret_key() );
+            //phpcs:ignore
+            $response = $lib->restClient->request( RestClient::$POST, get_option('BW_TOKEN_URL') );
+
+            if ( ! $response->isError() ) {
+                set_transient('bw_token', $response->response, 60*15);
+                return $response->response;
+            }
+            return null;
+        }
+	}
+
+
 }

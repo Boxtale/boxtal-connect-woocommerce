@@ -20,6 +20,7 @@ use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
 use Boxtal\BoxtalWoocommerce\Init\Translation;
 use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
 use Boxtal\BoxtalWoocommerce\Plugin;
+use Boxtal\BoxtalWoocommerce\Rest_Controller\Configuration;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Checkout;
@@ -51,10 +52,11 @@ function boxtal_woocommerce_init() {
 	$plugin['translation']     = 'boxtal_woocommerce_init_translation';
 	//phpcs:ignore
 	// $plugin['component']            = 'boxtal_woocommerce_init_admin_components';
-	$plugin['notice']               = 'boxtal_woocommerce_init_admin_notices';
-	$plugin['check-environment']    = 'boxtal_woocommerce_check_environment';
-	$plugin['setup-wizard']         = 'boxtal_woocommerce_setup_wizard';
-	$plugin['rest-controller-shop'] = 'boxtal_woocommerce_rest_controller_shop';
+	$plugin['notice']                        = 'boxtal_woocommerce_init_admin_notices';
+	$plugin['check-environment']             = 'boxtal_woocommerce_check_environment';
+	$plugin['rest-controller-configuration'] = 'boxtal_woocommerce_rest_controller_configuration';
+	$plugin['setup-wizard']                  = 'boxtal_woocommerce_setup_wizard';
+	$plugin['rest-controller-shop']          = 'boxtal_woocommerce_rest_controller_shop';
 	if ( Auth_Util::can_use_plugin() ) {
 		$plugin['tracking-controller']               = 'boxtal_woocommerce_tracking_controller';
 		$plugin['front-order-page']                  = 'boxtal_woocommerce_front_order_page';
@@ -117,6 +119,23 @@ function boxtal_woocommerce_check_environment( $plugin ) {
 	}
 
 	$object = new Environment_Check( $plugin );
+	return $object;
+}
+
+/**
+ * Get new Configuration instance.
+ *
+ * @param array $plugin plugin array.
+ * @return Configuration $object
+ */
+function boxtal_woocommerce_rest_controller_configuration( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Configuration( $plugin );
 	return $object;
 }
 

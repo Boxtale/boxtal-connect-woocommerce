@@ -59,7 +59,11 @@ class Controller {
 	 * @void
 	 */
 	public function get_map_url() {
-		return get_option( 'BW_MAP_URL', '' );
+	    $token = Auth_Util::get_maps_token();
+	    if (null !== $token) {
+            return sprintf(get_option( 'BW_MAP_URL' ), Auth_Util::get_maps_token());
+        }
+        return null;
 	}
 
 	/**
@@ -111,6 +115,20 @@ class Controller {
 	public function parcel_point_styles() {
 		wp_enqueue_style( 'bw_leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css' );
 		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
+	}
+
+	/**
+	 * Get parcel point operator options
+	 *
+	 * @return array operator options
+	 */
+	public static function get_operator_options() {
+		$carriers = get_option( 'BW_PP_OPERATORS' );
+		$options  = array();
+		foreach ( $carriers as $carrier ) {
+			$options[ $carrier->code ] = $carrier->label;
+		}
+		return $options;
 	}
 
 	/**

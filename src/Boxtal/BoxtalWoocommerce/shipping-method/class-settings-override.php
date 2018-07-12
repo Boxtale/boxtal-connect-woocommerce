@@ -7,6 +7,8 @@
 
 namespace Boxtal\BoxtalWoocommerce\Shipping_Method;
 
+use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Controller;
+
 /**
  * Settings_Override class.
  *
@@ -64,14 +66,13 @@ class Settings_Override {
 	 * @return array $form_fields
 	 */
 	public function add_form_field( $form_fields ) {
+		$carrier_options                          = Controller::get_operator_options();
 		$form_fields['bw_parcel_point_operators'] = array(
 			'title'       => __( 'Parcel points map display (Boxtal Woocommerce)', 'boxtal-woocommerce' ),
 			'type'        => 'multiselect',
 			'description' => __( 'Choose one or more parcel point carriers in order to display a parcel point map for this shipping method. Use ctrl+click to select several carriers.', 'boxtal-woocommerce' ),
-			'options'     => array(
-				'MONR' => __( 'Mondial Relay', 'boxtal-woocommerce' ),
-				'SOGP' => __( 'Relais colis', 'boxtal-woocommerce' ),
-			),
+			'options'     => $carrier_options,
+			'default'     => array(),
 			'class'       => 'wc-enhanced-select bw-parcel-point-operators-dropdown',
 		);
 		return $form_fields;
