@@ -98,7 +98,8 @@ class Controller {
 				'SUNDAY'    => __( 'sunday', 'boxtal-woocommerce' ),
 			),
 		);
-		wp_enqueue_script( 'bw_leaflet', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/leaflet.min.js', array(), $this->plugin_version );
+		wp_enqueue_script( 'bw_leaflet', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/leaflet.min.js', array(), $this->plugin_version  );
+		wp_enqueue_script( 'bw_vector_grid', 'https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js' );
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_leaflet' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
