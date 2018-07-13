@@ -64,18 +64,37 @@ class Misc_Util {
 	 * @return boolean is checkout page
 	 */
 	public static function is_checkout_page() {
-		if ( in_the_loop() ) {
-			return (int) get_option( 'woocommerce_checkout_page_id' ) === get_the_ID();
-		}
-		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-			$checkout_url = self::get_checkout_url();
-			$request_uri  = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-			return stristr( $checkout_url, $request_uri )
-				|| ( false !== strpos( $request_uri, '?' ) && stristr( $checkout_url, substr( $request_uri, 0, strpos( $request_uri, '?' ) ) ) )
-				|| ( isset( $_SERVER['HTTP_REFERER'] ) && stristr( $checkout_url, sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) ) && ! stristr( WC()->cart->get_cart_url(), $request_uri ) );
-		}
-		return false;
+        if (in_the_loop()) {
+            return (int) get_option( 'woocommerce_checkout_page_id' ) === get_the_ID();
+        }
+
+        if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+            $checkout_url = self::get_checkout_url();
+            $request_uri  = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+
+            if (self::remove_query_string($checkout_url) === self::remove_query_string($request_uri)) {
+                return true;
+            }
+
+            if (isset($_SERVER['HTTP_REFERER']) && false !== strpos($checkout_url, $_SERVER['HTTP_REFERER']) && false === strpos(WC()->cart->get_cart_url(), $request_uri) ) {
+                return true;
+            }
+        }
+        return false;
 	}
+
+    /**
+     * Helper function to remove query string in url.
+     *
+     * @param string $url url.
+     * @return boolean url without query string
+     */
+    private static function remove_query_string($url) {
+        if (strpos($url, '?') !== false) {
+            $url = substr($url, 0, strpos($url, '?'));
+        }
+        return $url;
+    }
 
 	/**
 	 * Should display parcel point link.
