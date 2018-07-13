@@ -99,7 +99,7 @@ class Controller {
 				'SUNDAY'    => __( 'sunday', 'boxtal-woocommerce' ),
 			),
 		);
-		wp_enqueue_script( 'bw_leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js' );
+		wp_enqueue_script( 'bw_leaflet',  $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/leaflet.min.js', array(), $this->plugin_version  );
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_leaflet' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
@@ -113,7 +113,7 @@ class Controller {
 	 * @void
 	 */
 	public function parcel_point_styles() {
-		wp_enqueue_style( 'bw_leaflet', 'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css' );
+		wp_enqueue_style( 'bw_leaflet', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/leaflet.css', array(), $this->plugin_version );
 		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
 	}
 

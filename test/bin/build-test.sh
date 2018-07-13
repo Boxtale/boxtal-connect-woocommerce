@@ -44,6 +44,8 @@ install_wp() {
 
 	if [[ $RUN_E2E = "1" ]]; then
         gulp css
+        cp -R $HOME/node_modules/leaflet/dist/leaflet.css $HOME/src/Boxtal/BoxtalWoocommerce/assets/css
+        cp -R $HOME/node_modules/leaflet/dist/leaflet.js $HOME/src/Boxtal/BoxtalWoocommerce/assets/js
         gulp js
         mkdir -p $HOME/src/Boxtal/BoxtalPhp
         cp -R $HOME/vendor/boxtal/boxtal-php-poc/src/* $HOME/src/Boxtal/BoxtalPhp
