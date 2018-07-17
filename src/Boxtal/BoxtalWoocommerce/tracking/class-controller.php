@@ -6,6 +6,8 @@
  */
 
 namespace Boxtal\BoxtalWoocommerce\Tracking;
+use Boxtal\BoxtalPhp\ApiClient;
+use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
 /**
  * Controller class.
@@ -111,20 +113,12 @@ class Controller {
 	 * @return array tracking events
 	 */
 	private function get_carrier_tracking( $carrier_reference ) {
-		return array(
-			array(
-				'date'    => '07-01-2018',
-				'message' => 'Le colis est arrivé à destination',
-			),
-			array(
-				'date'    => '06-29-2018',
-				'message' => 'Le colis est en cours d\'acheminement',
-			),
-			array(
-				'date'    => '06-28-2018',
-				'message' => 'Le colis a été déposé au point relais de destination',
-			),
-		);
+	    $lib = new ApiClient(Auth_Util::get_access_key(), Auth_Util::get_secret_key());
+	    $response = $lib->getTracking($carrier_reference);
+	    if ($response->isError()) {
+	        return null;
+        }
+		return $response->response;
 	}
 
 	/**

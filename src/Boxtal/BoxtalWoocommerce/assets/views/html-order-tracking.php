@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php foreach ( $shipment['tracking_events'] as $event ) : ?>
 					<p>
 						<?php
-							echo esc_html( $event['date'] . ' ' . $event['message'] );
+							echo esc_html( $event->date . ' ' . $event->message );
 						?>
 					</p>
 				<?php endforeach; ?>
