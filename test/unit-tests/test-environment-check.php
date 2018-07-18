@@ -23,7 +23,7 @@ class BW_Test_Environment_Check extends WP_UnitTestCase {
 		$plugin['min-php-version'] = '5.3.0';
 		$environment_check         = new Environment_Check( $plugin );
 		$this->assertFalse(
-			$environment_check->boxtal_woocommerce_get_environment_warning()
+			$environment_check->get_environment_warning()
 		);
 	}
 }

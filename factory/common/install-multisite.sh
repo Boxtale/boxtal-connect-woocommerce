@@ -24,7 +24,7 @@ core_configuration() {
     $wp site create --slug=$TMPSITESLUG --allow-root --path=$WP_CORE_DIR
     sudo chmod 644 $WP_CORE_DIR/wp-config.php
     sudo rm -rf $WP_CORE_DIR/.htaccess
-    sudo cp build/multisite-htaccess.txt $WP_CORE_DIR/.htaccess
+    sudo cp factory/common/multisite-htaccess.txt $WP_CORE_DIR/.htaccess
 }
 
 plugin_configuration() {

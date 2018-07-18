@@ -9,7 +9,6 @@ namespace Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point;
 
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalPhp\ApiResponse;
-use Boxtal\BoxtalPhp\RestClient;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
 
@@ -59,11 +58,11 @@ class Controller {
 	 * @void
 	 */
 	public function get_map_url() {
-	    $token = Auth_Util::get_maps_token();
-	    if (null !== $token) {
-            return sprintf(get_option( 'BW_MAP_URL' ), Auth_Util::get_maps_token());
-        }
-        return null;
+		$token = Auth_Util::get_maps_token();
+		if ( null !== $token ) {
+			return sprintf( get_option( 'BW_MAP_URL' ), $token );
+		}
+		return null;
 	}
 
 	/**
@@ -99,7 +98,7 @@ class Controller {
 				'SUNDAY'    => __( 'sunday', 'boxtal-woocommerce' ),
 			),
 		);
-		wp_enqueue_script( 'bw_leaflet',  $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/leaflet.min.js', array(), $this->plugin_version  );
+		wp_enqueue_script( 'bw_leaflet', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/leaflet.min.js', array(), $this->plugin_version );
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_leaflet' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );

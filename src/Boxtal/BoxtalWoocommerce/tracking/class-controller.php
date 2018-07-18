@@ -6,6 +6,7 @@
  */
 
 namespace Boxtal\BoxtalWoocommerce\Tracking;
+
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
@@ -113,11 +114,11 @@ class Controller {
 	 * @return array tracking events
 	 */
 	private function get_carrier_tracking( $carrier_reference ) {
-	    $lib = new ApiClient(Auth_Util::get_access_key(), Auth_Util::get_secret_key());
-	    $response = $lib->getTracking($carrier_reference);
-	    if ($response->isError()) {
-	        return null;
-        }
+		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
+		$response = $lib->getTracking( $carrier_reference );
+		if ( $response->isError() ) {
+			return null;
+		}
 		return $response->response;
 	}
 

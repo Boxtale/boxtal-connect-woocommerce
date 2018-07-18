@@ -45,10 +45,10 @@ class Environment_Check {
 	 * @void
 	 */
 	public function run() {
-		$this->environment_warning = $this->boxtal_woocommerce_get_environment_warning();
+		$this->environment_warning = $this->get_environment_warning();
 
 		if ( false !== $this->environment_warning ) {
-			add_action( 'admin_init', array( $this, 'boxtal_woocommerce_display_environment_warning' ) );
+			add_action( 'admin_init', array( $this, 'display_environment_warning' ) );
 		}
 	}
 
@@ -57,7 +57,7 @@ class Environment_Check {
 	 *
 	 * @return string $message
 	 */
-	public function boxtal_woocommerce_get_environment_warning() {
+	public function get_environment_warning() {
 		if ( version_compare( PHP_VERSION, $this->min_php_version, '<' ) ) {
 			/* translators: 1) int version 2) int version */
 			$message = __( 'Boxtal Woocommerce - The minimum PHP version required for this plugin is %1$s. You are running %2$s.', 'boxtal-woocommerce' );
@@ -83,7 +83,7 @@ class Environment_Check {
 	 *
 	 * @void
 	 */
-	public function boxtal_woocommerce_display_environment_warning() {
+	public function display_environment_warning() {
 		Notice_Controller::add_notice(
 			Notice_Controller::$custom, array(
 				'status'  => 'warning',

@@ -9,4 +9,4 @@ if [[ $(docker inspect -f {{.State.Running}} boxtal_woocommerce) = "false" ]]; t
     exit
 fi
 
-docker exec boxtal_woocommerce /home/docker/test/bin/build-test.sh $WP_VERSION $WC_VERSION false $MULTISITE
+docker exec boxtal_woocommerce /home/docker/factory/common/test/build.sh $WP_VERSION $WC_VERSION false $MULTISITE

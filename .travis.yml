@@ -51,16 +51,16 @@ before_script:
   - mysql -u root -e "CREATE USER 'dbadmin'@'localhost' IDENTIFIED BY 'dbpass'"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'localhost' WITH GRANT OPTION;"
   - sudo chown -R travis:travis /var/www/html
-  - bash test/bin/build-test.sh $WP_VERSION $WC_VERSION true $WP_MULTISITE
-  - bash build/travis.sh
+  - bash factory/common/test/build.sh $WP_VERSION $WC_VERSION true $WP_MULTISITE
+  - bash factory/travis/travis.sh
 
 script:
   - if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then phpunit -v --debug; fi
   - if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "1" ]]; then phpunit -c phpunit-multisite.xml -v --debug; fi
   - if [[ $PHPUNIT_VERSION != "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then vendor/bin/phpunit -v --debug; fi
   - if [[ $PHPUNIT_VERSION != "travis" ]] && [[ $WP_MULTISITE = "1" ]]; then vendor/bin/phpunit -c phpunit-multisite.xml -v --debug; fi
-  - if [[ $RUN_PHPCS = "1" ]]; then bash build/phpcs.sh true; fi
-  - if [[ $RUN_E2E = "1" ]]; then bash test/bin/run-e2e-test.sh true $WP_MULTISITE; fi
+  - if [[ $RUN_PHPCS = "1" ]]; then bash factory/common/phpcs.sh true; fi
+  - if [[ $RUN_E2E = "1" ]]; then bash factory/common/test/run-e2e.sh true $WP_MULTISITE; fi
 
 after_script:
   - if [[ $RUN_CODE_COVERAGE == 1 ]]; then wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar; fi

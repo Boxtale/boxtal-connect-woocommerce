@@ -56,10 +56,10 @@ RUN chown -R docker:docker $HOME
 RUN composer dump-autoload --optimize
 
 COPY wp-cli.yml $HOME
-COPY build/install-wp.sh $HOME/build/
+COPY factory/common/install-wp.sh $HOME/factory/common/
 RUN /etc/init.d/apache2 start \
  && /etc/init.d/mysql start \
- && /bin/bash ./build/install-wp.sh $WP_VERSION $WC_VERSION
+ && /bin/bash $HOME/factory/common/install-wp.sh $WP_VERSION $WC_VERSION
 
 COPY package.json $HOME
 COPY package-lock.json $HOME
@@ -84,4 +84,4 @@ RUN mkdir -p /var/www/html/wp-content/plugins/boxtal-woocommerce \
  && find /var/www/html -type f -exec chmod 644 {} \;
 
 USER docker
-ENTRYPOINT $HOME/build/entrypoint.sh
+ENTRYPOINT $HOME/factory/docker/entrypoint.sh

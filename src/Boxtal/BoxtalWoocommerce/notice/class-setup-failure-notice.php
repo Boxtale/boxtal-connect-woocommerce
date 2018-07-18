@@ -7,8 +7,6 @@
 
 namespace Boxtal\BoxtalWoocommerce\Notice;
 
-use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
-
 /**
  * Setup failure notice class.
  *

@@ -212,34 +212,34 @@ class Auth_Util {
 	 * @return string
 	 */
 	public static function get_maps_token() {
-        if ( WC()->session ) {
-            $token = WC()->session->get( 'bw_token', false );
-            if (false === $token) {
-                $lib = new ApiClient( self::get_access_key(), self::get_secret_key() );
+		if ( WC()->session ) {
+			$token = WC()->session->get( 'bw_token', false );
+			if ( false === $token ) {
+				$lib = new ApiClient( self::get_access_key(), self::get_secret_key() );
                 //phpcs:ignore
                 $response = $lib->restClient->request( RestClient::$POST, get_option('BW_TOKEN_URL') );
 
-                if ( ! $response->isError() ) {
-                    WC()->session->set('bw_token', $response->response);
-                    return $response->response;
-                }
-            } else {
-                return $token;
-            }
-        }
-        return null;
+				if ( ! $response->isError() ) {
+					WC()->session->set( 'bw_token', $response->response );
+					return $response->response;
+				}
+			} else {
+				return $token;
+			}
+		}
+		return null;
 	}
 
-    /**
-     * Has maps token.
-     *
-     * @return boolean
-     */
-    public static function has_maps_token() {
-        if ( WC()->session ) {
-            $token = WC()->session->get( 'bw_token', false );
-            return false !== $token;
-        }
-        return false;
-    }
+	/**
+	 * Has maps token.
+	 *
+	 * @return boolean
+	 */
+	public static function has_maps_token() {
+		if ( WC()->session ) {
+			$token = WC()->session->get( 'bw_token', false );
+			return false !== $token;
+		}
+		return false;
+	}
 }

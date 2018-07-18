@@ -40,7 +40,7 @@ install_wp() {
 		return 0
 	fi
 
-	$HOME/build/install-wp.sh $WP_VERSION $WC_VERSION
+	$HOME/factory/common/install-wp.sh $WP_VERSION $WC_VERSION
 
 	if [[ $RUN_E2E = "1" ]]; then
         gulp css
@@ -58,7 +58,7 @@ install_wp() {
     fi
 
 	if [[ $MULTISITE = "1" ]]; then
-	    $HOME/build/install-multisite.sh
+	    $HOME/factory/common/install-multisite.sh
 
 	    if [[ $RUN_E2E = "1" ]]; then
             activate_plugin_multisite
@@ -71,7 +71,7 @@ install_wp() {
 }
 
 install_db() {
-    $HOME/test/bin/reset-unit-test-db.sh
+    $HOME/factory/common/test/reset-unit-test-db.sh
 }
 
 install_wc() {

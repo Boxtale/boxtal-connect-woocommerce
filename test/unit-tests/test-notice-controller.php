@@ -18,17 +18,26 @@ class BW_Test_Notice_Controller extends WP_UnitTestCase {
 	 */
 	public function test_add_remove_notice() {
 		Notice_Controller::remove_all_notices();
-		Notice_Controller::add_notice( 'setup-wizard' );
+		Notice_Controller::add_notice( Notice_Controller::$setup_wizard );
 		$stored_notices = Notice_Controller::get_notice_keys();
 		$this->assertSame(
 			$stored_notices,
 			array(
-				0 => 'setup-wizard',
+				0 => Notice_Controller::$setup_wizard,
 			)
 		);
-		Notice_Controller::remove_notice( 'setup-wizard' );
+		$this->assertTrue(
+			Notice_Controller::has_notice( Notice_Controller::$setup_wizard )
+		);
+		$this->assertTrue(
+			Notice_Controller::has_notices()
+		);
+		Notice_Controller::remove_notice( Notice_Controller::$setup_wizard );
 		$stored_notices = Notice_Controller::get_notice_keys();
 		$this->assertEmpty( $stored_notices );
+		$this->assertFalse(
+			Notice_Controller::has_notice( Notice_Controller::$setup_wizard )
+		);
 	}
 
 	/**
