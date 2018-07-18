@@ -9,7 +9,6 @@ namespace Boxtal\BoxtalWoocommerce\Rest_Controller;
 
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalPhp\RestClient;
-use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
 use Boxtal\BoxtalWoocommerce\Util\Api_Util;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 

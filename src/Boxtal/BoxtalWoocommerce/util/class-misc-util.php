@@ -89,7 +89,7 @@ class Misc_Util {
      * @param string $url url.
      * @return boolean url without query string
      */
-    private static function remove_query_string($url) {
+    public static function remove_query_string($url) {
         if (strpos($url, '?') !== false) {
             $url = substr($url, 0, strpos($url, '?'));
         }
@@ -149,7 +149,7 @@ class Misc_Util {
 	 * @return array $settings method settings
 	 */
 	public static function get_settings( $method_id ) {
-		if ( -1 !== strpos( $method_id, ':' ) ) {
+		if ( false !== strpos( $method_id, ':' ) ) {
 			$method_name  = explode( ':', $method_id );
 			$settings_key = 'woocommerce_' . $method_name[0] . '_' . $method_name[1] . '_settings';
 		} else {

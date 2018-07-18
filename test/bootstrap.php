@@ -22,6 +22,7 @@ function _manually_load_plugin() {
 
 	// Load woocommerce test helpers.
 	require $wc_dir . '/tests/framework/helpers/class-wc-helper-product.php';
+	require $wc_dir . '/tests/framework/helpers/class-wc-helper-shipping.php';
 
 	// Load boxtal woocommerce plugin.
 	require __DIR__ . '/../src/boxtal-woocommerce.php';

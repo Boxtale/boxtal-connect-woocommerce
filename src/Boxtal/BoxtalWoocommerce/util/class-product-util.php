@@ -197,7 +197,7 @@ class Product_Util {
 	 * @param WC variation $variation woocommerce product variation.
 	 * @return string $id
 	 */
-	private static function get_parent_id( $variation ) {
+	public static function get_parent_id( $variation ) {
 		if ( method_exists( $variation, 'get_parent_id' ) ) {
 			return $variation->get_parent_id();
 		}

@@ -22,7 +22,7 @@ class Shipping_Rate_Util {
 	/**
 	 * Get shipping method settings from shipping rate.
 	 *
-	 * @param WC_Shipping_Rate $method woocommerce shipping rate.
+	 * @param \WC_Shipping_Rate $method woocommerce shipping rate.
 	 * @return array $settings shipping rate settings
 	 */
 	public static function get_settings( $method ) {
@@ -32,7 +32,7 @@ class Shipping_Rate_Util {
 	/**
 	 * Get shipping method settings key from shipping rate.
 	 *
-	 * @param WC_Shipping_Rate $method woocommerce shipping rate.
+	 * @param \WC_Shipping_Rate $method woocommerce shipping rate.
 	 * @return string $settings_key shipping rate settings key
 	 */
 	private static function get_settings_key( $method ) {
