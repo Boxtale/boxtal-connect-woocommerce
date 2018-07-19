@@ -95,7 +95,8 @@ class Order {
 	 */
 	public function get_orders() {
 		$result = array();
-		foreach ( wc_get_orders( array( 'status' => array( 'on-hold', 'processing' ) ) ) as $order ) {
+		$statuses = Order_Util::get_import_status_list();
+		foreach ( wc_get_orders( array( 'status' => $statuses ) ) as $order ) {
 			$recipient = array(
 				'firstname'    => Misc_Util::not_empty_or_null( Order_Util::get_shipping_first_name( $order ) ),
 				'lastname'     => Misc_Util::not_empty_or_null( Order_Util::get_shipping_last_name( $order ) ),
@@ -133,6 +134,11 @@ class Order {
 
 			$result[] = array(
 				'reference'   => '' . Order_Util::get_id( $order ),
+				'status' => Order_Util::get_status($order),
+				'shippingMethod' => Misc_Util::not_empty_or_null($order->get_shipping_method()),
+				'shippingAmount' => $order->get_shipping_total(),
+				'creationDate' => $order->get_date_created()->date('Y-m-d H:i:s'),
+				'orderAmount' => $order->get_total(),
 				'recipient'   => $recipient,
 				'products'    => $products,
 				'parcelPoint' => $parcel_point,

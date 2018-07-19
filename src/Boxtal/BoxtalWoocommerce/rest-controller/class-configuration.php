@@ -168,6 +168,7 @@ class Configuration {
 		delete_option( 'BW_PP_OPERATORS' );
 		delete_option( 'BW_TRACKING_EVENT' );
 		delete_option( 'BW_NOTICES' );
+		delete_option( 'BW_PAIRING_UPDATE' );
 		//phpcs:ignore
 		$wpdb->query(
 			$wpdb->prepare(

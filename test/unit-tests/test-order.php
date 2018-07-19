@@ -26,6 +26,8 @@ class BW_Test_Order extends WP_UnitTestCase {
 		);
 		$order      = wc_create_order( $order_data );
 
+        WC_Helper_Shipping::create_simple_flat_rate();
+
 		$product = WC_Helper_Product::create_simple_product();
 		Product_Util::set_weight( $product, 2.5 );
 		Product_Util::set_regular_price( $product, 15 );
@@ -49,12 +51,45 @@ class BW_Test_Order extends WP_UnitTestCase {
 		Order_Util::save( $order );
 		$order->update_status( 'wc-on-hold' );
 
+        // Add shipping costs
+        $shipping_taxes = WC_Tax::calc_shipping_tax( '10', WC_Tax::get_shipping_tax_rates() );
+        $rate   = new WC_Shipping_Rate( 'flat_rate_shipping', 'Flat rate shipping', '10', $shipping_taxes, 'flat_rate' );
+        $item   = new WC_Order_Item_Shipping();
+        $item->set_props( array(
+            'method_title' => $rate->label,
+            'method_id'    => $rate->id,
+            'total'        => wc_format_decimal( $rate->cost ),
+            'taxes'        => $rate->taxes,
+        ) );
+        foreach ( $rate->get_meta_data() as $key => $value ) {
+            $item->add_meta_data( $key, $value, true );
+        }
+        $order->add_item( $item );
+
+        // Set payment gateway
+		$payment_gateways = WC()->payment_gateways->payment_gateways();
+		$order->set_payment_method( $payment_gateways['bacs'] );
+
+        // Set totals
+        $order->set_shipping_total( 10 );
+        $order->set_discount_total( 0 );
+        $order->set_discount_tax( 0 );
+        $order->set_cart_tax( 0 );
+        $order->set_shipping_tax( 0 );
+        $order->set_total( 60 ); // 4 x 15 simple helper product
+        $order->save();
+
 		$order_rest_controller = new Order();
 
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
 				0 => array(
 					'reference'   => '' . Order_Util::get_id( $order ),
+					'status' => 'on-hold',
+					'shippingMethod' => 'Flat rate shipping',
+					'shippingAmount' => '10',
+                    'creationDate' => $order->get_date_created()->date('Y-m-d H:i:s'),
+                    'orderAmount' => '60.00',
 					'recipient'   => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',
@@ -97,6 +132,8 @@ class BW_Test_Order extends WP_UnitTestCase {
 		);
 		$order      = wc_create_order( $order_data );
 
+        WC_Helper_Shipping::create_simple_flat_rate();
+
 		$product = WC_Helper_Product::create_variation_product();
 		Product_Util::set_weight( $product, 2.5 );
 		Product_Util::set_regular_price( $product, 12 );
@@ -130,12 +167,45 @@ class BW_Test_Order extends WP_UnitTestCase {
 			$product_description = Product_Util::get_product_description( $item );
 		}
 
+        // Add shipping costs
+        $shipping_taxes = WC_Tax::calc_shipping_tax( '10', WC_Tax::get_shipping_tax_rates() );
+        $rate   = new WC_Shipping_Rate( 'flat_rate_shipping', 'Flat rate shipping', '10', $shipping_taxes, 'flat_rate' );
+        $item   = new WC_Order_Item_Shipping();
+        $item->set_props( array(
+            'method_title' => $rate->label,
+            'method_id'    => $rate->id,
+            'total'        => wc_format_decimal( $rate->cost ),
+            'taxes'        => $rate->taxes,
+        ) );
+        foreach ( $rate->get_meta_data() as $key => $value ) {
+            $item->add_meta_data( $key, $value, true );
+        }
+        $order->add_item( $item );
+
+        // Set payment gateway
+        $payment_gateways = WC()->payment_gateways->payment_gateways();
+        $order->set_payment_method( $payment_gateways['bacs'] );
+
+        // Set totals
+        $order->set_shipping_total( 10 );
+        $order->set_discount_total( 0 );
+        $order->set_discount_tax( 0 );
+        $order->set_cart_tax( 0 );
+        $order->set_shipping_tax( 0 );
+        $order->set_total( 70 ); // 5 x 14 variation product
+        $order->save();
+
 		$order_rest_controller = new Order();
 
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
 				0 => array(
 					'reference'   => '' . Order_Util::get_id( $order ),
+                    'status' => 'on-hold',
+                    'shippingMethod' => 'Flat rate shipping',
+                    'shippingAmount' => '10',
+                    'creationDate' => $order->get_date_created()->date('Y-m-d H:i:s'),
+                    'orderAmount' => '70.00',
 					'recipient'   => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',

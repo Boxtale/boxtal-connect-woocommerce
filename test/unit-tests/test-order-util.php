@@ -212,4 +212,12 @@ class BW_Test_Order_Util extends WP_UnitTestCase {
 		$updated_order = new WC_Order( Order_Util::get_id( $order ) );
 		$this->assertEquals( Order_Util::get_meta( $updated_order, 'metaKey' ), 'metaValue' );
 	}
+
+    /**
+     * Test get import status list.
+     */
+    public function test_get_import_status_list() {
+        $this->assertTrue( in_array('on-hold', Order_Util::get_import_status_list()));
+        $this->assertTrue( in_array('processing', Order_Util::get_import_status_list()));
+    }
 }

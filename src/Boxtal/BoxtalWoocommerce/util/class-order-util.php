@@ -366,6 +366,19 @@ class Order_Util {
 		}
 	}
 
+    /**
+     * Get status of WC order.
+     *
+     * @param \WC_Order $order woocommerce order.
+     * @return string $status order status
+     */
+    public static function get_status( $order ) {
+        if ( method_exists( $order, 'get_status' ) ) {
+            return $order->get_status();
+        }
+        return $order->status;
+    }
+
 	/**
 	 * Save WC order.
 	 *
@@ -437,4 +450,20 @@ class Order_Util {
 		}
 		return $order;
 	}
+
+    /**
+     * Get order statuses valid for import.
+     *
+     * @return array string list of statuses
+     */
+    public static function get_import_status_list() {
+        $statuses = array();
+        $unauthorized_status = array('wc-pending', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed');
+        foreach (wc_get_order_statuses() as $order_status => $translation) {
+            if(!in_array($order_status, $unauthorized_status)) {
+                $statuses[] = str_replace('wc-', '', $order_status);
+            }
+        };
+        return $statuses;
+    }
 }
