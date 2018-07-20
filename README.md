@@ -9,11 +9,13 @@ If you are not a developer, please use the Boxtal plugin page on WordPress.org.
 You can use the tracking event hook to launch actions when a boxtal shipment tracking status changes.
 
 `function my_tracking_function($order_id, $carrier_reference, $tracking_event_date, $tracking_event_code) {
- /* your code here */
+
+    /* your code here */
 }
+
 add_action( 'boxtal_tracking_event', 'my_tracking_function' );`
 
 Be aware that a WooCommerce can have several carrier references.
 
 ## Contributing to Boxtal WooCommerce
-If you have a patch or have stumbled upon an issue with our plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/woocommerce/woocommerce/blob/master/.github/CONTRIBUTING.md) for more information how you can do this.
+If you have a patch or have stumbled upon an issue with our plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/Boxtale/boxtal-woocommerce-poc/blob/master/.github/CONTRIBUTING.md) for more information how you can do this.
