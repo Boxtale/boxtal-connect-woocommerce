@@ -115,15 +115,6 @@ class Misc_Util {
 			return false;
 		}
 
-		$settings = Shipping_Rate_Util::get_settings( $method );
-		if ( ! is_array( $settings ) ) {
-			return false;
-		}
-
-		if ( empty( self::get_active_parcel_point_operators($settings) ) ) {
-			return false;
-		}
-
 		if ( ! WC()->customer->get_shipping_country() || ! WC()->customer->get_shipping_city() ) {
 			return false;
 		}
@@ -161,20 +152,24 @@ class Misc_Util {
 		return get_option( $settings_key );
 	}
 
-    /**
-     * Get active parcel point operators for shipping method.
-     *
-     * @param array $settings shipping rate settings.
-     * @return array $operators
-     */
-    public static function get_active_parcel_point_operators( $settings ) {
-        if (null === $settings['bw_parcel_point_operators'] || !is_array($settings['bw_parcel_point_operators'] || empty($settings['bw_parcel_point_operators']))) {
+	/**
+	 * Get active parcel point operators for shipping method.
+	 *
+	 * @param array $settings shipping rate settings.
+	 * @return array $operators
+	 */
+	public static function get_active_parcel_point_operators( $settings ) {
+		if ( null === $settings['bw_parcel_point_operators'] || ! is_array( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
             return array();
         }
-        $operators = get_option( 'BW_PP_OPERATORS' );
-        if (false === $operators || !is_array($operators)) {
-            return array();
+		$operators = get_option( 'BW_PP_OPERATORS' );
+		if ( false === $operators || ! is_array( $operators ) ) {
+			return array();
+		}
+		$operators_array = array();
+		foreach ($operators as $operator) {
+		    $operators_array[] = $operator->code;
         }
-        return array_intersect($operators, $settings['bw_parcel_point_operators']);
-    }
+		return array_intersect( $operators_array, $settings['bw_parcel_point_operators'] );
+	}
 }

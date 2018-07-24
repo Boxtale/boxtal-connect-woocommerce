@@ -120,17 +120,17 @@ class Configuration {
             update_option('BW_SIGNUP_URL', $body->signupPageUrl);
 
 			$stored_operators = get_option( 'BW_PP_OPERATORS' );
-            if ( is_array( $stored_operators ) ) {
-                $removed_operators = $stored_operators;
-                foreach ($body->parcelPointOperators as $new_operator) {
-			        foreach ($stored_operators as $key => $old_operator) {
-			            if ($new_operator->code === $old_operator->code) {
-                            unset($removed_operators[$key]);
-                        }
-                    }
-                }
+			if ( is_array( $stored_operators ) ) {
+				$removed_operators = $stored_operators;
+				foreach ( $body->parcelPointOperators as $new_operator ) {
+					foreach ( $stored_operators as $key => $old_operator ) {
+						if ( $new_operator->code === $old_operator->code ) {
+							unset( $removed_operators[ $key ] );
+						}
+					}
+				}
 
-                if (count($removed_operators) > 0) {
+				if ( count( $removed_operators ) > 0 ) {
 					Notice_Controller::add_notice(
 						Notice_Controller::$custom, array(
 							'status'  => 'warning',
@@ -139,15 +139,15 @@ class Configuration {
 					);
 				}
 
-                $added_operators = $body->parcelPointOperators;
-                foreach ($body->parcelPointOperators as $new_operator) {
-                    foreach ($stored_operators as $key => $old_operator) {
-                        if ($new_operator->code === $old_operator->code) {
-                            unset($added_operators[$key]);
-                        }
-                    }
-                }
-                if (count($added_operators) > 0) {
+				$added_operators = $body->parcelPointOperators;
+				foreach ( $body->parcelPointOperators as $new_operator ) {
+					foreach ( $stored_operators as $key => $old_operator ) {
+						if ( $new_operator->code === $old_operator->code ) {
+							unset( $added_operators[ $key ] );
+						}
+					}
+				}
+				if ( count( $added_operators ) > 0 ) {
 					Notice_Controller::add_notice(
 						Notice_Controller::$custom, array(
 							'status'  => 'info',

@@ -7,8 +7,6 @@
 
 namespace Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point;
 
-use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
-use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
 use Boxtal\BoxtalWoocommerce\Util\Order_Util;
 
 /**
@@ -29,36 +27,7 @@ class Checkout {
 	 * @void
 	 */
 	public function run() {
-		add_action( 'woocommerce_checkout_process', array( $this, 'validate_checkout' ) );
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'order_created' ) );
-	}
-
-	/**
-	 * Validate checkout.
-	 *
-	 * @void
-	 */
-	public function validate_checkout() {
-        // phpcs:ignore
-		if ( isset( $_REQUEST['shipping_method'][0] ) && Auth_Util::has_maps_token()) {
-            // phpcs:ignore
-			$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['shipping_method'][0] ) );
-			$settings = Misc_Util::get_settings( $carrier );
-
-			if ( empty( Misc_Util::get_active_parcel_point_operators($settings)) ) {
-				return;
-			}
-
-			if ( WC()->session ) {
-				$session_parcel_point_code     = WC()->session->get( 'bw_parcel_point_code_' . $carrier, false );
-				$session_parcel_point_operator = WC()->session->get( 'bw_parcel_point_operator_' . $carrier, false );
-				if ( ! $session_parcel_point_code || ! $session_parcel_point_operator ) {
-					wc_add_notice( __( 'Please select a parcel point', 'boxtal-woocommerce' ), 'error' );
-				}
-			} else {
-				wc_add_notice( __( 'Could not set parcel point. Woocommerce sessions are not enabled!', 'boxtal-woocommerce' ), 'error' );
-			}
-		}
 	}
 
 	/**
@@ -73,12 +42,14 @@ class Checkout {
             // phpcs:ignore
 			$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['shipping_method'][0] ) );
 			if ( WC()->session ) {
-				$session_parcel_point_code     = WC()->session->get( 'bw_parcel_point_code_' . $carrier, false );
-				$session_parcel_point_operator = WC()->session->get( 'bw_parcel_point_operator_' . $carrier, false );
-				if ( $session_parcel_point_code && $session_parcel_point_operator ) {
+				$point = Controller::get_chosen_point( $carrier );
+				if ( $point === null ) {
+					$point = Controller::get_closest_point( $carrier );
+				}
+				if ( null !== $point ) {
 					$order = new \WC_Order( $order_id );
-					Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $session_parcel_point_code );
-					Order_Util::add_meta_data( $order, 'bw_parcel_point_operator', $session_parcel_point_operator );
+					Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->code );
+					Order_Util::add_meta_data( $order, 'bw_parcel_point_operator', $point->operator );
 					Order_Util::save( $order );
 				}
 			}

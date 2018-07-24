@@ -65,12 +65,12 @@ class Notice_Controller {
 	 */
 	public static $custom = 'custom';
 
-    /**
-     * Notice name.
-     *
-     * @var string
-     */
-    public static $environment_warning = 'environment-warning';
+	/**
+	 * Notice name.
+	 *
+	 * @var string
+	 */
+	public static $environment_warning = 'environment-warning';
 
 	/**
 	 * Array of notices - name => callback.

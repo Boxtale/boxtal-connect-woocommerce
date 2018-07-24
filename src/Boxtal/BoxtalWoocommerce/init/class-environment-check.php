@@ -46,17 +46,17 @@ class Environment_Check {
 	 * @void
 	 */
 	public function run() {
-		$this->environment_warning = Environment_Util::check_errors($this->plugin);
+		$this->environment_warning = Environment_Util::check_errors( $this->plugin );
 
 		if ( false !== $this->environment_warning ) {
-		    Notice_Controller::remove_all_notices();
-            Notice_Controller::add_notice(
-                Notice_Controller::$environment_warning, array(
-                    'message' => $this->environment_warning,
-                )
-            );
-		} elseif (Notice_Controller::has_notice(Notice_Controller::$environment_warning)) {
-		    Notice_Controller::remove_notice(Notice_Controller::$environment_warning);
-        }
+			Notice_Controller::remove_all_notices();
+			Notice_Controller::add_notice(
+				Notice_Controller::$environment_warning, array(
+					'message' => $this->environment_warning,
+				)
+			);
+		} elseif ( Notice_Controller::has_notice( Notice_Controller::$environment_warning ) ) {
+			Notice_Controller::remove_notice( Notice_Controller::$environment_warning );
+		}
 	}
 }

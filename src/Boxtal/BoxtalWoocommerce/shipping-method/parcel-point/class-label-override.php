@@ -33,18 +33,22 @@ class Label_Override {
 	/**
 	 * Add relay map link to shipping method label.
 	 *
-	 * @param string           $full_label shipping method label.
-	 * @param WC_Shipping_Rate $method shipping rate.
+	 * @param string            $full_label shipping method label.
+	 * @param \WC_Shipping_Rate $method shipping rate.
 	 * @return string $full_label
 	 */
 	public function change_shipping_label( $full_label, $method ) {
 		if ( Misc_Util::should_display_parcel_point_link( $method ) ) {
-			$full_label .= '<br/><span class="bw-select-parcel">' . __( 'Choose a parcel point', 'boxtal-woocommerce' ) . '</span>';
-			if ( WC()->session ) {
-				$chosen_pickup_point = WC()->session->get( 'bw_pickup_point_name_' . $method->id, false );
-				if ( false !== $chosen_pickup_point ) {
-					$full_label .= '<br/><span>' . __( 'Selected:', 'boxtal-woocommerce' ) . ' <span class="bw-parcel-client">' . $chosen_pickup_point . '</span></span>';
+			$points_response = Controller::init_points( Controller::get_recipient_address(), $method );
+			if ( $points_response ) {
+				$chosen_parcel_point = Controller::get_chosen_point( $method );
+				if ( $chosen_parcel_point === null ) {
+					$closest_parcel_point = Controller::get_closest_point( $method );
+					$full_label          .= '<br/><span>' . __( 'Closest parcel point:', 'boxtal-woocommerce' ) . ' <span class="bw-parcel-client">' . $closest_parcel_point->label . '</span></span>';
+				} else {
+					$full_label .= '<br/><span>' . __( 'Your parcel point:', 'boxtal-woocommerce' ) . ' <span class="bw-parcel-client">' . $chosen_parcel_point->label . '</span></span>';
 				}
+				$full_label .= '<br/><span class="bw-select-parcel">' . __( 'Choose another', 'boxtal-woocommerce' ) . '</span>';
 			}
 		}
 		return $full_label;

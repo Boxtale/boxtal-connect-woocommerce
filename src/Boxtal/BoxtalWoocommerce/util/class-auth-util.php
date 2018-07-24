@@ -213,7 +213,8 @@ class Auth_Util {
 	 */
 	public static function get_maps_token() {
 		if ( WC()->session ) {
-			$token = WC()->session->get( 'bw_token', false );
+			// $token = WC()->session->get( 'bw_token', false );
+			$token = 'test';
 			if ( false === $token ) {
 				$lib = new ApiClient( self::get_access_key(), self::get_secret_key() );
                 //phpcs:ignore
