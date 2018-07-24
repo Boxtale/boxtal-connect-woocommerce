@@ -9,6 +9,7 @@ namespace Boxtal\BoxtalWoocommerce\Rest_Controller;
 
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalPhp\RestClient;
+use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
 use Boxtal\BoxtalWoocommerce\Util\Api_Util;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 
@@ -117,6 +118,44 @@ class Configuration {
             update_option('BW_TOKEN_URL', $body->mapsTokenUrl);
             //phpcs:ignore
             update_option('BW_SIGNUP_URL', $body->signupPageUrl);
+
+			$stored_operators = get_option( 'BW_PP_OPERATORS' );
+            if ( is_array( $stored_operators ) ) {
+                $removed_operators = $stored_operators;
+                foreach ($body->parcelPointOperators as $new_operator) {
+			        foreach ($stored_operators as $key => $old_operator) {
+			            if ($new_operator->code === $old_operator->code) {
+                            unset($removed_operators[$key]);
+                        }
+                    }
+                }
+
+                if (count($removed_operators) > 0) {
+					Notice_Controller::add_notice(
+						Notice_Controller::$custom, array(
+							'status'  => 'warning',
+							'message' => __( 'There\'s been a change in Boxtal parcel point operator list, we\'ve adapted your shipping method configuration. Please check that everything is in order.', 'boxtal-woocommerce' ),
+						)
+					);
+				}
+
+                $added_operators = $body->parcelPointOperators;
+                foreach ($body->parcelPointOperators as $new_operator) {
+                    foreach ($stored_operators as $key => $old_operator) {
+                        if ($new_operator->code === $old_operator->code) {
+                            unset($added_operators[$key]);
+                        }
+                    }
+                }
+                if (count($added_operators) > 0) {
+					Notice_Controller::add_notice(
+						Notice_Controller::$custom, array(
+							'status'  => 'info',
+							'message' => __( 'There\'s been a change in Boxtal parcel point operator list, you can add the extra parcel point operator(s) to your shipping method configuration.', 'boxtal-woocommerce' ),
+						)
+					);
+				}
+			}
             //phpcs:ignore
             update_option('BW_PP_OPERATORS', $body->parcelPointOperators);
 			return true;

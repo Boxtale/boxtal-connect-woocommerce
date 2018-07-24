@@ -120,7 +120,7 @@ class Misc_Util {
 			return false;
 		}
 
-		if ( ! isset( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
+		if ( empty( self::get_active_parcel_point_operators($settings) ) ) {
 			return false;
 		}
 
@@ -160,4 +160,21 @@ class Misc_Util {
 		}
 		return get_option( $settings_key );
 	}
+
+    /**
+     * Get active parcel point operators for shipping method.
+     *
+     * @param array $settings shipping rate settings.
+     * @return array $operators
+     */
+    public static function get_active_parcel_point_operators( $settings ) {
+        if (null === $settings['bw_parcel_point_operators'] || !is_array($settings['bw_parcel_point_operators'] || empty($settings['bw_parcel_point_operators']))) {
+            return array();
+        }
+        $operators = get_option( 'BW_PP_OPERATORS' );
+        if (false === $operators || !is_array($operators)) {
+            return array();
+        }
+        return array_intersect($operators, $settings['bw_parcel_point_operators']);
+    }
 }

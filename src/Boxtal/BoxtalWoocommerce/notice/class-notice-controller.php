@@ -65,12 +65,19 @@ class Notice_Controller {
 	 */
 	public static $custom = 'custom';
 
+    /**
+     * Notice name.
+     *
+     * @var string
+     */
+    public static $environment_warning = 'environment-warning';
+
 	/**
 	 * Array of notices - name => callback.
 	 *
 	 * @var array
 	 */
-	private static $core_notices = array( 'update', 'setup-wizard', 'pairing', 'pairing-update', 'setup-failure' );
+	private static $core_notices = array( 'update', 'setup-wizard', 'pairing', 'pairing-update', 'setup-failure', 'environment-warning' );
 
 	/**
 	 * Construct function.

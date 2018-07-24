@@ -144,15 +144,12 @@ class Controller {
         // phpcs:ignore
 		$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
 		$settings = Misc_Util::get_settings( $carrier );
-		if ( ! isset( $settings['bw_parcel_point_operators'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Something is wrong with this shipping method\'s settings', 'boxtal-woocommerce' ) ) );
-		}
-		if ( empty( $settings['bw_parcel_point_operators'] ) ) {
+		if ( empty( Misc_Util::get_active_parcel_point_operators($settings) ) ) {
 			wp_send_json_error( array( 'message' => __( 'No relay operators were defined for this shipping method', 'boxtal-woocommerce' ) ) );
 		}
 
 		$address  = $this->get_recipient_address();
-		$response = $this->get_points( $address, $settings['bw_parcel_point_operators'] );
+		$response = $this->get_points( $address, Misc_Util::get_active_parcel_point_operators($settings) );
 
 		if ( $response->isError() ) {
 			wp_send_json_error( array( 'message' => __( 'Something went wrong, could not retrieve parcel points', 'boxtal-woocommerce' ) ) );

@@ -45,7 +45,7 @@ class Checkout {
 			$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['shipping_method'][0] ) );
 			$settings = Misc_Util::get_settings( $carrier );
 
-			if ( ! isset( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
+			if ( empty( Misc_Util::get_active_parcel_point_operators($settings)) ) {
 				return;
 			}
 
