@@ -213,19 +213,18 @@ class Auth_Util {
 	 */
 	public static function get_maps_token() {
 		if ( WC()->session ) {
-			// $token = WC()->session->get( 'bw_token', false );
-			$token = 'test';
+			$token = WC()->session->get( 'bw_token', false );
 			if ( false === $token ) {
 				$lib = new ApiClient( self::get_access_key(), self::get_secret_key() );
                 //phpcs:ignore
                 $response = $lib->restClient->request( RestClient::$POST, get_option('BW_TOKEN_URL') );
 
-				if ( ! $response->isError() ) {
-					WC()->session->set( 'bw_token', $response->response );
-					return $response->response;
+				if ( ! $response->isError() && property_exists($response->response, 'accessToken')) {
+					WC()->session->set( 'bw_token', $response->response->accessToken );
+					return $response->response->accessToken;
 				}
 			} else {
-				return $token;
+			    return $token;
 			}
 		}
 		return null;

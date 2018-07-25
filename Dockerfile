@@ -71,6 +71,12 @@ RUN npm install -g gulp-cli
 COPY . $HOME
 RUN chown -R docker:docker $HOME
 
+RUN cp -R node_modules/leaflet/dist/leaflet.css src/Boxtal/BoxtalWoocommerce/assets/css
+RUN cp -R node_modules/leaflet/dist/leaflet.js src/Boxtal/BoxtalWoocommerce/assets/js
+RUN cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css
+RUN cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
+RUN cp -R node_modules/mapbox-gl-leaflet/leaflet-mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
+
 RUN gulp css
 RUN gulp js
 

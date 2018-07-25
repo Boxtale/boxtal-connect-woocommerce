@@ -6,6 +6,9 @@ docker exec -u root boxtal_woocommerce chmod -R +x /home/docker/factory/common/t
 docker exec -u root boxtal_woocommerce gulp css
 docker exec -u root boxtal_woocommerce cp -R node_modules/leaflet/dist/leaflet.css src/Boxtal/BoxtalWoocommerce/assets/css
 docker exec -u root boxtal_woocommerce cp -R node_modules/leaflet/dist/leaflet.js src/Boxtal/BoxtalWoocommerce/assets/js
+docker exec -u root boxtal_woocommerce cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css
+docker exec -u root boxtal_woocommerce cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
+docker exec -u root boxtal_woocommerce cp -R node_modules/mapbox-gl-leaflet/leaflet-mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
 docker exec -u root boxtal_woocommerce gulp js
 docker exec -u root boxtal_woocommerce cp -R vendor/boxtal/boxtal-php-poc/src/* src/Boxtal/BoxtalPhp
 docker exec -u root boxtal_woocommerce cp -R /var/www/html/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json /tmp

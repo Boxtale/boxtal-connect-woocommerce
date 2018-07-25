@@ -7,149 +7,6 @@
         map: null,
         markers: [],
         bounds: null,
-        vectorTileLayerStyles: {
-            water: {
-                fill: true,
-                weight: 1,
-                fillColor: '#06cccc',
-                color: '#06cccc',
-                fillOpacity: 0.2,
-                opacity: 0.4,
-            },
-            admin: {
-                weight: 1,
-                fillColor: 'pink',
-                color: 'pink',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            waterway: {
-                weight: 1,
-                fillColor: '#2375e0',
-                color: '#2375e0',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            landcover: {
-                fill: true,
-                weight: 1,
-                fillColor: '#53e033',
-                color: '#53e033',
-                fillOpacity: 0.2,
-                opacity: 0.4,
-            },
-            landuse: {
-                fill: true,
-                weight: 1,
-                fillColor: '#e5b404',
-                color: '#e5b404',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            park: {
-                fill: true,
-                weight: 1,
-                fillColor: '#84ea5b',
-                color: '#84ea5b',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            boundary: [],
-            aeroway: {
-                weight: 1,
-                fillColor: '#51aeb5',
-                color: '#51aeb5',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            road: {	// mapbox & nextzen only
-                weight: 1,
-                fillColor: '#f2b648',
-                color: '#f2b648',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            tunnel: {	// mapbox only
-                weight: 0.5,
-                fillColor: '#f2b648',
-                color: '#f2b648',
-                fillOpacity: 0.2,
-                opacity: 0.4,
-// 					dashArray: [4, 4]
-            },
-            bridge: {	// mapbox only
-                weight: 0.5,
-                fillColor: '#f2b648',
-                color: '#f2b648',
-                fillOpacity: 0.2,
-                opacity: 0.4,
-// 					dashArray: [4, 4]
-            },
-            transportation: {	// openmaptiles only
-                weight: 0.5,
-                fillColor: '#f2b648',
-                color: '#f2b648',
-                fillOpacity: 0.2,
-                opacity: 0.4,
-// 					dashArray: [4, 4]
-            },
-            transit: {	// nextzen only
-                weight: 0.5,
-                fillColor: '#f2b648',
-                color: '#f2b648',
-                fillOpacity: 0.2,
-                opacity: 0.4,
-// 					dashArray: [4, 4]
-            },
-            building: [],
-            water_name: {
-                weight: 1,
-                fillColor: '#022c5b',
-                color: '#022c5b',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            transportation_name: {
-                weight: 1,
-                fillColor: '#bc6b38',
-                color: '#bc6b38',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-            place: [],
-            housenumber: [],
-            poi: [],
-            earth: {	// nextzen only
-                fill: true,
-                weight: 1,
-                fillColor: '#c0c0c0',
-                color: '#c0c0c0',
-                fillOpacity: 0.2,
-                opacity: 0.4
-            },
-
-
-            // Do not symbolize some stuff for mapbox
-            country_label: [],
-            marine_label: [],
-            state_label: [],
-            place_label: [],
-            waterway_label: [],
-            poi_label: [],
-            road_label: [],
-            housenum_label: [],
-
-
-            // Do not symbolize some stuff for openmaptiles
-            country_name: [],
-            marine_name: [],
-            state_name: [],
-            place_name: [],
-            waterway_name: [],
-            poi_name: [],
-            road_name: [],
-            housenum_name: []
-        },
 
         init: function () {
             const self = this;
@@ -158,17 +15,13 @@
                 if (!self.mapContainer) {
                     self.initMap();
                 }
-
                 self.bounds = L.latLngBounds();
 
                 self.on("body", "click", ".bw-parcel-point-button", function() {
                     self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-label"), this.getAttribute("data-operator"))
                         .then(function(label) {
-                            let target = document.querySelector(".bw-parcel-client");
-                            if (!target) {
-                                self.initSelectedParcelPoint();
-                                target = document.querySelector(".bw-parcel-client");
-                            }
+                            self.initSelectedParcelPoint();
+                             const target = document.querySelector(".bw-parcel-name");
                             target.innerHTML = label;
                             self.closeMap();
                         })
@@ -211,20 +64,14 @@
             self.mapContainer.appendChild(mapInner);
             document.body.appendChild(self.mapContainer);
 
-            self.map = L.map("bw-map-canvas", {
+            self.map = L.map('bw-map-canvas', {
                 crs: L.CRS.EPSG3857
             });
-            L.vectorGrid.protobuf("http://api.boxtal.org/data/v3/{z}/{x}/{y}.pbf", {
-                vectorTileLayerStyles: self.vectorTileLayerStyles,
-                maxZoom: 14
-            }).addTo(self.map);
 
-            /*
-            L.tileLayer(mapUrl, {
-                attributionControl: false,
-                maxZoom: 18
+            L.mapboxGL({
+                style: 'http://api.boxtal.org/styles/klokantech-basic/style.json',
+                accessToken: 'whatever'
             }).addTo(self.map);
-            */
         },
 
         openMap: function() {
@@ -242,14 +89,11 @@
         },
 
         initSelectedParcelPoint: function() {
-            const selectPointLink = document.querySelector(".bw-select-parcel");
-            const selectParcelPointContent = document.createElement("span");
-            selectParcelPointContent.setAttribute("class", "bw-parcel-client");
-            const selectParcelPoint = document.createElement("span");
+            const selectParcelPoint = document.querySelector(".bw-parcel-client");
             selectParcelPoint.innerHTML = translations.text.selectedParcelPoint + " ";
+            const selectParcelPointContent = document.createElement("span");
+            selectParcelPointContent.setAttribute("class", "bw-parcel-name");
             selectParcelPoint.appendChild(selectParcelPointContent);
-            selectPointLink.parentNode.insertBefore(selectParcelPoint, selectPointLink.nextSibling);
-            selectPointLink.parentNode.insertBefore(document.createElement("br"), selectPointLink.nextSibling);
         },
 
         getPoints: function() {
