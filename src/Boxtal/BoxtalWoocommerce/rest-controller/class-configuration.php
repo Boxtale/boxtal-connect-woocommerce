@@ -176,7 +176,7 @@ class Configuration {
         //phpcs:disable
         $response = $lib->restClient->request(
             RestClient::$GET,
-            $lib->getApiUrl() . '/v2/sellershop/module/config',
+            $lib->getApiUrl() . '/v2/sellershop/plugin/configuration',
             array(),
             $headers
         );

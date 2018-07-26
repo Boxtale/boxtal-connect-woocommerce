@@ -65,7 +65,7 @@
             mapboxgl.accessToken = 'whatever';
             self.map =  new mapboxgl.Map({
                 container: 'bw-map-canvas',
-                style: 'https://maps.boxtal.org/styles/klokantech-basic/style.json',
+                style: mapUrl,
                 zoom: 14
             });
             self.map.addControl(new mapboxgl.NavigationControl());
