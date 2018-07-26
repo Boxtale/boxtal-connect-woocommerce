@@ -42,11 +42,8 @@ install:
   - npm install
   - npm install -g gulp
   - npm install -g gulp-cli
-  - cp -R node_modules/leaflet/dist/leaflet.css src/Boxtal/BoxtalWoocommerce/assets/css
-  - cp -R node_modules/leaflet/dist/leaflet.js src/Boxtal/BoxtalWoocommerce/assets/js
   - cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css
   - cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
-  - cp -R node_modules/mapbox-gl-leaflet/leaflet-mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
 
 before_script:
   - sudo a2enmod actions

@@ -6,7 +6,6 @@
         mapContainer: null,
         map: null,
         markers: [],
-        bounds: null,
 
         init: function () {
             const self = this;
@@ -15,7 +14,6 @@
                 if (!self.mapContainer) {
                     self.initMap();
                 }
-                self.bounds = L.latLngBounds();
 
                 self.on("body", "click", ".bw-parcel-point-button", function() {
                     self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-label"), this.getAttribute("data-operator"))
@@ -64,14 +62,13 @@
             self.mapContainer.appendChild(mapInner);
             document.body.appendChild(self.mapContainer);
 
-            self.map = L.map('bw-map-canvas', {
-                crs: L.CRS.EPSG3857
+            mapboxgl.accessToken = 'whatever';
+            self.map =  new mapboxgl.Map({
+                container: 'bw-map-canvas',
+                style: 'https://maps.boxtal.org/styles/klokantech-basic/style.json',
+                zoom: 14
             });
-
-            L.mapboxGL({
-                style: 'i',
-                accessToken: 'whatever'
-            }).addTo(self.map);
+            self.map.addControl(new mapboxgl.NavigationControl());
         },
 
         openMap: function() {
@@ -81,6 +78,7 @@
                 offset = window.pageYOffset;
             }
             this.mapContainer.style.top = offset + 'px';
+            this.map.resize();
         },
 
         closeMap: function() {
@@ -144,6 +142,7 @@
         },
 
         addParcelPointMarker: function(point) {
+            const self = this;
             let info ="<div class='bw-marker-popup'><b>"+point.label+'</b><br/>'+
                 '<a href="#" class="bw-parcel-point-button" data-code="'+point.code+'" data-label="'+point.label+'" data-operator="'+point.operator+'"><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
                 point.address.street+", "+point.address.postcode+" "+point.address.city+"<br/>"+"<b>" + translations.text.openingHours +
@@ -156,45 +155,43 @@
 
                 for (let j = 0, t = day.timePeriods.length; j < t; j++) {
                     const timePeriod = day.timePeriods[j];
-                    info += this.formatHours(timePeriod.openingTime) +'-'+this.formatHours(timePeriod.closingTime);
+                    info += self.formatHours(timePeriod.openingTime) +'-'+self.formatHours(timePeriod.closingTime);
                 }
                 info += '<br/>';
             }
             info += '</div>';
 
-            const popup = L.popup()
-                .setContent(info);
+            const el = document.createElement('div');
+            el.className = 'bw-marker';
+            el.style.backgroundImage = "url('" + imgDir + "markers/" + (point.index + 1) + ".png')";
+            el.style.width = '28px';
+            el.style.height = '35px';
 
-            const marker = L.marker(
-                [parseFloat(point.coordinates.latitude), parseFloat(point.coordinates.longitude)],
-                {
-                    icon: L.icon({
-                        iconUrl: imgDir + "markers/"+(point.index + 1)+".png",
-                        iconSize: [26, 37],
-                        iconAnchor: [13, 37],
-                        popupAnchor: [0, -37],
-                    }),
-                    riseOnHover: true,
-                    title: point.label
-                }
-            ).bindPopup(popup).addTo(this.map);
+            const popup = new mapboxgl.Popup({ offset: 25 })
+                .setHTML(info);
 
-            this.markers.push(marker);
+            const marker = new mapboxgl.Marker({
+                element: el,
 
-            this.addRightColMarkerEvent(marker, point.code);
+            })
+                .setLngLat(new mapboxgl.LngLat(parseFloat(point.coordinates.longitude), parseFloat(point.coordinates.latitude)))
+                .setPopup(popup)
+                .addTo(self.map);
 
-            this.bounds.extend(marker.getLatLng());
+            self.markers.push(marker);
+
+            self.addRightColMarkerEvent(marker, point.code);
         },
 
         addRightColMarkerEvent: function(marker, code) {
             this.on("body", "click", ".bw-show-info-" + code, function(){
-                marker.openPopup();
+                marker.togglePopup();
             });
         },
 
         formatHours: function(time) {
             const explode = time.split(':');
-            if (explode.length == 3) {
+            if (3 === explode.length) {
                 time = explode[0]+':'+explode[1];
             }
             return time;
@@ -203,29 +200,37 @@
         addRecipientMarker: function(latlon) {
             const self = this;
 
-            const marker = L.marker(
-                [parseFloat(latlon.latitude), parseFloat(latlon.longitude)],
-                //[47.38061, 8.54736],
-                {
-                    icon: L.icon({
-                        iconUrl: imgDir + "marker-recipient.png",
-                        iconSize: [26, 37],
-                        iconAnchor: [13, 37]
-                    })
-                }
-            ).addTo(self.map);
+            const el = document.createElement('div');
+            el.className = 'bw-marker-recipient';
+            el.style.backgroundImage = "url('" + imgDir + "marker-recipient.png')";
+            el.style.width = '30px';
+            el.style.height = '35px';
+
+            const marker = new mapboxgl.Marker({
+                element: el,
+            })
+                .setLngLat(new mapboxgl.LngLat(parseFloat(latlon.longitude), parseFloat(latlon.latitude)))
+                .addTo(self.map);
 
             self.markers.push(marker);
-
-            self.map.setView([parseFloat(latlon.latitude), parseFloat(latlon.longitude)], 11);
-            self.bounds.extend(marker.getLatLng());
         },
 
         setMapBounds: function() {
-            if(this.map.getZoom() > 15){
-                this.map.setZoom(15);
+
+            let bounds = new mapboxgl.LngLatBounds();
+
+            for (let i = 0; i < this.markers.length; i++) {
+                const marker = this.markers[i];
+                bounds = bounds.extend(marker.getLngLat());
             }
-            this.map.fitBounds(this.bounds);
+
+            this.map.fitBounds(
+                bounds,
+                {
+                    padding: 30,
+                    linear: true
+                }
+            );
         },
 
         fillParcelPointPanel: function(parcelPoints) {
