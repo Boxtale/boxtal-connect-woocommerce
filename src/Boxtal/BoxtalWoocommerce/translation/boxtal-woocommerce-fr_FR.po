@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal woocommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-06 10:55+0200\n"
-"PO-Revision-Date: 2018-07-06 10:56+0200\n"
+"POT-Creation-Date: 2018-07-26 09:32+0200\n"
+"PO-Revision-Date: 2018-07-26 09:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -21,10 +21,40 @@ msgstr ""
 "X-Loco-Target-Locale: fr_FR\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#: Boxtal/BoxtalWoocommerce/assets/views/html-admin-order-view-modal-tracking.php:14
+msgid "Tracking details"
+msgstr "Détails de suivi"
+
 #: Boxtal/BoxtalWoocommerce/assets/views/html-custom-notice.php:17
 #: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-success-notice.php:19
 msgid "Hide this notice"
 msgstr "Ne plus afficher ce message"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-front-order-tracking.php:14
+msgid "Order tracking"
+msgstr "Suivi de commande"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:17
+msgid "No tracking info available yet"
+msgstr "Pas d'information de suivi disponible"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:22
+msgid "Your order has been sent in 1 shipment."
+msgstr "Votre commande a été expédiée en 1 envoi."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:25
+#, php-format
+msgid "Your order has been sent in %s shipments."
+msgstr "Votre commande a été expédiée en %s envois."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:30
+#, php-format
+msgid "Shipment reference %s"
+msgstr "Référence d'expédition %s"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:42
+msgid "No tracking event for this shipment yet."
+msgstr "Pas d'événement de suivi disponible pour cet envoi."
 
 #: Boxtal/BoxtalWoocommerce/assets/views/html-pairing-failure-notice.php:15
 msgid ""
@@ -58,10 +88,10 @@ msgstr "non"
 #: Boxtal/BoxtalWoocommerce/assets/views/html-setup-failure-notice.php:15
 msgid ""
 "There was a problem initializing the Boxtal WooCommerce plugin. You should "
-"deactivate it and contact our suppor team."
+"deactivate it and contact our support team."
 msgstr ""
-"Un problème est survenu lors de l'initialisation du module Boxtal "
-"Woocommerce. Vous devriez le désactiver et contacter notre équipe support."
+"Il y a eu un problème lors de l'initialisation du module Boxtal WooCommerce. "
+"Veuillez le désactiver et contacter notre équipe support."
 
 #: Boxtal/BoxtalWoocommerce/assets/views/html-setup-wizard-notice.php:14
 msgid "Run the setup wizard to connect your shop to Boxtal."
@@ -72,34 +102,29 @@ msgstr ""
 msgid "Connect my shop"
 msgstr "Je connecte ma boutique"
 
-#: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:63
-#, php-format
+#: Boxtal/BoxtalWoocommerce/rest-controller/class-configuration.php:137
 msgid ""
-"Boxtal Woocommerce - The minimum PHP version required for this plugin is "
-"%1$s. You are running %2$s."
+"There's been a change in Boxtal parcel point operator list, we've adapted "
+"your shipping method configuration. Please check that everything is in order."
 msgstr ""
-"Boxtal Woocommerce - La version PHP minimale requise pour ce plugin est "
-"%1$s. Vous utilisez la version %2$s."
+"La liste des transporteurs en point relais a changé, nous avons adapté la "
+"configuration de vos méthodes de livraison. Veuillez vérifier que tout est "
+"en ordre."
 
-#: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:69
-msgid "Boxtal Woocommerce requires WooCommerce to be activated to work."
-msgstr ""
-"Boxtal Woocommerce nécessite l'activation de Woocommerce pour fonctionner."
-
-#: Boxtal/BoxtalWoocommerce/init/class-environment-check.php:74
-#, php-format
+#: Boxtal/BoxtalWoocommerce/rest-controller/class-configuration.php:154
 msgid ""
-"Boxtal Woocommerce - The minimum WooCommerce version required for this "
-"plugin is %1$s. You are running %2$s."
+"There's been a change in Boxtal parcel point operator list, you can add the "
+"extra parcel point operator(s) to your shipping method configuration."
 msgstr ""
-"Boxtal Woocommerce - La version minimale de Woocommerce requise pour ce "
-"plugin est %1$s. Vous utilisez la version %2$s."
+"La liste des transporteurs en point relais a changé, vous pouvez ajouter "
+"le(s) nouveau(x) transporteur(s) dans la configuration de vos méthodes de "
+"livraison."
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:68
+#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:71
 msgid "Parcel points map display (Boxtal Woocommerce)"
 msgstr "Affichage de la carte des points relais (Boxtal Woocommerce)"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:70
+#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:73
 msgid ""
 "Choose one or more parcel point carriers in order to display a parcel point "
 "map for this shipping method. Use ctrl+click to select several carriers."
@@ -108,103 +133,141 @@ msgstr ""
 "relais pour cette méthode de livraison. Utilisez ctrl+clic pour sélectionner "
 "plusieurs transporteurs."
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:72
-msgid "Mondial Relay"
-msgstr "Mondial Relay"
-
-#: Boxtal/BoxtalWoocommerce/shipping-method/class-settings-override.php:73
-msgid "Relais colis"
-msgstr "Relais colis"
-
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-checkout.php:55
-msgid "Please select a parcel point"
-msgstr "Veuillez choisir un point relais"
-
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-checkout.php:58
-msgid "Could not set parcel point. Woocommerce sessions are not enabled!"
-msgstr ""
-"Impossible de sauvegarder le point relais. Les sessions Woocommerce ne sont "
-"pas activées !"
-
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:76
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:124
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:80
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:145
 msgid "Unable to find carrier"
 msgstr "Impossible de trouver le transporteur"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:77
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:81
 msgid "Could not find address"
 msgstr "Impossible de trouver l'adresse"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:78
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:82
 msgid "Could not connect to map server"
 msgstr "Impossible de se connecter au serveur de carte"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:81
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:85
 msgid "Opening hours"
 msgstr "Horaires d'ouverture"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:82
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:86
 msgid "Choose this parcel point"
 msgstr "Choisir ce point relais"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:83
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:87
 msgid "Your address:"
 msgstr "Votre adresse :"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:84
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:88
 msgid "Close map"
 msgstr "Fermer la carte"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:85
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:46
-msgid "Selected:"
-msgstr "Sélectionné :"
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:89
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:49
+msgid "Your parcel point:"
+msgstr "Votre point relais :"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:88
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:92
 msgid "monday"
 msgstr "lundi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:89
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:93
 msgid "tuesday"
 msgstr "mardi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:90
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:94
 msgid "wednesday"
 msgstr "mercredi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:91
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:95
 msgid "thursday"
 msgstr "jeudi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:92
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:96
 msgid "friday"
 msgstr "vendredi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:93
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:97
 msgid "saturday"
 msgstr "samedi"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:94
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:98
 msgid "sunday"
 msgstr "dimanche"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:130
-msgid "Something is wrong with this shipping method's settings"
-msgstr "Il y a un problème de configuration avec cette méthode de livraison"
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:47
+msgid "Closest parcel point:"
+msgstr "Point relais le plus proche :"
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:133
-msgid "No relay operators were defined for this shipping method"
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:51
+msgid "Choose another"
+msgstr "Autre point relais"
+
+#: Boxtal/BoxtalWoocommerce/tracking/class-admin-order-page.php:60
+#: Boxtal/BoxtalWoocommerce/tracking/class-admin-order-page.php:63
+msgid "Boxtal - Shipment tracking"
+msgstr "Boxtal - Suivi d'expédition"
+
+#: Boxtal/BoxtalWoocommerce/util/class-environment-util.php:33
+#, php-format
+msgid ""
+"Boxtal Woocommerce - The minimum PHP version required for this plugin is "
+"%1$s. You are running %2$s."
 msgstr ""
-"Aucun transporteur point relais n'est configuré pour cette méthode de "
-"livraison"
+"Boxtal Woocommerce - La version PHP minimale requise pour ce plugin est "
+"%1$s. Vous utilisez la version %2$s."
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:139
-msgid "Could not find any parcel point for this address"
-msgstr "Impossible de trouver des points relais pour cette adresse"
+#: Boxtal/BoxtalWoocommerce/util/class-environment-util.php:39
+msgid "Boxtal Woocommerce requires WooCommerce to be activated to work."
+msgstr ""
+"Boxtal Woocommerce nécessite l'activation de Woocommerce pour fonctionner."
 
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-label-override.php:42
-msgid "Choose a parcel point"
-msgstr "Choisissez un point relais"
+#: Boxtal/BoxtalWoocommerce/util/class-environment-util.php:44
+#, php-format
+msgid ""
+"Boxtal Woocommerce - The minimum WooCommerce version required for this "
+"plugin is %1$s. You are running %2$s."
+msgstr ""
+"Boxtal Woocommerce - La version minimale de Woocommerce requise pour ce "
+"plugin est %1$s. Vous utilisez la version %2$s."
+
+#~ msgid ""
+#~ "There was a problem initializing the Boxtal WooCommerce plugin. You "
+#~ "should deactivate it and contact our suppor team."
+#~ msgstr ""
+#~ "Un problème est survenu lors de l'initialisation du module Boxtal "
+#~ "Woocommerce. Vous devriez le désactiver et contacter notre équipe support."
+
+#~ msgid "Mondial Relay"
+#~ msgstr "Mondial Relay"
+
+#~ msgid "Relais colis"
+#~ msgstr "Relais colis"
+
+#~ msgid "Please select a parcel point"
+#~ msgstr "Veuillez choisir un point relais"
+
+#~ msgid "Could not set parcel point. Woocommerce sessions are not enabled!"
+#~ msgstr ""
+#~ "Impossible de sauvegarder le point relais. Les sessions Woocommerce ne "
+#~ "sont pas activées !"
+
+#~ msgid "Selected:"
+#~ msgstr "Sélectionné :"
+
+#~ msgid "Something is wrong with this shipping method's settings"
+#~ msgstr "Il y a un problème de configuration avec cette méthode de livraison"
+
+#~ msgid "No relay operators were defined for this shipping method"
+#~ msgstr ""
+#~ "Aucun transporteur point relais n'est configuré pour cette méthode de "
+#~ "livraison"
+
+#~ msgid "Could not find any parcel point for this address"
+#~ msgstr "Impossible de trouver des points relais pour cette adresse"
+
+#~ msgid "Choose a parcel point"
+#~ msgstr "Choisissez un point relais"
 
 #~ msgid ""
 #~ "Boxtal Woocommerce install is complete. Run the setup wizard to connect "

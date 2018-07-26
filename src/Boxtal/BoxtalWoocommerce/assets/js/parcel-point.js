@@ -69,7 +69,7 @@
             });
 
             L.mapboxGL({
-                style: 'http://api.boxtal.org/styles/klokantech-basic/style.json',
+                style: 'i',
                 accessToken: 'whatever'
             }).addTo(self.map);
         },
