@@ -42,7 +42,7 @@ class Label_Override {
 			$points_response = Controller::init_points( Controller::get_recipient_address(), $method );
 			if ( $points_response ) {
 				$chosen_parcel_point = Controller::get_chosen_point( $method->id );
-				if ( $chosen_parcel_point === null ) {
+				if ( null === $chosen_parcel_point ) {
 					$closest_parcel_point = Controller::get_closest_point( $method->id );
 					$full_label          .= '<br/><span class="bw-parcel-client">' . __( 'Closest parcel point:', 'boxtal-woocommerce' ) . ' <span class="bw-parcel-name">' . $closest_parcel_point->label . '</span></span>';
 				} else {

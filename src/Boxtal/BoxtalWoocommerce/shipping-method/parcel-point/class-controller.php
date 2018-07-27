@@ -30,134 +30,134 @@ class Controller {
 	 * @param array $plugin plugin array.
 	 * @void
 	 */
-    public function __construct( $plugin ) {
-        $this->plugin_url     = $plugin['url'];
-        $this->plugin_version = $plugin['version'];
-        $this->map_url        = null;
-    }
+	public function __construct( $plugin ) {
+		$this->plugin_url     = $plugin['url'];
+		$this->plugin_version = $plugin['version'];
+		$this->map_url        = null;
+	}
 
 	/**
 	 * Run class.
 	 *
 	 * @void
 	 */
-    public function run() {
-        add_action( 'woocommerce_after_checkout_form', array( $this, 'parcel_point_scripts' ) );
-        add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
-        add_action( 'wp_ajax_get_points', array( $this, 'get_points_callback' ) );
-        add_action( 'wp_ajax_nopriv_get_points', array( $this, 'get_points_callback' ) );
-        add_action( 'wp_ajax_set_point', array( $this, 'set_point_callback' ) );
-        add_action( 'wp_ajax_nopriv_set_point', array( $this, 'set_point_callback' ) );
-        add_action( 'wp_ajax_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
-        add_action( 'wp_ajax_nopriv_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
-    }
+	public function run() {
+		add_action( 'woocommerce_after_checkout_form', array( $this, 'parcel_point_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
+		add_action( 'wp_ajax_get_points', array( $this, 'get_points_callback' ) );
+		add_action( 'wp_ajax_nopriv_get_points', array( $this, 'get_points_callback' ) );
+		add_action( 'wp_ajax_set_point', array( $this, 'set_point_callback' ) );
+		add_action( 'wp_ajax_nopriv_set_point', array( $this, 'set_point_callback' ) );
+		add_action( 'wp_ajax_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
+		add_action( 'wp_ajax_nopriv_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
+	}
 
 	/**
 	 * Get map url.
 	 *
 	 * @void
 	 */
-    public function get_map_url() {
-        $token = Auth_Util::get_maps_token();
-        if ( null !== $token ) {
-            return sprintf( get_option( 'BW_MAP_URL' ), $token );
-        }
-        return null;
-    }
+	public function get_map_url() {
+		$token = Auth_Util::get_maps_token();
+		if ( null !== $token ) {
+			return sprintf( get_option( 'BW_MAP_URL' ), $token );
+		}
+		return null;
+	}
 
 	/**
 	 * Enqueue pickup point script
 	 *
 	 * @void
 	 */
-    public function parcel_point_scripts() {
-        if ( ! Misc_Util::is_checkout_page() ) {
-            return;
-        }
+	public function parcel_point_scripts() {
+		if ( ! Misc_Util::is_checkout_page() ) {
+			return;
+		}
 
-        $translations = array(
-            'error' => array(
-                'carrierNotFound' => __( 'Unable to find carrier', 'boxtal-woocommerce' ),
-                'addressNotFound' => __( 'Could not find address', 'boxtal-woocommerce' ),
-                'mapServerError'  => __( 'Could not connect to map server', 'boxtal-woocommerce' ),
-            ),
-            'text'  => array(
-                'openingHours'        => __( 'Opening hours', 'boxtal-woocommerce' ),
-                'chooseParcelPoint'   => __( 'Choose this parcel point', 'boxtal-woocommerce' ),
-                'yourAddress'         => __( 'Your address:', 'boxtal-woocommerce' ),
-                'closeMap'            => __( 'Close map', 'boxtal-woocommerce' ),
-                'selectedParcelPoint' => __( 'Your parcel point:', 'boxtal-woocommerce' ),
-            ),
-            'day'   => array(
-                'MONDAY'    => __( 'monday', 'boxtal-woocommerce' ),
-                'TUESDAY'   => __( 'tuesday', 'boxtal-woocommerce' ),
-                'WEDNESDAY' => __( 'wednesday', 'boxtal-woocommerce' ),
-                'THURSDAY'  => __( 'thursday', 'boxtal-woocommerce' ),
-                'FRIDAY'    => __( 'friday', 'boxtal-woocommerce' ),
-                'SATURDAY'  => __( 'saturday', 'boxtal-woocommerce' ),
-                'SUNDAY'    => __( 'sunday', 'boxtal-woocommerce' ),
-            ),
-        );
-        wp_enqueue_script( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/mapbox-gl.min.js', array(), $this->plugin_version );
-        wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_mapbox_gl' ), $this->plugin_version );
-        wp_localize_script( 'bw_shipping', 'translations', $translations );
-        wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
-        wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
-        wp_localize_script( 'bw_shipping', 'mapUrl', $this->get_map_url() );
-    }
+		$translations = array(
+			'error' => array(
+				'carrierNotFound' => __( 'Unable to find carrier', 'boxtal-woocommerce' ),
+				'addressNotFound' => __( 'Could not find address', 'boxtal-woocommerce' ),
+				'mapServerError'  => __( 'Could not connect to map server', 'boxtal-woocommerce' ),
+			),
+			'text'  => array(
+				'openingHours'        => __( 'Opening hours', 'boxtal-woocommerce' ),
+				'chooseParcelPoint'   => __( 'Choose this parcel point', 'boxtal-woocommerce' ),
+				'yourAddress'         => __( 'Your address:', 'boxtal-woocommerce' ),
+				'closeMap'            => __( 'Close map', 'boxtal-woocommerce' ),
+				'selectedParcelPoint' => __( 'Your parcel point:', 'boxtal-woocommerce' ),
+			),
+			'day'   => array(
+				'MONDAY'    => __( 'monday', 'boxtal-woocommerce' ),
+				'TUESDAY'   => __( 'tuesday', 'boxtal-woocommerce' ),
+				'WEDNESDAY' => __( 'wednesday', 'boxtal-woocommerce' ),
+				'THURSDAY'  => __( 'thursday', 'boxtal-woocommerce' ),
+				'FRIDAY'    => __( 'friday', 'boxtal-woocommerce' ),
+				'SATURDAY'  => __( 'saturday', 'boxtal-woocommerce' ),
+				'SUNDAY'    => __( 'sunday', 'boxtal-woocommerce' ),
+			),
+		);
+		wp_enqueue_script( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/mapbox-gl.min.js', array(), $this->plugin_version );
+		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/js/parcel-point.min.js', array( 'bw_mapbox_gl' ), $this->plugin_version );
+		wp_localize_script( 'bw_shipping', 'translations', $translations );
+		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/img/' );
+		wp_localize_script( 'bw_shipping', 'mapUrl', $this->get_map_url() );
+	}
 
 	/**
 	 * Enqueue parcel point styles
 	 *
 	 * @void
 	 */
-    public function parcel_point_styles() {
-        wp_enqueue_style( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/mapbox-gl.css', array(), $this->plugin_version );
-        wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
-    }
+	public function parcel_point_styles() {
+		wp_enqueue_style( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/mapbox-gl.css', array(), $this->plugin_version );
+		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
+	}
 
 	/**
 	 * Get parcel point operator options
 	 *
 	 * @return array operator options
 	 */
-    public static function get_operator_options() {
-        $carriers = get_option( 'BW_PP_OPERATORS' );
-        $options  = array();
-        foreach ( $carriers as $carrier ) {
-            $options[ $carrier->code ] = $carrier->label;
-        }
-        return $options;
-    }
+	public static function get_operator_options() {
+		$carriers = get_option( 'BW_PP_OPERATORS' );
+		$options  = array();
+		foreach ( $carriers as $carrier ) {
+			$options[ $carrier->code ] = $carrier->label;
+		}
+		return $options;
+	}
 
 	/**
 	 * Get parcel points callback.
 	 *
 	 * @void
 	 */
-    public function get_points_callback() {
-        header( 'Content-Type: application/json; charset=utf-8' );
+	public function get_points_callback() {
+		header( 'Content-Type: application/json; charset=utf-8' );
         // phpcs:ignore
         if ( ! isset( $_REQUEST['carrier'] ) ) {
-            wp_send_json_error( array( 'message' => __( 'Unable to find carrier', 'boxtal-woocommerce' ) ) );
-        }
+			wp_send_json_error( array( 'message' => __( 'Unable to find carrier', 'boxtal-woocommerce' ) ) );
+		}
         // phpcs:ignore
         $carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
 
-        wp_send_json( $this::get_points( $carrier ) );
-    }
+		wp_send_json( $this::get_points( $carrier ) );
+	}
 
 	/**
 	 * Set parcel point callback.
 	 *
 	 * @void
 	 */
-    public function set_point_callback() {
-        header( 'Content-Type: application/json; charset=utf-8' );
+	public function set_point_callback() {
+		header( 'Content-Type: application/json; charset=utf-8' );
         // phpcs:ignore
         if ( ! isset( $_REQUEST['carrier'], $_REQUEST['operator'], $_REQUEST['code'], $_REQUEST['label'] ) ) {
-            wp_send_json_error( array( 'message' => 'could not set point' ) );
-        }
+			wp_send_json_error( array( 'message' => 'could not set point' ) );
+		}
         // phpcs:ignore
         $carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
         // phpcs:ignore
@@ -166,34 +166,34 @@ class Controller {
         $code     = sanitize_text_field( wp_unslash( $_REQUEST['code'] ) );
         // phpcs:ignore
         $label     = sanitize_text_field( wp_unslash( $_REQUEST['label'] ) );
-        if ( WC()->session ) {
-            WC()->session->set(
-                'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id($carrier), (object) [
-                    'operator' => $operator,
-                    'code'     => $code,
-                    'label'    => $label,
-                ]
-            );
-        } else {
-            wp_send_json_error( array( 'message' => 'could not set point. Woocommerce sessions are not enabled!' ) );
-        }
+		if ( WC()->session ) {
+			WC()->session->set(
+				'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $carrier ), (object) [
+					'operator' => $operator,
+					'code'     => $code,
+					'label'    => $label,
+				]
+			);
+		} else {
+			wp_send_json_error( array( 'message' => 'could not set point. Woocommerce sessions are not enabled!' ) );
+		}
 
-        wp_send_json( true );
-    }
+		wp_send_json( true );
+	}
 
 	/**
 	 * Get recipient address.
 	 *
 	 * @return array recipient address
 	 */
-    public static function get_recipient_address() {
-        return array(
-            'street'   => trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ),
-            'city'     => trim( WC()->customer->get_shipping_city() ),
-            'postcode' => trim( WC()->customer->get_shipping_postcode() ),
-            'country'  => strtolower( WC()->customer->get_shipping_country() ),
-        );
-    }
+	public static function get_recipient_address() {
+		return array(
+			'street'   => trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ),
+			'city'     => trim( WC()->customer->get_shipping_city() ),
+			'postcode' => trim( WC()->customer->get_shipping_postcode() ),
+			'country'  => strtolower( WC()->customer->get_shipping_country() ),
+		);
+	}
 
 	/**
 	 * Get parcel points.
@@ -202,12 +202,12 @@ class Controller {
 	 * @param \WC_Shipping_Rate $method shipping rate.
 	 * @return boolean
 	 */
-    public static function init_points( $address, $method ) {
-        if ( WC()->session ) {
-            WC()->session->set( 'bw_parcel_points_' .Shipping_Rate_Util::get_clean_id($method->id), null );
-        } else {
-            return false;
-        }
+	public static function init_points( $address, $method ) {
+		if ( WC()->session ) {
+			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), null );
+		} else {
+			return false;
+		}
 
 		$settings = Shipping_Rate_Util::get_settings( $method );
 		if ( ! is_array( $settings ) ) {
@@ -222,7 +222,7 @@ class Controller {
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
 		$response = $lib->getParcelPoints( $address, $operators );
 		if ( ! $response->isError() ) {
-			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id($method->id), $response->response );
+			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), $response->response );
 			return true;
 		}
 		return false;
@@ -231,14 +231,16 @@ class Controller {
 	/**
 	 * Get closest parcel point.
 	 *
-     * @param string $id shipping rate id.
+	 * @param string $id shipping rate id.
 	 * @return mixed
 	 */
 	public static function get_closest_point( $id ) {
 		if ( WC()->session ) {
-			$parcel_points = WC()->session->get( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id($id), null );
-			if ( property_exists($parcel_points, 'parcelPoints') && is_array( $parcel_points->parcelPoints ) && count( $parcel_points->parcelPoints ) > 0 ) {
-				return $parcel_points->parcelPoints[0];
+			$parcel_points = WC()->session->get( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $id ), null );
+            //phpcs:ignore
+			if ( property_exists( $parcel_points, 'parcelPoints' ) && is_array( $parcel_points->parcelPoints ) && count( $parcel_points->parcelPoints ) > 0 ) {
+                //phpcs:ignore
+			    return $parcel_points->parcelPoints[0];
 			}
 		}
 		return null;
@@ -252,7 +254,7 @@ class Controller {
 	 */
 	public static function get_chosen_point( $id ) {
 		if ( WC()->session ) {
-			return WC()->session->get( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id($id), null );
+			return WC()->session->get( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $id ), null );
 		}
 		return null;
 	}
@@ -265,7 +267,7 @@ class Controller {
 	 */
 	public static function get_points( $id ) {
 		if ( WC()->session ) {
-			return WC()->session->get( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id($id), null );
+			return WC()->session->get( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $id ), null );
 		}
 		return null;
 	}

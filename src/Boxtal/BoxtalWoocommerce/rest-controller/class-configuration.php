@@ -122,6 +122,7 @@ class Configuration {
 			$stored_operators = get_option( 'BW_PP_OPERATORS' );
 			if ( is_array( $stored_operators ) ) {
 				$removed_operators = $stored_operators;
+                //phpcs:ignore
 				foreach ( $body->parcelPointOperators as $new_operator ) {
 					foreach ( $stored_operators as $key => $old_operator ) {
 						if ( $new_operator->code === $old_operator->code ) {
@@ -139,7 +140,9 @@ class Configuration {
 					);
 				}
 
+                //phpcs:ignore
 				$added_operators = $body->parcelPointOperators;
+                //phpcs:ignore
 				foreach ( $body->parcelPointOperators as $new_operator ) {
 					foreach ( $stored_operators as $key => $old_operator ) {
 						if ( $new_operator->code === $old_operator->code ) {

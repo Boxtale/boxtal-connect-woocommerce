@@ -160,16 +160,16 @@ class Misc_Util {
 	 */
 	public static function get_active_parcel_point_operators( $settings ) {
 		if ( null === $settings['bw_parcel_point_operators'] || ! is_array( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
-            return array();
-        }
+			return array();
+		}
 		$operators = get_option( 'BW_PP_OPERATORS' );
 		if ( false === $operators || ! is_array( $operators ) ) {
 			return array();
 		}
 		$operators_array = array();
-		foreach ($operators as $operator) {
-		    $operators_array[] = $operator->code;
-        }
+		foreach ( $operators as $operator ) {
+			$operators_array[] = $operator->code;
+		}
 		return array_intersect( $operators_array, $settings['bw_parcel_point_operators'] );
 	}
 }

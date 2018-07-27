@@ -42,11 +42,13 @@ class Checkout {
             // phpcs:ignore
 			$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['shipping_method'][0] ) );
 			if ( WC()->session ) {
-				$point = Controller::get_chosen_point( $carrier );
-				if ( $point === null ) {
-					$point = Controller::get_closest_point( $carrier );
-				}
-				if ( null !== $point ) {
+				$closest_point = Controller::get_closest_point( $carrier );
+				if ( null !== $closest_point ) {
+					$point = Controller::get_chosen_point( $carrier );
+					if ( null === $point ) {
+						$point = $closest_point;
+					}
+
 					$order = new \WC_Order( $order_id );
 					Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->code );
 					Order_Util::add_meta_data( $order, 'bw_parcel_point_operator', $point->operator );

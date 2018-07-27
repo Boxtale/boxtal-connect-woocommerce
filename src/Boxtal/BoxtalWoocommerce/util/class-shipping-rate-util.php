@@ -40,13 +40,13 @@ class Shipping_Rate_Util {
 		return 'woocommerce_' . $method_name . '_' . $method_instance_id . '_settings';
 	}
 
-    /**
-     * Get clean id (without :).
-     *
-     * @param string $id woocommerce shipping rate id.
-     * @return string $id shipping rate id without :
-     */
-    public static function get_clean_id( $id ) {
-        return str_replace(':', '', $id);
-    }
+	/**
+	 * Get clean id (without :).
+	 *
+	 * @param string $id woocommerce shipping rate id.
+	 * @return string $id shipping rate id without :
+	 */
+	public static function get_clean_id( $id ) {
+		return str_replace( ':', '', $id );
+	}
 }
