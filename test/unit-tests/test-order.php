@@ -30,11 +30,12 @@ class BW_Test_Order extends WP_UnitTestCase {
 
 		$product = WC_Helper_Product::create_simple_product();
 		Product_Util::set_weight( $product, 2.5 );
+		Product_Util::set_price( $product, 15 );
 		Product_Util::set_regular_price( $product, 15 );
 		Product_Util::set_name( $product, 'simple product' );
 		Product_Util::save( $product );
 
-		Order_Util::add_product( $order, $product, 4 );
+		Order_Util::add_product( $order, Product_Util::get_product(Product_Util::get_id($product)), 4 );
 		Order_Util::set_shipping_first_name( $order, 'Jon' );
 		Order_Util::set_shipping_last_name( $order, 'Snow' );
 		Order_Util::set_shipping_company( $order, 'GoT' );
@@ -52,34 +53,16 @@ class BW_Test_Order extends WP_UnitTestCase {
 		$order->update_status( 'wc-on-hold' );
 
 		// Add shipping costs.
-		$shipping_taxes = WC_Tax::calc_shipping_tax( '10', WC_Tax::get_shipping_tax_rates() );
-		$rate           = new WC_Shipping_Rate( 'flat_rate_shipping', 'Flat rate shipping', '10', $shipping_taxes, 'flat_rate' );
-		$item           = new WC_Order_Item_Shipping();
-		$item->set_props(
-			array(
-				'method_title' => $rate->label,
-				'method_id'    => $rate->id,
-				'total'        => wc_format_decimal( $rate->cost ),
-				'taxes'        => $rate->taxes,
-			)
-		);
-		foreach ( $rate->get_meta_data() as $key => $value ) {
-			$item->add_meta_data( $key, $value, true );
-		}
-		$order->add_item( $item );
+		$shipping_taxes = WC_Tax::calc_shipping_tax( 10.0, WC_Tax::get_shipping_tax_rates() );
+		$rate           = new WC_Shipping_Rate( 'flat_rate_shipping', 'Flat rate shipping', 10.0, $shipping_taxes, 'flat_rate' );
+		Order_Util::add_shipping( $order, $rate );
+
+		Order_Util::set_total( $order, 60.0 );
 
 		// Set payment gateway.
 		$payment_gateways = WC()->payment_gateways->payment_gateways();
 		$order->set_payment_method( $payment_gateways['bacs'] );
-
-		// Set totals.
-		$order->set_shipping_total( 10 );
-		$order->set_discount_total( 0 );
-		$order->set_discount_tax( 0 );
-		$order->set_cart_tax( 0 );
-		$order->set_shipping_tax( 0 );
-		$order->set_total( 60 ); // 4 x 15 simple helper product
-		$order->save();
+		Order_Util::save( $order );
 
 		$order_rest_controller = new Order();
 
@@ -89,9 +72,9 @@ class BW_Test_Order extends WP_UnitTestCase {
 					'reference'      => '' . Order_Util::get_id( $order ),
 					'status'         => 'on-hold',
 					'shippingMethod' => 'Flat rate shipping',
-					'shippingAmount' => '10',
-					'creationDate'   => $order->get_date_created()->date( 'Y-m-d H:i:s' ),
-					'orderAmount'    => '60.00',
+					'shippingAmount' => 10.0,
+					'creationDate'   => Order_Util::get_date_created( $order ),
+					'orderAmount'    => 60.0,
 					'recipient'      => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',
@@ -138,6 +121,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 
 		$product = WC_Helper_Product::create_variation_product();
 		Product_Util::set_weight( $product, 2.5 );
+		Product_Util::set_price( $product, 12 );
 		Product_Util::set_regular_price( $product, 12 );
 		Product_Util::set_name( $product, 'variation product' );
 		Product_Util::save( $product );
@@ -145,11 +129,12 @@ class BW_Test_Order extends WP_UnitTestCase {
 		$variations        = $product->get_available_variations();
 		$variation         = array_shift( $variations );
 		$variation_product = Product_Util::get_product( $variation['variation_id'] );
+		Product_Util::set_price( $variation_product, 14 );
 		Product_Util::set_regular_price( $variation_product, 14 );
 		Product_Util::set_weight( $variation_product, 6 );
 		Product_Util::save( $variation_product );
 
-		Order_Util::add_product( $order, $variation_product, 5 );
+		Order_Util::add_product( $order, Product_Util::get_product( $variation['variation_id'] ), 5 );
 		Order_Util::set_shipping_first_name( $order, 'Jon' );
 		Order_Util::set_shipping_last_name( $order, 'Snow' );
 		Order_Util::set_shipping_company( $order, 'GoT' );
@@ -172,32 +157,14 @@ class BW_Test_Order extends WP_UnitTestCase {
 		// Add shipping costs.
 		$shipping_taxes = WC_Tax::calc_shipping_tax( '10', WC_Tax::get_shipping_tax_rates() );
 		$rate           = new WC_Shipping_Rate( 'flat_rate_shipping', 'Flat rate shipping', '10', $shipping_taxes, 'flat_rate' );
-		$item           = new WC_Order_Item_Shipping();
-		$item->set_props(
-			array(
-				'method_title' => $rate->label,
-				'method_id'    => $rate->id,
-				'total'        => wc_format_decimal( $rate->cost ),
-				'taxes'        => $rate->taxes,
-			)
-		);
-		foreach ( $rate->get_meta_data() as $key => $value ) {
-			$item->add_meta_data( $key, $value, true );
-		}
-		$order->add_item( $item );
+		Order_Util::add_shipping( $order, $rate );
+
+		Order_Util::set_total( $order, 70.0 );
 
 		// Set payment gateway.
 		$payment_gateways = WC()->payment_gateways->payment_gateways();
 		$order->set_payment_method( $payment_gateways['bacs'] );
-
-		// Set totals.
-		$order->set_shipping_total( 10 );
-		$order->set_discount_total( 0 );
-		$order->set_discount_tax( 0 );
-		$order->set_cart_tax( 0 );
-		$order->set_shipping_tax( 0 );
-		$order->set_total( 70 ); // 5 x 14 variation product
-		$order->save();
+		Order_Util::save( $order );
 
 		$order_rest_controller = new Order();
 
@@ -207,9 +174,9 @@ class BW_Test_Order extends WP_UnitTestCase {
 					'reference'      => '' . Order_Util::get_id( $order ),
 					'status'         => 'on-hold',
 					'shippingMethod' => 'Flat rate shipping',
-					'shippingAmount' => '10',
-					'creationDate'   => $order->get_date_created()->date( 'Y-m-d H:i:s' ),
-					'orderAmount'    => '70.00',
+					'shippingAmount' => 10.0,
+					'creationDate'   => Order_Util::get_date_created( $order ),
+					'orderAmount'    => 70.0,
 					'recipient'      => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',

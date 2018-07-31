@@ -40,7 +40,7 @@ class Product_Util {
 	 * Get WC product price from product id.
 	 *
 	 * @param integer $product_id woocommerce product id.
-	 * @float
+	 * @return float|false
 	 */
 	public static function get_product_price( $product_id ) {
 		if ( isset( $product_id ) && ! empty( $product_id ) ) {
@@ -118,7 +118,7 @@ class Product_Util {
 		if ( method_exists( $product, 'set_weight' ) ) {
 			$product->set_weight( $weight );
 		} else {
-			update_post_meta( $product->id, '_weight', $weight );
+			update_post_meta( self::get_id( $product ), '_weight', $weight );
 		}
 	}
 
@@ -136,19 +136,32 @@ class Product_Util {
 	}
 
 	/**
-	 * Set WC product regular price.
+	 * Set WC product price.
 	 *
 	 * @param WC_Product_Simple $product woocommerce product.
 	 * @param float             $price desired price.
 	 * @void
 	 */
-	public static function set_regular_price( $product, $price ) {
-		if ( method_exists( $product, 'set_regular_price' ) ) {
-			$product->set_regular_price( $price );
-		} else {
-			update_post_meta( $product->id, '_price', $price );
+	public static function set_price( $product, $price ) {
+		if ( method_exists( $product, 'set_price' ) ) {
+			$product->set_price( $price );
 		}
+		update_post_meta( self::get_id( $product ), '_price', $price );
 	}
+
+    /**
+     * Set WC product regular price.
+     *
+     * @param WC_Product_Simple $product woocommerce product.
+     * @param float             $price desired price.
+     * @void
+     */
+    public static function set_regular_price( $product, $price ) {
+        if ( method_exists( $product, 'set_regular_price' ) ) {
+            $product->set_regular_price( $price );
+        }
+        update_post_meta( self::get_id( $product ), '_regular_price', $price );
+    }
 
 	/**
 	 * Get product id.

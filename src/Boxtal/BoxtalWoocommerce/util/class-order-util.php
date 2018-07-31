@@ -40,8 +40,14 @@ class Order_Util {
 			);
 			$item->save();
 			$order->add_item( $item );
+			$order->set_discount_total( 0 );
+			$order->set_discount_tax( 0 );
+			$order->set_cart_tax( 0 );
 		} else {
 			$order->add_product( $product, $quantity );
+			$order->set_total( 0, 'cart_discount' );
+			$order->set_total( 0, 'cart_discount_tax' );
+			$order->set_total( 0, 'tax' );
 		}
 	}
 
@@ -419,6 +425,84 @@ class Order_Util {
 			return $order->get_meta( $key );
 		}
 		return get_post_meta( $order->id, $key, true );
+	}
+
+	/**
+	 * Add shipping rate to WC order.
+	 *
+	 * @param \WC_Order         $order woocommerce order.
+	 * @param \WC_Shipping_Rate $rate shipping rate to add.
+	 * @void
+	 */
+	public static function add_shipping( $order, $rate ) {
+		if ( class_exists( 'WC_Order_Item_Shipping' ) ) {
+			$item = new \WC_Order_Item_Shipping();
+			$item->set_props(
+				array(
+					'method_title' => $rate->label,
+					'method_id'    => $rate->id,
+					'total'        => wc_format_decimal( $rate->cost ),
+					'taxes'        => $rate->taxes,
+				)
+			);
+			foreach ( $rate->get_meta_data() as $key => $value ) {
+				$item->add_meta_data( $key, $value, true );
+			}
+			$order->add_item( $item );
+			$order->set_shipping_total( $rate->cost );
+			$order->set_shipping_tax( 0 );
+		} else {
+			$order->add_shipping( $rate );
+			$order->set_total( $rate->cost, 'shipping' );
+			$order->set_total( $rate->taxes, 'shipping_tax' );
+		}
+	}
+
+	/**
+	 * Get WC order shipping total.
+	 *
+	 * @param \WC_Order $order woocommerce order.
+	 * @return float
+	 */
+	public static function get_shipping_total( $order ) {
+		if ( method_exists( $order, 'get_shipping_total' ) ) {
+			return (float)$order->get_shipping_total();
+		}
+		return (float)$order->get_total_shipping();
+	}
+
+	/**
+	 * Get WC order creation date.
+	 *
+	 * @param \WC_Order $order woocommerce order.
+	 * @return string
+	 */
+	public static function get_date_created( $order ) {
+		if ( method_exists( $order, 'get_date_created' ) ) {
+			return $order->get_date_created()->date( 'Y-m-d H:i:s' );
+		}
+		return $order->order_date;
+	}
+
+	/**
+	 * Get WC order total.
+	 *
+	 * @param \WC_Order $order woocommerce order.
+	 * @return float
+	 */
+	public static function get_total( $order ) {
+		return (float) $order->get_total();
+	}
+
+	/**
+	 * Set WC order total.
+	 *
+	 * @param \WC_Order $order woocommerce order.
+	 * @param float     $total total.
+	 * @void
+	 */
+	public static function set_total( $order, $total ) {
+		$order->set_total( $total );
 	}
 
 	/**

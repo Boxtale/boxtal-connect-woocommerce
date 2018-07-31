@@ -31,3 +31,7 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Start up the WP testing environment.
 require $wp_tests_dir . '/includes/bootstrap.php';
+
+if ( ! isset( $_SERVER['SERVER_NAME'] ) ) {
+	$_SERVER['SERVER_NAME'] = 'localhost';
+}
