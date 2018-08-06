@@ -10,13 +10,9 @@ sudo node_modules/gulp/bin/gulp.js js
 sudo rm -rf src/Boxtal/BoxtalPhp
 sudo mkdir -p src/Boxtal/BoxtalPhp
 sudo cp -R vendor/boxtal/boxtal-php-poc/src/* src/Boxtal/BoxtalPhp
-if [ -f "/var/www/html/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json" ]
-then
-	sudo cp -R /var/www/html/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json /tmp
-else
+if [ ! -f "/var/www/html/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json" ]; then
 	sudo cp -R src/Boxtal/BoxtalPhp/config.json /tmp
 fi
-
 sudo -H -u www-data bash -c "rm -rf /var/www/html/wp-content/plugins/boxtal-woocommerce"
 sudo -H -u www-data bash -c "mkdir -p /var/www/html/wp-content/plugins/boxtal-woocommerce"
 sudo -H -u www-data bash -c "cp -R src/* /var/www/html/wp-content/plugins/boxtal-woocommerce"

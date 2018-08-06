@@ -112,17 +112,17 @@ function boxtal_woocommerce_init_admin_components( $plugin ) {
  * Check PHP version, WC version.
  *
  * @param array $plugin plugin array.
- * @return Environment_Check $object static environment check instance.
+ * @return Environment_Check $environment_check static environment check instance.
  */
 function boxtal_woocommerce_check_environment( $plugin ) {
-	static $object;
+	static $environment_check;
 
-	if ( null !== $object ) {
-		return $object;
+	if ( null !== $environment_check ) {
+		return $environment_check;
 	}
 
-	$object = new Environment_Check( $plugin );
-	return $object;
+	$environment_check = new Environment_Check( $plugin );
+	return $environment_check;
 }
 
 /**
