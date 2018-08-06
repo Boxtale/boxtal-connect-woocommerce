@@ -65,6 +65,19 @@ class Order_Util {
 	}
 
 	/**
+	 * Get order number (display) of WC order.
+	 *
+	 * @param \WC_Order $order woocommerce order.
+	 * @return string $order_number order number
+	 */
+	public static function get_order_number( $order ) {
+		if ( method_exists( $order, 'get_order_number' ) ) {
+			return $order->get_order_number();
+		}
+		return $order->order_number;
+	}
+
+	/**
 	 * Get shipping first name of WC order.
 	 *
 	 * @param \WC_Order $order woocommerce order.
@@ -466,9 +479,9 @@ class Order_Util {
 	 */
 	public static function get_shipping_total( $order ) {
 		if ( method_exists( $order, 'get_shipping_total' ) ) {
-			return (float)$order->get_shipping_total();
+			return (float) $order->get_shipping_total();
 		}
-		return (float)$order->get_total_shipping();
+		return (float) $order->get_total_shipping();
 	}
 
 	/**

@@ -16,7 +16,7 @@ use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
 /**
  * Configuration class.
  *
- * Opens API endpoint to modify configuration.
+ * Opens API endpoints to edit configuration.
  *
  * @class       Configuration
  * @package     Boxtal\BoxtalWoocommerce\Rest_Controller
@@ -179,7 +179,7 @@ class Configuration {
         //phpcs:disable
         $response = $lib->restClient->request(
             RestClient::$GET,
-            $lib->getApiUrl() . '/v2/sellershop/plugin/configuration',
+            $lib->getApiUrl() . '/public/plugin/configuration',
             array(),
             $headers
         );

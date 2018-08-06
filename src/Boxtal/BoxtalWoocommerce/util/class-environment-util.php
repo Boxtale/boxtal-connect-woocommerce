@@ -12,7 +12,7 @@ use Boxtal\BoxtalWoocommerce\Plugin;
 /**
  * Environment util class.
  *
- * Helper to check environment
+ * Helper to check environment.
  *
  * @class       Environment_Util
  * @package     Boxtal\BoxtalWoocommerce\Util

@@ -149,19 +149,19 @@ class Product_Util {
 		update_post_meta( self::get_id( $product ), '_price', $price );
 	}
 
-    /**
-     * Set WC product regular price.
-     *
-     * @param WC_Product_Simple $product woocommerce product.
-     * @param float             $price desired price.
-     * @void
-     */
-    public static function set_regular_price( $product, $price ) {
-        if ( method_exists( $product, 'set_regular_price' ) ) {
-            $product->set_regular_price( $price );
-        }
-        update_post_meta( self::get_id( $product ), '_regular_price', $price );
-    }
+	/**
+	 * Set WC product regular price.
+	 *
+	 * @param WC_Product_Simple $product woocommerce product.
+	 * @param float             $price desired price.
+	 * @void
+	 */
+	public static function set_regular_price( $product, $price ) {
+		if ( method_exists( $product, 'set_regular_price' ) ) {
+			$product->set_regular_price( $price );
+		}
+		update_post_meta( self::get_id( $product ), '_regular_price', $price );
+	}
 
 	/**
 	 * Get product id.

@@ -44,9 +44,12 @@ Your step is to set up your local work environment. Luckily we have included too
 * Clone this repository, then command prompt into it
 * Install [composer](https://getcomposer.org/)
 * Run `composer install`
+* Install [node and npm](https://docs.npmjs.com/getting-started/installing-node#installing-npm-from-the-nodejs-site)
+* Run `npm install`
 * Build your own docker image with this command: `./factory/docker/build.sh <php_version> <wordpress_version> <woocommerce_version>` (if you don't want to spend time debugging the build process, we strongly recommand that you stay inside the versions tested in the `.travis.yml` file)
 * Run the image with: 
 `./factory/docker/run.sh <php_version> <wordpress_version> <woocommerce_version>`
+
 
 That's it! A fully configured wordpress with woocommerce will be running on your localhost. The Boxtal WooCommerce plugin will be preinstalled.
 

@@ -35,7 +35,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 		Product_Util::set_name( $product, 'simple product' );
 		Product_Util::save( $product );
 
-		Order_Util::add_product( $order, Product_Util::get_product(Product_Util::get_id($product)), 4 );
+		Order_Util::add_product( $order, Product_Util::get_product( Product_Util::get_id( $product ) ), 4 );
 		Order_Util::set_shipping_first_name( $order, 'Jon' );
 		Order_Util::set_shipping_last_name( $order, 'Snow' );
 		Order_Util::set_shipping_company( $order, 'GoT' );
@@ -69,7 +69,8 @@ class BW_Test_Order extends WP_UnitTestCase {
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
 				0 => array(
-					'reference'      => '' . Order_Util::get_id( $order ),
+					'id'             => '' . Order_Util::get_id( $order ),
+					'reference'      => '' . Order_Util::get_order_number( $order ),
 					'status'         => 'on-hold',
 					'shippingMethod' => 'Flat rate shipping',
 					'shippingAmount' => 10.0,
@@ -171,7 +172,8 @@ class BW_Test_Order extends WP_UnitTestCase {
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
 				0 => array(
-					'reference'      => '' . Order_Util::get_id( $order ),
+					'id'             => '' . Order_Util::get_id( $order ),
+					'reference'      => '' . Order_Util::get_order_number( $order ),
 					'status'         => 'on-hold',
 					'shippingMethod' => 'Flat rate shipping',
 					'shippingAmount' => 10.0,

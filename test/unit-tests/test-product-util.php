@@ -28,10 +28,10 @@ class BW_Test_Product_Util extends WP_UnitTestCase {
 	 */
 	public function test_get_product_price() {
 		$product = WC_Helper_Product::create_simple_product();
-        Product_Util::set_price( $product, 2.5 );
-        Product_Util::set_regular_price( $product, 2.5 );
-        Product_Util::save( $product );
-        $this->assertEquals( Product_Util::get_product_price( Product_Util::get_id( $product ) ), 2.50 );
+		Product_Util::set_price( $product, 2.5 );
+		Product_Util::set_regular_price( $product, 2.5 );
+		Product_Util::save( $product );
+		$this->assertEquals( Product_Util::get_product_price( Product_Util::get_id( $product ) ), 2.50 );
 	}
 
 	/**

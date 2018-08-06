@@ -44,16 +44,9 @@ RUN /etc/init.d/mysql start \
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo \
  && echo "docker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-RUN curl -sS https://getcomposer.org/installer | \
- php -- --install-dir=/usr/bin/ --filename=composer
-
 ENV HOME=/home/docker
 WORKDIR $HOME
-COPY composer.json $HOME
-COPY composer.lock $HOME
-RUN composer install --no-scripts --no-autoloader --no-dev
 RUN chown -R docker:docker $HOME
-RUN composer dump-autoload --optimize
 
 COPY wp-cli.yml $HOME
 COPY factory/common/install-wp.sh $HOME/factory/common/
@@ -61,33 +54,10 @@ RUN /etc/init.d/apache2 start \
  && /etc/init.d/mysql start \
  && /bin/bash $HOME/factory/common/install-wp.sh $WP_VERSION $WC_VERSION
 
-COPY package.json $HOME
-COPY package-lock.json $HOME
-COPY gulpfile.js $HOME
-RUN npm install
-RUN npm install -g gulp
-RUN npm install -g gulp-cli
-
 COPY . $HOME
 RUN chown -R docker:docker $HOME
-
-RUN cp -R node_modules/leaflet/dist/leaflet.css src/Boxtal/BoxtalWoocommerce/assets/css
-RUN cp -R node_modules/leaflet/dist/leaflet.js src/Boxtal/BoxtalWoocommerce/assets/js
-RUN cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css
-RUN cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
-RUN cp -R node_modules/mapbox-gl-leaflet/leaflet-mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
-
-RUN gulp css
-RUN gulp js
-
-RUN mkdir $HOME/src/Boxtal/BoxtalPhp \
- && cp -R $HOME/vendor/boxtal/boxtal-php-poc/src/* $HOME/src/Boxtal/BoxtalPhp
-
-RUN mkdir -p /var/www/html/wp-content/plugins/boxtal-woocommerce \
- && cp -R $HOME/src/* /var/www/html/wp-content/plugins/boxtal-woocommerce \
- && chown -R www-data:www-data /var/www/html \
- && find /var/www/html -type d -exec chmod 775 {} \; \
- && find /var/www/html -type f -exec chmod 644 {} \;
+RUN chmod -R +x $HOME/factory/common
+RUN $HOME/factory/common/sync.sh
 
 USER docker
 ENTRYPOINT $HOME/factory/docker/entrypoint.sh

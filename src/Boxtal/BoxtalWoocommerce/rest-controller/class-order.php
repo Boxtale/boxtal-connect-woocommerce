@@ -133,7 +133,8 @@ class Order {
 			}
 
 			$result[] = array(
-				'reference'      => '' . Order_Util::get_id( $order ),
+				'id'             => '' . Order_Util::get_id( $order ),
+				'reference'      => '' . Order_Util::get_order_number( $order ),
 				'status'         => Order_Util::get_status( $order ),
 				'shippingMethod' => Misc_Util::not_empty_or_null( $order->get_shipping_method() ),
 				'shippingAmount' => Order_Util::get_shipping_total( $order ),
