@@ -41,21 +41,7 @@ install_wp() {
 	fi
 
 	$HOME/factory/common/install-wp.sh $WP_VERSION $WC_VERSION
-
-	if [[ $RUN_E2E = "1" ]]; then
-        gulp css
-        cp -R $HOME/node_modules/leaflet/dist/leaflet.css $HOME/src/Boxtal/BoxtalWoocommerce/assets/css
-        cp -R $HOME/node_modules/leaflet/dist/leaflet.js $HOME/src/Boxtal/BoxtalWoocommerce/assets/js
-        gulp js
-        mkdir -p $HOME/src/Boxtal/BoxtalPhp
-        cp -R $HOME/vendor/boxtal/boxtal-php-poc/src/* $HOME/src/Boxtal/BoxtalPhp
-        mkdir -p /var/www/html/wp-content/plugins/boxtal-woocommerce
-        cp -R $HOME/src/* /var/www/html/wp-content/plugins/boxtal-woocommerce
-        sudo chown -R www-data:www-data /var/www/html
-        sudo find /var/www/html -type d -exec chmod 775 {} \;
-        sudo find /var/www/html -type f -exec chmod 644 {} \;
-        rm -rf $HOME/src/Boxtal/BoxtalPhp
-    fi
+	$HOME/factory/common/sync.sh $HOME
 
 	if [[ $MULTISITE = "1" ]]; then
 	    $HOME/factory/common/install-multisite.sh
