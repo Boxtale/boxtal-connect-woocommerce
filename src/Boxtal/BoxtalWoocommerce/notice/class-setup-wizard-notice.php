@@ -48,7 +48,7 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 	 * @return string signup link
 	 */
 	public function get_signup_url() {
-		$signup_link = get_option( 'BW_SIGNUP_URL' );
+		$signup_link = get_option( 'BW_ACCOUNT_PAGE_URL' );
 		$admins      = get_super_admins();
 		if ( is_array( $admins ) && count( $admins ) > 0 ) {
 			$admin_user_login = array_shift( $admins );

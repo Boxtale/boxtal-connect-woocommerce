@@ -129,10 +129,6 @@ class Misc_Util {
 			return false;
 		}
 
-		if ( null === Auth_Util::get_maps_token() ) {
-			return false;
-		}
-
 		return true;
 	}
 

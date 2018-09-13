@@ -70,41 +70,12 @@ class Controller {
 	 * @return array tracking
 	 */
 	public function get_order_tracking( $order_id ) {
-		$shipments = $this->get_order_shipments( $order_id );
-
-		if ( null !== $shipments && ! empty( $shipments ) ) {
-			$tracking = array();
-			foreach ( $shipments as $shipment ) {
-				$tracking[] = array(
-					'reference'       => $shipment['carrier_reference'],
-					'tracking_url'    => $shipment['carrier_tracking_url'],
-					'tracking_events' => $this->get_carrier_tracking( $shipment['carrier_reference'] ),
-				);
-			}
-			return $tracking;
-		}
-		return null;
-	}
-
-	/**
-	 * Get order shipments.
-	 *
-	 * @param string $order_id \WC_Order id.
-	 * @return array $shipment mock tracking
-	 */
-	private function get_order_shipments( $order_id ) {
-	    //phpcs:ignore
-		// return get_post_meta($order_id, 'bw_shipments', true);
-		return array(
-			array(
-				'carrier_reference'    => 'FRTXXXX',
-				'carrier_tracking_url' => 'http://anyurl',
-			),
-			array(
-				'carrier_reference'    => 'GRVVVV',
-				'carrier_tracking_url' => 'http://anyurl',
-			),
-		);
+        $lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
+        $response = $lib->getOrderTracking( $order_id );
+        if ( $response->isError() ) {
+            return null;
+        }
+        return $response->response;
 	}
 
 	/**

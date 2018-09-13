@@ -145,7 +145,7 @@
             const self = this;
             let info ="<div class='bw-marker-popup'><b>"+point.label+'</b><br/>'+
                 '<a href="#" class="bw-parcel-point-button" data-code="'+point.code+'" data-label="'+point.label+'" data-operator="'+point.operator+'"><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
-                point.address.street+", "+point.address.postcode+" "+point.address.city+"<br/>"+"<b>" + translations.text.openingHours +
+                point.address.street+", "+point.address.postalCode+" "+point.address.city+"<br/>"+"<b>" + translations.text.openingHours +
                 "</b><br/>"+'<div class="bw-parcel-point-schedule">';
 
             for (let i = 0, l = point.schedule.length; i < l; i++) {
@@ -242,7 +242,7 @@
                 html += '<td><img src="' + imgDir + 'markers/'+(i+1)+'.png" />';
                 html += '<div class="bw-parcel-point-title"><a class="bw-show-info-' + point.code + '">' + point.label + '</a></div><br/>';
                 html += point.address.street + '<br/>';
-                html += point.address.postcode + ' ' + point.address.city + '<br/>';
+                html += point.address.postalCode + ' ' + point.address.city + '<br/>';
                 html += '<a class="bw-parcel-point-button" data-code="'+point.code+'" data-label="'+point.label+'" data-operator="'+point.operator+'"><b>'+translations.text.chooseParcelPoint+'</b></a>';
                 html += '</td>';
                 html += '</tr>';

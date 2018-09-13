@@ -217,7 +217,7 @@ class Auth_Util {
 			if ( false === $token ) {
 				$lib = new ApiClient( self::get_access_key(), self::get_secret_key() );
                 //phpcs:ignore
-                $response = $lib->restClient->request( RestClient::$POST, get_option('BW_TOKEN_URL') );
+                $response = $lib->restClient->request( RestClient::$POST, get_option('BW_MAP_TOKEN_URL') );
 
 				if ( ! $response->isError() && property_exists( $response->response, 'accessToken' ) ) {
 					WC()->session->set( 'bw_token', $response->response->accessToken );

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal woocommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-26 09:32+0200\n"
-"PO-Revision-Date: 2018-07-26 09:37+0200\n"
+"POT-Creation-Date: 2018-09-13 16:24+0200\n"
+"PO-Revision-Date: 2018-09-13 16:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -34,25 +34,39 @@ msgstr "Ne plus afficher ce message"
 msgid "Order tracking"
 msgstr "Suivi de commande"
 
-#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:17
-msgid "No tracking info available yet"
-msgstr "Pas d'information de suivi disponible"
-
-#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:22
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:18
 msgid "Your order has been sent in 1 shipment."
 msgstr "Votre commande a été expédiée en 1 envoi."
 
-#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:25
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:21
 #, php-format
 msgid "Your order has been sent in %s shipments."
 msgstr "Votre commande a été expédiée en %s envois."
 
-#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:30
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:26
 #, php-format
 msgid "Shipment reference %s"
 msgstr "Référence d'expédition %s"
 
-#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:42
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:28
+msgid "Your shipment has 1 package."
+msgstr "Votre envoi est composé d'1 colis."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:31
+#, php-format
+msgid "Your shipment has %s packages."
+msgstr "Votre envoi est composé de %s colis."
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:34
+#, php-format
+msgid "Package reference %s:"
+msgstr "Colis réf. %s :"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:41
+msgid "Y-m-d H:i:s"
+msgstr "d-m-Y H:i:s"
+
+#: Boxtal/BoxtalWoocommerce/assets/views/html-order-tracking.php:47
 msgid "No tracking event for this shipment yet."
 msgstr "Pas d'événement de suivi disponible pour cet envoi."
 
@@ -102,7 +116,7 @@ msgstr ""
 msgid "Connect my shop"
 msgstr "Je connecte ma boutique"
 
-#: Boxtal/BoxtalWoocommerce/rest-controller/class-configuration.php:137
+#: Boxtal/BoxtalWoocommerce/rest-controller/class-configuration.php:165
 msgid ""
 "There's been a change in Boxtal parcel point operator list, we've adapted "
 "your shipping method configuration. Please check that everything is in order."
@@ -111,7 +125,7 @@ msgstr ""
 "configuration de vos méthodes de livraison. Veuillez vérifier que tout est "
 "en ordre."
 
-#: Boxtal/BoxtalWoocommerce/rest-controller/class-configuration.php:154
+#: Boxtal/BoxtalWoocommerce/rest-controller/class-configuration.php:184
 msgid ""
 "There's been a change in Boxtal parcel point operator list, you can add the "
 "extra parcel point operator(s) to your shipping method configuration."
@@ -134,7 +148,7 @@ msgstr ""
 "plusieurs transporteurs."
 
 #: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:80
-#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:145
+#: Boxtal/BoxtalWoocommerce/shipping-method/parcel-point/class-controller.php:142
 msgid "Unable to find carrier"
 msgstr "Impossible de trouver le transporteur"
 
@@ -230,6 +244,9 @@ msgid ""
 msgstr ""
 "Boxtal Woocommerce - La version minimale de Woocommerce requise pour ce "
 "plugin est %1$s. Vous utilisez la version %2$s."
+
+#~ msgid "No tracking info available yet"
+#~ msgstr "Pas d'information de suivi disponible"
 
 #~ msgid ""
 #~ "There was a problem initializing the Boxtal WooCommerce plugin. You "

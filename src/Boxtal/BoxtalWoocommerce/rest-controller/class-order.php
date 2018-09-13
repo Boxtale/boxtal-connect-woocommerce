@@ -46,18 +46,6 @@ class Order {
 		add_action(
 			'rest_api_init', function() {
 				register_rest_route(
-					'boxtal-woocommerce/v1', '/order/(?P<order_id>[*]+)', array(
-						'methods'             => 'PATCH',
-						'callback'            => array( $this, 'update_order_handler' ),
-						'permission_callback' => array( $this, 'authenticate' ),
-					)
-				);
-			}
-		);
-
-		add_action(
-			'rest_api_init', function() {
-				register_rest_route(
 					'boxtal-woocommerce/v1', '/order/(?P<order_id>[*]+)/tracking', array(
 						'methods'             => 'POST',
 						'callback'            => array( $this, 'tracking_event_handler' ),
@@ -146,27 +134,6 @@ class Order {
 			);
 		}
 		return $result;
-	}
-
-	/**
-	 * Update order callback.
-	 *
-	 * @param WP_REST_Request $request request.
-	 * @void
-	 */
-	public function update_order_handler( $request ) {
-
-		$body = Auth_Util::decrypt_body( $request->get_body() );
-
-		if ( ! is_array( $body ) || ! isset( $request['order_id'] ) ) {
-			Api_Util::send_api_response( 400 );
-		}
-
-		if ( count( $body ) > 0 ) {
-			update_post_meta( $request['order_id'], 'bw_shipments', $body );
-		}
-
-		Api_Util::send_api_response( 200 );
 	}
 
 	/**

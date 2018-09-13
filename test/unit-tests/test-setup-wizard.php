@@ -19,7 +19,7 @@ class BW_Test_Setup_Wizard extends WP_UnitTestCase {
 	 */
 	public function test_get_signup_url() {
 		$setup_wizard_notice = new Setup_Wizard_Notice( 'setup-wizard' );
-		update_option( 'BW_SIGNUP_URL', 'http://anyurl' );
+		update_option( 'BW_ACCOUNT_PAGE_URL', 'http://anyurl' );
 		$admins = get_super_admins();
 		if ( is_array( $admins ) && count( $admins ) > 0 ) {
 			$admin_user_login = array_shift( $admins );

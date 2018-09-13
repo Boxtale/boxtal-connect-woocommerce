@@ -12,11 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="bw-tracking">
-	<?php if ( null === $tracking ) : ?>
-
-		<p><?php esc_html_e( 'No tracking info available yet', 'boxtal-woocommerce' ); ?></p>
-
-	<?php else : ?>
+	<?php if ( null !== $tracking ) : ?>
 
 		<?php if ( 1 === count( $tracking ) ) : ?>
 			<p><?php esc_html_e( 'Your order has been sent in 1 shipment.', 'boxtal-woocommerce' ); ?></p>
@@ -27,20 +23,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<?php foreach ( $tracking as $shipment ) : ?>
 			<?php //phpcs:ignore ?>
-			<h4><?php echo sprintf( __( 'Shipment reference %s', 'boxtal-woocommerce' ), '<a href="' . esc_url( $shipment['tracking_url'] ) . '" target="_blank">' . $shipment['reference'] . '</a>' ); ?></h4>
-			<?php if ( isset( $shipment['tracking_events'] ) && is_array( $shipment['tracking_events'] ) && count( $shipment['tracking_events'] ) > 0 ) : ?>
+			<h4><?php echo sprintf( __( 'Shipment reference %s', 'boxtal-woocommerce' ), '<a href="' . esc_url( "anyurl" ) . '" target="_blank">' . $shipment->carrierReference . '</a>' ); ?></h4>
+            <?php if ( 1 === count( $shipment->packages ) ) : ?>
+                <p><?php esc_html_e( 'Your shipment has 1 package.', 'boxtal-woocommerce' ); ?></p>
+            <?php else : ?>
+                <?php /* translators: 1) int number of shipments */ ?>
+                <p><?php echo esc_html( sprintf( __( 'Your shipment has %s packages.', 'boxtal-woocommerce' ), count( $shipment->packages ) ) ); ?></p>
+            <?php endif; ?>
+            <?php foreach ( $shipment->packages as $package ) : ?>
+                <p><?php echo sprintf( __( 'Package reference %s:', 'boxtal-woocommerce' ), $package->packageReference ); ?></p>
+                <?php if ( is_array( $package->trackingEvents ) && count( $package->trackingEvents ) > 0 ) : ?>
 
-				<?php foreach ( $shipment['tracking_events'] as $event ) : ?>
-					<p>
-						<?php
-							echo esc_html( $event->date . ' ' . $event->message );
-						?>
-					</p>
-				<?php endforeach; ?>
+                    <?php foreach ( $package->trackingEvents as $event ) : ?>
+                        <p>
+                            <?php
+                                $date = new DateTime($event->date);
+                                echo esc_html( $date->format(__('Y-m-d H:i:s', 'boxtal-woocommerce')) . ' ' . $event->message );
+                            ?>
+                        </p>
+                    <?php endforeach; ?>
 
-			<?php else : ?>
-				<p><?php esc_html_e( 'No tracking event for this shipment yet.', 'boxtal-woocommerce' ); ?></p>
-			<?php endif; ?>
+                <?php else : ?>
+                    <p><?php esc_html_e( 'No tracking event for this shipment yet.', 'boxtal-woocommerce' ); ?></p>
+                <?php endif; ?>
+                <br/>
+            <?php endforeach; ?>
 		<?php endforeach; ?>
 
 	<?php endif; ?>

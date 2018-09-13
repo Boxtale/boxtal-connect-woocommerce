@@ -104,95 +104,179 @@ class Configuration {
 	}
 
 	/**
-	 * Parse configuration.
-	 *
-	 * @param object $body body.
-	 * @return boolean
-	 */
-	private static function parse_configuration( $body ) {
-		if ( is_object( $body ) && property_exists( $body, 'mapsEndpointUrl' ) && property_exists( $body, 'mapsTokenUrl' )
-			&& property_exists( $body, 'signupPageUrl' ) && property_exists( $body, 'parcelPointOperators' ) ) {
-            //phpcs:ignore
-            update_option('BW_MAP_URL', $body->mapsEndpointUrl);
-            //phpcs:ignore
-            update_option('BW_TOKEN_URL', $body->mapsTokenUrl);
-            //phpcs:ignore
-            update_option('BW_SIGNUP_URL', $body->signupPageUrl);
-
-			$stored_operators = get_option( 'BW_PP_OPERATORS' );
-			if ( is_array( $stored_operators ) ) {
-				$removed_operators = $stored_operators;
-                //phpcs:ignore
-				foreach ( $body->parcelPointOperators as $new_operator ) {
-					foreach ( $stored_operators as $key => $old_operator ) {
-						if ( $new_operator->code === $old_operator->code ) {
-							unset( $removed_operators[ $key ] );
-						}
-					}
-				}
-
-				if ( count( $removed_operators ) > 0 ) {
-					Notice_Controller::add_notice(
-						Notice_Controller::$custom, array(
-							'status'  => 'warning',
-							'message' => __( 'There\'s been a change in Boxtal parcel point operator list, we\'ve adapted your shipping method configuration. Please check that everything is in order.', 'boxtal-woocommerce' ),
-						)
-					);
-				}
-
-                //phpcs:ignore
-				$added_operators = $body->parcelPointOperators;
-                //phpcs:ignore
-				foreach ( $body->parcelPointOperators as $new_operator ) {
-					foreach ( $stored_operators as $key => $old_operator ) {
-						if ( $new_operator->code === $old_operator->code ) {
-							unset( $added_operators[ $key ] );
-						}
-					}
-				}
-				if ( count( $added_operators ) > 0 ) {
-					Notice_Controller::add_notice(
-						Notice_Controller::$custom, array(
-							'status'  => 'info',
-							'message' => __( 'There\'s been a change in Boxtal parcel point operator list, you can add the extra parcel point operator(s) to your shipping method configuration.', 'boxtal-woocommerce' ),
-						)
-					);
-				}
-			}
-            //phpcs:ignore
-            update_option('BW_PP_OPERATORS', $body->parcelPointOperators);
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Get configuration.
 	 *
 	 * @return boolean
 	 */
 	public static function get_configuration() {
-		$lib     = new ApiClient( null, null );
-		$headers = array(
-			'Accept-Language' => get_locale(),
-		);
+	    return self::get_parcel_point_operators() && self::get_map_configuration() && self::get_website_configuration();
+	}
+
+    /**
+     * Get parcel point operators.
+     *
+     * @return boolean
+     */
+    public static function get_parcel_point_operators() {
+        $lib     = new ApiClient( null, null );
+
         //phpcs:disable
         $response = $lib->restClient->request(
             RestClient::$GET,
-            $lib->getApiUrl() . '/public/plugin/configuration',
+            $lib->getApiUrl() . '/v2/parcel-point-operator',
+            array()
+        );
+        //phpcs:enable
+
+        if ( ! $response->isError() ) {
+            if ( self::parse_parcel_point_operators( $response->response ) ) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Parse parcel point operators response.
+     *
+     * @param object $body body.
+     * @return boolean
+     */
+    private static function parse_parcel_point_operators( $body ) {
+        if ( is_object( $body ) && property_exists( $body, 'operators' ) ) {
+
+            $stored_operators = get_option( 'BW_PP_OPERATORS' );
+            if ( is_array( $stored_operators ) ) {
+                $removed_operators = $stored_operators;
+                //phpcs:ignore
+                foreach ( $body->operators as $new_operator ) {
+                    foreach ( $stored_operators as $key => $old_operator ) {
+                        if ( $new_operator->code === $old_operator->code ) {
+                            unset( $removed_operators[ $key ] );
+                        }
+                    }
+                }
+
+                if ( count( $removed_operators ) > 0 ) {
+                    Notice_Controller::add_notice(
+                        Notice_Controller::$custom, array(
+                            'status'  => 'warning',
+                            'message' => __( 'There\'s been a change in Boxtal parcel point operator list, we\'ve adapted your shipping method configuration. Please check that everything is in order.', 'boxtal-woocommerce' ),
+                        )
+                    );
+                }
+
+                //phpcs:ignore
+                $added_operators = $body->operators;
+                //phpcs:ignore
+                foreach ( $body->operators as $new_operator ) {
+                    foreach ( $stored_operators as $key => $old_operator ) {
+                        if ( $new_operator->code === $old_operator->code ) {
+                            unset( $added_operators[ $key ] );
+                        }
+                    }
+                }
+                if ( count( $added_operators ) > 0 ) {
+                    Notice_Controller::add_notice(
+                        Notice_Controller::$custom, array(
+                            'status'  => 'info',
+                            'message' => __( 'There\'s been a change in Boxtal parcel point operator list, you can add the extra parcel point operator(s) to your shipping method configuration.', 'boxtal-woocommerce' ),
+                        )
+                    );
+                }
+            }
+            //phpcs:ignore
+            update_option('BW_PP_OPERATORS', $body->operators);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get map configuration.
+     *
+     * @return boolean
+     */
+    public static function get_map_configuration() {
+        $lib     = new ApiClient( null, null );
+
+        //phpcs:disable
+        $response = $lib->restClient->request(
+            RestClient::$GET,
+            $lib->getApiUrl() . '/v2/maps-configuration',
+            array()
+        );
+        //phpcs:enable
+
+        if ( ! $response->isError() ) {
+            if ( self::parse_map_configuration( $response->response ) ) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Parse map configuration.
+     *
+     * @param object $body body.
+     * @return boolean
+     */
+    private static function parse_map_configuration( $body ) {
+        if ( is_object( $body ) && property_exists( $body, 'bootstrapUrl' ) && property_exists( $body, 'tokenUrl' ) ) {
+            //phpcs:ignore
+            update_option('BW_MAP_BOOTSTRAP_URL', $body->bootstrapUrl);
+            //phpcs:ignore
+            update_option('BW_MAP_TOKEN_URL', $body->tokenUrl);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get website configuration.
+     *
+     * @return boolean
+     */
+    public static function get_website_configuration() {
+        $lib     = new ApiClient( null, null );
+        $headers = array(
+            'Accept-Language' => get_locale(),
+        );
+        //phpcs:disable
+        $response = $lib->restClient->request(
+            RestClient::$GET,
+            $lib->getApiUrl() . '/v2/website-configuration',
             array(),
             $headers
         );
         //phpcs:enable
 
-		if ( ! $response->isError() ) {
-			if ( self::parse_configuration( $response->response ) ) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
+        if ( ! $response->isError() ) {
+            if ( self::parse_website_configuration( $response->response ) ) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Parse website configuration.
+     *
+     * @param object $body body.
+     * @return boolean
+     */
+    private static function parse_website_configuration( $body ) {
+        if ( is_object( $body ) && property_exists( $body, 'accountPageUrl' ) ) {
+            //phpcs:ignore
+            update_option('BW_ACCOUNT_PAGE_URL', $body->accountPageUrl);
+            return true;
+        }
+        return false;
+    }
 
 	/**
 	 * Delete configuration.
@@ -204,9 +288,9 @@ class Configuration {
 
 		delete_option( 'BW_ACCESS_KEY' );
 		delete_option( 'BW_SECRET_KEY' );
-		delete_option( 'BW_MAP_URL' );
-		delete_option( 'BW_TOKEN_URL' );
-		delete_option( 'BW_SIGNUP_URL' );
+		delete_option( 'BW_MAP_BOOTSTRAP_URL' );
+		delete_option( 'BW_MAP_TOKEN_URL' );
+		delete_option( 'BW_ACCOUNT_PAGE_URL' );
 		delete_option( 'BW_PP_OPERATORS' );
 		delete_option( 'BW_TRACKING_EVENT' );
 		delete_option( 'BW_NOTICES' );
