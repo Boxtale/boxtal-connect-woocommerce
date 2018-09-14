@@ -217,7 +217,8 @@ class BW_Test_Order_Util extends WP_UnitTestCase {
 	 * Test get import status list.
 	 */
 	public function test_get_import_status_list() {
-		$this->assertTrue( in_array( 'on-hold', Order_Util::get_import_status_list(), true ) );
-		$this->assertTrue( in_array( 'processing', Order_Util::get_import_status_list(), true ) );
+		$statuses = Order_Util::get_import_status_list();
+		$this->assertTrue( isset( $statuses['on-hold'] ) );
+		$this->assertTrue( isset( $statuses['processing'] ) );
 	}
 }

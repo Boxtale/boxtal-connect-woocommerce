@@ -558,9 +558,9 @@ class Order_Util {
 		$unauthorized_status = array( 'wc-pending', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed' );
 		foreach ( wc_get_order_statuses() as $order_status => $translation ) {
 			if ( ! in_array( $order_status, $unauthorized_status, true ) ) {
-				$statuses[] = str_replace( 'wc-', '', $order_status );
+				$statuses[ str_replace( 'wc-', '', $order_status ) ] = $translation;
 			}
-		};
+		}
 		return $statuses;
 	}
 }

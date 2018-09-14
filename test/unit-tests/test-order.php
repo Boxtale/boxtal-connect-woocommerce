@@ -69,14 +69,24 @@ class BW_Test_Order extends WP_UnitTestCase {
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
 				0 => array(
-					'id'             => '' . Order_Util::get_id( $order ),
-					'reference'      => '' . Order_Util::get_order_number( $order ),
-					'status'         => 'on-hold',
-					'shippingMethod' => 'Flat rate shipping',
-					'shippingAmount' => 10.0,
-					'creationDate'   => Order_Util::get_date_created( $order ),
-					'orderAmount'    => 60.0,
-					'recipient'      => array(
+					'internalReference' => '' . Order_Util::get_id( $order ),
+					'reference'         => '' . Order_Util::get_order_number( $order ),
+					'status'            => array(
+						'key'          => 'on-hold',
+						'translations' => array(
+							'en_US' => 'On hold',
+						),
+					),
+					'shippingMethod'    => array(
+						'key'          => 'flat_rate_shipping',
+						'translations' => array(
+							'en_US' => 'Flat rate shipping',
+						),
+					),
+					'shippingAmount'    => 10.0,
+					'creationDate'      => Order_Util::get_date_created( $order ),
+					'orderAmount'       => 60.0,
+					'recipient'         => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',
 						'company'      => 'GoT',
@@ -89,15 +99,17 @@ class BW_Test_Order extends WP_UnitTestCase {
 						'phone'        => '0612341234',
 						'email'        => 'jsnow@boxtal.com',
 					),
-					'products'       => array(
+					'products'          => array(
 						0 => array(
 							'weight'      => 2.5,
 							'quantity'    => 4,
 							'price'       => 15.0,
-							'description' => 'simple product',
+							'description' => array(
+								'en_US' => 'simple product',
+							),
 						),
 					),
-					'parcelPoint'    => array(
+					'parcelPoint'       => array(
 						'code'     => 'XXXXXX',
 						'operator' => 'MONR',
 					),
@@ -172,14 +184,24 @@ class BW_Test_Order extends WP_UnitTestCase {
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
 				0 => array(
-					'id'             => '' . Order_Util::get_id( $order ),
-					'reference'      => '' . Order_Util::get_order_number( $order ),
-					'status'         => 'on-hold',
-					'shippingMethod' => 'Flat rate shipping',
-					'shippingAmount' => 10.0,
-					'creationDate'   => Order_Util::get_date_created( $order ),
-					'orderAmount'    => 70.0,
-					'recipient'      => array(
+					'internalReference' => '' . Order_Util::get_id( $order ),
+					'reference'         => '' . Order_Util::get_order_number( $order ),
+					'status'            => array(
+						'key'          => 'on-hold',
+						'translations' => array(
+							'en_US' => 'On hold',
+						),
+					),
+					'shippingMethod'    => array(
+						'key'          => 'flat_rate_shipping',
+						'translations' => array(
+							'en_US' => 'Flat rate shipping',
+						),
+					),
+					'shippingAmount'    => 10.0,
+					'creationDate'      => Order_Util::get_date_created( $order ),
+					'orderAmount'       => 70.0,
+					'recipient'         => array(
 						'firstname'    => 'Jon',
 						'lastname'     => 'Snow',
 						'company'      => 'GoT',
@@ -192,15 +214,17 @@ class BW_Test_Order extends WP_UnitTestCase {
 						'phone'        => '0612341234',
 						'email'        => 'jsnow@boxtal.com',
 					),
-					'products'       => array(
+					'products'          => array(
 						0 => array(
 							'weight'      => 6.0,
 							'quantity'    => 5,
 							'price'       => 14.0,
-							'description' => $product_description,
+							'description' => array(
+								'en_US' => $product_description,
+							),
 						),
 					),
-					'parcelPoint'    => array(
+					'parcelPoint'       => array(
 						'code'     => 'XXXXXX',
 						'operator' => 'MONR',
 					),

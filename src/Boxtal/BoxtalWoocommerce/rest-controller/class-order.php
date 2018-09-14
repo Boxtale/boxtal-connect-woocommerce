@@ -82,9 +82,10 @@ class Order {
 	 * @return array $result
 	 */
 	public function get_orders() {
-		$result   = array();
-		$statuses = Order_Util::get_import_status_list();
-		foreach ( wc_get_orders( array( 'status' => $statuses ) ) as $order ) {
+		$result           = array();
+		$statuses         = Order_Util::get_import_status_list();
+		$current_language = get_locale();
+		foreach ( wc_get_orders( array( 'status' => array_keys( $statuses ) ) ) as $order ) {
 			$recipient = array(
 				'firstname'    => Misc_Util::not_empty_or_null( Order_Util::get_shipping_first_name( $order ) ),
 				'lastname'     => Misc_Util::not_empty_or_null( Order_Util::get_shipping_last_name( $order ) ),
@@ -106,7 +107,9 @@ class Order {
 				$product['weight']      = false !== Product_Util::get_product_weight( $product_id ) ? (float) Product_Util::get_product_weight( $product_id ) : null;
 				$product['quantity']    = (int) $item['qty'];
 				$product['price']       = Product_Util::get_product_price( $product_id );
-				$product['description'] = esc_html( Product_Util::get_product_description( $item ) );
+				$product['description'] = array(
+					$current_language => esc_html( Product_Util::get_product_description( $item ) ),
+				);
 				$products[]             = $product;
 			}
 
@@ -120,17 +123,30 @@ class Order {
 				);
 			}
 
-			$result[] = array(
-				'id'             => '' . Order_Util::get_id( $order ),
-				'reference'      => '' . Order_Util::get_order_number( $order ),
-				'status'         => Order_Util::get_status( $order ),
-				'shippingMethod' => Misc_Util::not_empty_or_null( $order->get_shipping_method() ),
-				'shippingAmount' => Order_Util::get_shipping_total( $order ),
-				'creationDate'   => Order_Util::get_date_created( $order ),
-				'orderAmount'    => Order_Util::get_total( $order ),
-				'recipient'      => $recipient,
-				'products'       => $products,
-				'parcelPoint'    => $parcel_point,
+			$status           = Order_Util::get_status( $order );
+			$shipping_methods = $order->get_shipping_methods();
+			$shipping_method  = ! empty( $shipping_methods ) ? array_shift( $shipping_methods ) : null;
+			$result[]         = array(
+				'internalReference' => '' . Order_Util::get_id( $order ),
+				'reference'         => '' . Order_Util::get_order_number( $order ),
+				'status'            => array(
+					'key'          => $status,
+					'translations' => array(
+						$current_language => isset( $statuses[ $status ] ) ? $statuses[ $status ] : $status,
+					),
+				),
+				'shippingMethod'    => is_object( $shipping_method ) ? array(
+					'key'          => $shipping_method->get_method_id(),
+					'translations' => array(
+						$current_language => $shipping_method->get_name(),
+					),
+				) : null,
+				'shippingAmount'    => Order_Util::get_shipping_total( $order ),
+				'creationDate'      => Order_Util::get_date_created( $order ),
+				'orderAmount'       => Order_Util::get_total( $order ),
+				'recipient'         => $recipient,
+				'products'          => $products,
+				'parcelPoint'       => $parcel_point,
 			);
 		}
 		return $result;

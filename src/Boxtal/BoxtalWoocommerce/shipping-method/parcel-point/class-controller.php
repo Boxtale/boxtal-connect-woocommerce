@@ -60,7 +60,7 @@ class Controller {
 	public function get_map_url() {
 		$token = Auth_Util::get_maps_token();
 		if ( null !== $token ) {
-			return str_replace('${token}', $token, get_option( 'BW_MAP_BOOTSTRAP_URL' ) );
+			return str_replace( '${token}', $token, get_option( 'BW_MAP_BOOTSTRAP_URL' ) );
 		}
 		return null;
 	}
@@ -71,11 +71,11 @@ class Controller {
 	 * @void
 	 */
 	public function parcel_point_scripts() {
-        if ( ! Misc_Util::is_checkout_page() ) {
-            return;
-        }
+		if ( ! Misc_Util::is_checkout_page() ) {
+			return;
+		}
 
-        $translations = array(
+		$translations = array(
 			'error' => array(
 				'carrierNotFound' => __( 'Unable to find carrier', 'boxtal-woocommerce' ),
 				'addressNotFound' => __( 'Could not find address', 'boxtal-woocommerce' ),
@@ -112,7 +112,7 @@ class Controller {
 	 * @void
 	 */
 	public function parcel_point_styles() {
-        wp_enqueue_style( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/mapbox-gl.css', array(), $this->plugin_version );
+		wp_enqueue_style( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/mapbox-gl.css', array(), $this->plugin_version );
 		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalWoocommerce/assets/css/parcel-point.css', array(), $this->plugin_version );
 	}
 
@@ -223,8 +223,8 @@ class Controller {
 		$response = $lib->getParcelPoints( $address, $operators );
 
 		if ( ! $response->isError() && property_exists( $response->response, 'parcelPoints' ) && is_array( $response->response->parcelPoints ) && count( $response->response->parcelPoints ) > 0 ) {
-            WC()->session->set('bw_parcel_points_' . Shipping_Rate_Util::get_clean_id($method->id), $response->response);
-            return true;
+			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), $response->response );
+			return true;
 		}
 		return false;
 	}

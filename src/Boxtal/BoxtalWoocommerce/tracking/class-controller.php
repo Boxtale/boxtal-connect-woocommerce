@@ -70,23 +70,8 @@ class Controller {
 	 * @return array tracking
 	 */
 	public function get_order_tracking( $order_id ) {
-        $lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
-        $response = $lib->getOrderTracking( $order_id );
-        if ( $response->isError() ) {
-            return null;
-        }
-        return $response->response;
-	}
-
-	/**
-	 * Get carrier tracking.
-	 *
-	 * @param string $carrier_reference carrier reference.
-	 * @return array tracking events
-	 */
-	private function get_carrier_tracking( $carrier_reference ) {
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
-		$response = $lib->getTracking( $carrier_reference );
+		$response = $lib->getOrderTracking( $order_id );
 		if ( $response->isError() ) {
 			return null;
 		}
