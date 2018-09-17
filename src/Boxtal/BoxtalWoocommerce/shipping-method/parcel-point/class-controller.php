@@ -263,12 +263,15 @@ class Controller {
     /**
      * Reset chosen parcel point.
      *
-     * @param string $id shipping rate id.
      * @void
      */
-    public static function reset_chosen_point( $id ) {
+    public static function reset_chosen_points() {
         if ( WC()->session ) {
-            WC()->session->set( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $id ), null );
+            foreach (WC()->session->get_session_data() as $key => $value) {
+                if (-1 !== strpos('bw_chosen_parcel_point_', $key)) {
+                    WC()->session->set( $key, null );
+                }
+            }
         }
     }
 

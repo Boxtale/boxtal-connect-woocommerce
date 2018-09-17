@@ -48,7 +48,7 @@ class Checkout {
 					if ( null === $point ) {
 						$point = $closest_point;
 					} else {
-                        Controller::reset_chosen_point($carrier);
+                        Controller::reset_chosen_points();
                     }
 
 					$order = new \WC_Order( $order_id );
