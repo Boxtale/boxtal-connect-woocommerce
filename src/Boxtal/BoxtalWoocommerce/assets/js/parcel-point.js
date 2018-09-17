@@ -151,13 +151,15 @@
             for (let i = 0, l = point.schedule.length; i < l; i++) {
                 const day = point.schedule[i];
 
-                info += '<span class="bw-parcel-point-day">'+translations.day[day.weekday]+'</span>';
+                if (day.timePeriods.length > 0) {
+                    info += '<span class="bw-parcel-point-day">'+translations.day[day.weekday]+'</span>';
 
-                for (let j = 0, t = day.timePeriods.length; j < t; j++) {
-                    const timePeriod = day.timePeriods[j];
-                    info += self.formatHours(timePeriod.openingTime) +'-'+self.formatHours(timePeriod.closingTime);
+                    for (let j = 0, t = day.timePeriods.length; j < t; j++) {
+                        const timePeriod = day.timePeriods[j];
+                        info += ' ' + self.formatHours(timePeriod.openingTime) +'-'+self.formatHours(timePeriod.closingTime);
+                    }
+                    info += '<br/>';
                 }
-                info += '<br/>';
             }
             info += '</div>';
 
