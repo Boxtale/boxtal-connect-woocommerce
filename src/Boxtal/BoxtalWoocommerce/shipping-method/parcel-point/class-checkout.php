@@ -47,7 +47,9 @@ class Checkout {
 					$point = Controller::get_chosen_point( $carrier );
 					if ( null === $point ) {
 						$point = $closest_point;
-					}
+					} else {
+                        Controller::reset_chosen_point($carrier);
+                    }
 
 					$order = new \WC_Order( $order_id );
 					Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->code );

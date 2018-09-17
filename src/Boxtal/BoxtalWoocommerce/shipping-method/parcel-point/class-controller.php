@@ -260,6 +260,18 @@ class Controller {
 		return null;
 	}
 
+    /**
+     * Reset chosen parcel point.
+     *
+     * @param string $id shipping rate id.
+     * @void
+     */
+    public static function reset_chosen_point( $id ) {
+        if ( WC()->session ) {
+            WC()->session->set( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $id ), null );
+        }
+    }
+
 	/**
 	 * Get parcel points.
 	 *
