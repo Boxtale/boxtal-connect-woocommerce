@@ -18,9 +18,11 @@ else
     sh -e /etc/init.d/xvfb start
  	sleep 3
 	npm test
+	echo $?
 	if [ ${MULTISITE} = "1" ]; then
         export BASE_URL="http://localhost:80/alternate"
         npm test
+        echo $?
     fi
 fi
 
