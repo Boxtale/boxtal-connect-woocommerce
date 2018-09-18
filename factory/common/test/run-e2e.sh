@@ -19,12 +19,13 @@ else
  	sleep 3
 	npm test
 	TEST1=$?
+	if [ ${TEST1} = "1" ]; then
+	    exit 1
+	fi
 	if [ ${MULTISITE} = "1" ]; then
         export BASE_URL="http://localhost:80/alternate"
         npm test
-        echo $?
-        exit ${TEST1} && $?
+        exit $?
     fi
-    exit ${TEST1}
 fi
 
