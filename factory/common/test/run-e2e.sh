@@ -27,5 +27,6 @@ else
         npm test
         exit $?
     fi
+    exit 0
 fi
 
