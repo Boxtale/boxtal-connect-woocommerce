@@ -22,6 +22,7 @@ else
 	if [ ${TEST1} = "1" ]; then
 	    exit 1
 	fi
+	echo "result of first tests " ${TEST1}
 	if [ ${MULTISITE} = "1" ]; then
         export BASE_URL="http://localhost:80/alternate"
         npm test
