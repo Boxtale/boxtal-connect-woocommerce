@@ -30,6 +30,7 @@ class Admin_Order_Page {
 	public function __construct( $plugin ) {
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
+        $this->tracking = null;
 	}
 
 	/**
@@ -55,6 +56,16 @@ class Admin_Order_Page {
 	 * @void
 	 */
 	public function add_tracking_to_admin_order_page() {
+        $controller = new Controller(
+            array(
+                'url'     => $this->plugin_url,
+                'version' => $this->plugin_version,
+            )
+        );
+        $this->tracking   = $controller->get_order_tracking( Order_Util::get_id( Order_Util::admin_get_order() ) );
+        if (null === $this->tracking) {
+            return;
+        }
 		if ( function_exists( 'wc_get_order_types' ) ) {
 			foreach ( wc_get_order_types( 'order-meta-boxes' ) as $type ) {
 				add_meta_box( 'boxtal-order-tracking', __( 'Boxtal - Shipment tracking', 'boxtal-woocommerce' ), array( $this, 'order_edit_page' ), $type, 'normal', 'high' );
@@ -70,13 +81,7 @@ class Admin_Order_Page {
 	 * @void
 	 */
 	public function order_edit_page() {
-		$controller = new Controller(
-			array(
-				'url'     => $this->plugin_url,
-				'version' => $this->plugin_version,
-			)
-		);
-		$tracking   = $controller->get_order_tracking( Order_Util::get_id( Order_Util::admin_get_order() ) );
+		$tracking   = $this->tracking;
 		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-edit-page-tracking.php';
 	}
 

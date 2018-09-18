@@ -57,6 +57,8 @@ class Front_Order_Page {
 		);
 		$controller->tracking_styles();
 		$tracking = $controller->get_order_tracking( Order_Util::get_id( $order ) );
-		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-front-order-tracking.php';
+		if (null !== $tracking) {
+            include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-front-order-tracking.php';
+        }
 	}
 }
