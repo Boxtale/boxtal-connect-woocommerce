@@ -102,35 +102,6 @@ test.describe(
             }
 		);
 
-        test.it(
-            'Payment attempt without parcel point selection', () => {
-                const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
-                guest.fromShopAddProductsToCart( 'BW test product' );
-
-                const checkoutPage = guest.open( PAGE.CHECKOUT );
-                assert.eventually.ok( Helper.waitTillUIBlockNotPresent( driver ) );
-
-                const billingDetails = checkoutPage.components.billingDetails;
-                assert.eventually.ok( billingDetails.setFirstName( 'Jon' ) );
-                assert.eventually.ok( billingDetails.setLastName( 'Snow' ) );
-                assert.eventually.ok( billingDetails.setEmail( 'jon.snow@got.com' ) );
-                assert.eventually.ok( billingDetails.setPhone( '123456789' ) );
-                assert.eventually.ok( billingDetails.selectCountry( 'france', 'France' ) );
-                assert.eventually.ok( billingDetails.setAddress1( '4 boulevard des Capucines' ) );
-                assert.eventually.ok( billingDetails.setCity( 'Paris' ) );
-                assert.eventually.ok( billingDetails.setZip( '75009' ) );
-
-                const shippingMethods = new ComponentCheckoutShippingMethods(driver);
-                assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
-
-                checkoutPage.selectPaymentMethod( 'Check payments' );
-                checkoutPage.placeOrder();
-                Helper.waitTillUIBlockNotPresent( driver );
-
-                assert.eventually.ok(helper.waitTillPresentAndDisplayed(driver, PARCEL_POINT_ALERT_SELECTOR));
-            }
-        );
-
 		// Close the browser after finished testing.
 		test.after(
 			() => {
