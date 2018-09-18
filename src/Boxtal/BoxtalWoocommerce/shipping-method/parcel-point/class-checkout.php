@@ -48,8 +48,8 @@ class Checkout {
 					if ( null === $point ) {
 						$point = $closest_point;
 					} else {
-                        Controller::reset_chosen_points();
-                    }
+						Controller::reset_chosen_points();
+					}
 
 					$order = new \WC_Order( $order_id );
 					Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->code );
