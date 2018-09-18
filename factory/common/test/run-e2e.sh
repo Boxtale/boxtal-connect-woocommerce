@@ -23,6 +23,7 @@ else
         export BASE_URL="http://localhost:80/alternate"
         npm test
         echo $?
+        exit
     fi
 fi
 
