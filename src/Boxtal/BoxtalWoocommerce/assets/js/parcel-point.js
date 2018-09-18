@@ -163,11 +163,7 @@
             }
             info += '</div>';
 
-            const el = document.createElement('div');
-            el.className = 'bw-marker';
-            el.style.backgroundImage = "url('" + imgDir + "markers/" + (point.index + 1) + ".png')";
-            el.style.width = '28px';
-            el.style.height = '35px';
+            const el = this.getMarkerHtmlElement(point.index + 1);
 
             const popup = new mapboxgl.Popup({ offset: 25 })
                 .setHTML(info);
@@ -241,7 +237,7 @@
             for (let i = 0; i < parcelPoints.length; i++) {
                 const point = parcelPoints[i];
                 html += '<tr>';
-                html += '<td><img src="' + imgDir + 'markers/'+(i+1)+'.png" />';
+                html += '<td>' + this.getMarkerHtmlElement(i+1).outerHTML;
                 html += '<div class="bw-parcel-point-title"><a class="bw-show-info-' + point.code + '">' + point.label + '</a></div><br/>';
                 html += point.address.street + '<br/>';
                 html += point.address.postalCode + ' ' + point.address.city + '<br/>';
@@ -251,6 +247,20 @@
             }
             html += '</tbody></table>';
             document.querySelector('#bw-pp-container').innerHTML = html;
+        },
+
+        getMarkerHtmlElement: function(index) {
+            const el = document.createElement('div');
+            el.className = 'bw-marker';
+            el.style.backgroundImage = "url('" + imgDir + "marker.png')";
+            el.innerHTML = index;
+            el.style.color = '#fff';
+            el.style.fontSize = '14px';
+            el.style.textAlign = 'center';
+            el.style.paddingTop = '6px';
+            el.style.width = '28px';
+            el.style.height = '35px';
+            return el;
         },
 
         selectPoint: function(code, label, operator) {
