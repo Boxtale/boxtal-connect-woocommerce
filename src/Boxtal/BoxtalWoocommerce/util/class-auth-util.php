@@ -26,7 +26,7 @@ class Auth_Util {
 	 * API request validation.
 	 *
 	 * @param \WP_REST_Request $request request.
-	 * @return \WP_Error|boolean
+	 * @return boolean|void
 	 */
 	public static function authenticate( $request ) {
         // phpcs:ignore
@@ -53,7 +53,7 @@ class Auth_Util {
 	 * @return boolean
 	 */
 	public static function can_use_plugin() {
-		return false !== self::is_plugin_paired() && false === get_option( 'BW_PAIRING_UPDATE' );
+		return false !== self::is_plugin_paired() && false === get_option( 'BW_PAIRING_UPDATE' ) && true === Configuration_Util::has_configuration();
 	}
 
 	/**

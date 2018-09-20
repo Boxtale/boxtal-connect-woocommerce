@@ -29,17 +29,15 @@ class Setup_Wizard {
 	 * @void
 	 */
 	public function run() {
-		if ( Auth_Util::is_plugin_paired() && Notice_Controller::has_notice( Notice_Controller::$setup_wizard ) ) {
-			Notice_Controller::remove_notice( Notice_Controller::$setup_wizard );
-		} elseif ( ! Auth_Util::is_plugin_paired() && ! Notice_Controller::has_notice( Notice_Controller::$setup_wizard ) ) {
-			if ( Configuration::get_configuration() ) {
-				Notice_Controller::add_notice( Notice_Controller::$setup_wizard );
-				if ( Notice_Controller::has_notice( Notice_Controller::$setup_failure ) ) {
-					Notice_Controller::remove_notice( Notice_Controller::$setup_failure );
-				}
-			} else {
-				Notice_Controller::add_notice( Notice_Controller::$setup_failure );
+		if ( Auth_Util::is_plugin_paired() ) {
+			if ( Notice_Controller::has_notice( Notice_Controller::$setup_wizard ) ) {
+				Notice_Controller::remove_notice( Notice_Controller::$setup_wizard );
 			}
+			if ( ! Configuration::has_configuration() ) {
+				Notice_Controller::add_notice( Notice_Controller::$configuration_failure );
+			}
+		} elseif ( ! Auth_Util::is_plugin_paired() && ! Notice_Controller::has_notice( Notice_Controller::$setup_wizard ) ) {
+			Notice_Controller::add_notice( Notice_Controller::$setup_wizard );
 		}
 	}
 }

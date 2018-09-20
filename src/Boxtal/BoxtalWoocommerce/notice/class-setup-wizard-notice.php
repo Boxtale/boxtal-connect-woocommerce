@@ -7,7 +7,7 @@
 
 namespace Boxtal\BoxtalWoocommerce\Notice;
 
-use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
+use Boxtal\BoxtalWoocommerce\Util\Configuration_Util;
 
 /**
  * Setup wizard notice class.
@@ -22,11 +22,11 @@ use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
 class Setup_Wizard_Notice extends Abstract_Notice {
 
 	/**
-	 * Signup link.
+	 * Onboarding link.
 	 *
-	 * @var string $signup_link url.
+	 * @var string $onboarding_link url.
 	 */
-	public $signup_link;
+	public $onboarding_link;
 
 	/**
 	 * Construct function.
@@ -36,34 +36,9 @@ class Setup_Wizard_Notice extends Abstract_Notice {
 	 */
 	public function __construct( $key ) {
 		parent::__construct( $key );
-		$this->type         = 'setup-wizard';
-		$this->autodestruct = false;
-		$this->signup_link  = $this->get_signup_url();
-		$this->template     = 'html-setup-wizard-notice';
-	}
-
-	/**
-	 * Build signup link.
-	 *
-	 * @return string signup link
-	 */
-	public function get_signup_url() {
-		$signup_link = get_option( 'BW_ACCOUNT_PAGE_URL' );
-		$admins      = get_super_admins();
-		if ( is_array( $admins ) && count( $admins ) > 0 ) {
-			$admin_user_login = array_shift( $admins );
-			$admin_user       = get_user_by( 'login', $admin_user_login );
-			$admin_user_id    = $admin_user->get( 'ID' );
-		} else {
-			$admin_user_id = 1;
-		}
-
-		$customer = new \WC_Customer( $admin_user_id );
-		$params   = array(
-			'email'    => Customer_Util::get_email( $customer ),
-			'shopUrl'  => get_option( 'siteurl' ),
-			'shopType' => 'woocommerce',
-		);
-		return $signup_link . '?' . http_build_query( $params );
+		$this->type            = 'setup-wizard';
+		$this->autodestruct    = false;
+		$this->onboarding_link = Configuration_Util::get_onboarding_link();
+		$this->template        = 'html-setup-wizard-notice';
 	}
 }

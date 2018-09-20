@@ -20,7 +20,6 @@ use Boxtal\BoxtalWoocommerce\Init\Setup_Wizard;
 use Boxtal\BoxtalWoocommerce\Init\Translation;
 use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
 use Boxtal\BoxtalWoocommerce\Plugin;
-use Boxtal\BoxtalWoocommerce\Rest_Controller\Configuration;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
 use Boxtal\BoxtalWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point\Checkout;
@@ -44,6 +43,9 @@ add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
  * @void
  */
 function boxtal_woocommerce_init() {
+
+    define('BW_ONBOARDING_URL', 'https://www.boxtal.com/onboarding');
+
 	$plugin                      = new Plugin(); // Create container.
 	$plugin['path']              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 	$plugin['url']               = plugin_dir_url( __FILE__ );
@@ -56,7 +58,6 @@ function boxtal_woocommerce_init() {
     //phpcs:ignore
     // $plugin['component']            = 'boxtal_woocommerce_init_admin_components';
 	if ( false === Environment_Util::check_errors( $plugin ) ) {
-		$plugin['rest-controller-configuration'] = 'boxtal_woocommerce_rest_controller_configuration';
 		$plugin['setup-wizard']                  = 'boxtal_woocommerce_setup_wizard';
 		$plugin['rest-controller-shop']          = 'boxtal_woocommerce_rest_controller_shop';
 		if ( Auth_Util::can_use_plugin() ) {
@@ -123,23 +124,6 @@ function boxtal_woocommerce_check_environment( $plugin ) {
 
 	$environment_check = new Environment_Check( $plugin );
 	return $environment_check;
-}
-
-/**
- * Get new Configuration instance.
- *
- * @param array $plugin plugin array.
- * @return Configuration $object
- */
-function boxtal_woocommerce_rest_controller_configuration( $plugin ) {
-	static $object;
-
-	if ( null !== $object ) {
-		return $object;
-	}
-
-	$object = new Configuration( $plugin );
-	return $object;
 }
 
 /**

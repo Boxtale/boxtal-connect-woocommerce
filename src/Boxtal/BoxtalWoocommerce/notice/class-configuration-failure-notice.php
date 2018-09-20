@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains code for the setup failure notice class.
+ * Contains code for the configuration failure notice class.
  *
  * @package     Boxtal\BoxtalWoocommerce\Notice
  */
@@ -8,16 +8,16 @@
 namespace Boxtal\BoxtalWoocommerce\Notice;
 
 /**
- * Setup failure notice class.
+ * Configuration failure notice class.
  *
- * Setup failure notice used to display setup error.
+ * Configuration failure notice used to display setup error.
  *
- * @class       Setup_Failure_Notice
+ * @class       Configuration_Failure_Notice
  * @package     Boxtal\BoxtalWoocommerce\Notice
  * @category    Class
  * @author      API Boxtal
  */
-class Setup_Failure_Notice extends Abstract_Notice {
+class Configuration_Failure_Notice extends Abstract_Notice {
 
 	/**
 	 * Construct function.
@@ -27,8 +27,8 @@ class Setup_Failure_Notice extends Abstract_Notice {
 	 */
 	public function __construct( $key ) {
 		parent::__construct( $key );
-		$this->type         = 'setup-failure';
+		$this->type         = 'configuratino-failure';
 		$this->autodestruct = false;
-		$this->template     = 'html-setup-failure-notice';
+		$this->template     = 'html-configuration-failure-notice';
 	}
 }

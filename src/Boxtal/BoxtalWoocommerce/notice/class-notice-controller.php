@@ -42,7 +42,7 @@ class Notice_Controller {
 	 *
 	 * @var string
 	 */
-	public static $setup_failure = 'setup-failure';
+	public static $configuration_failure = 'configuration-failure';
 
 	/**
 	 * Notice name.
@@ -77,7 +77,7 @@ class Notice_Controller {
 	 *
 	 * @var array
 	 */
-	private static $core_notices = array( 'update', 'setup-wizard', 'pairing', 'pairing-update', 'setup-failure', 'environment-warning' );
+	private static $core_notices = array( 'update', 'setup-wizard', 'pairing', 'pairing-update', 'configuration-failure', 'environment-warning' );
 
 	/**
 	 * Construct function.
