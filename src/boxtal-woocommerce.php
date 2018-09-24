@@ -44,7 +44,7 @@ add_action( 'plugins_loaded', 'boxtal_woocommerce_init' );
  */
 function boxtal_woocommerce_init() {
 
-    define('BW_ONBOARDING_URL', 'https://www.boxtal.com/onboarding');
+	define( 'BW_ONBOARDING_URL', 'https://www.boxtal.com/onboarding' );
 
 	$plugin                      = new Plugin(); // Create container.
 	$plugin['path']              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
@@ -58,8 +58,8 @@ function boxtal_woocommerce_init() {
     //phpcs:ignore
     // $plugin['component']            = 'boxtal_woocommerce_init_admin_components';
 	if ( false === Environment_Util::check_errors( $plugin ) ) {
-		$plugin['setup-wizard']                  = 'boxtal_woocommerce_setup_wizard';
-		$plugin['rest-controller-shop']          = 'boxtal_woocommerce_rest_controller_shop';
+		$plugin['setup-wizard']         = 'boxtal_woocommerce_setup_wizard';
+		$plugin['rest-controller-shop'] = 'boxtal_woocommerce_rest_controller_shop';
 		if ( Auth_Util::can_use_plugin() ) {
 			$plugin['tracking-controller']               = 'boxtal_woocommerce_tracking_controller';
 			$plugin['front-order-page']                  = 'boxtal_woocommerce_front_order_page';

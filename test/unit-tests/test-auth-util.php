@@ -45,13 +45,4 @@ class BW_Test_Auth_Util extends WP_UnitTestCase {
 		Auth_Util::end_pairing_update();
 		$this->assertFalse( get_option( 'BW_PAIRING_UPDATE' ) );
 	}
-
-	/**
-	 * Test has_maps_token function.
-	 */
-	public function test_has_maps_token() {
-		$this->assertFalse( Auth_Util::has_maps_token() );
-		WC()->session->set( 'bw_token', 'test' );
-		$this->assertTrue( Auth_Util::has_maps_token() );
-	}
 }

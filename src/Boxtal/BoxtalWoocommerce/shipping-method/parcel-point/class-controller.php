@@ -42,6 +42,7 @@ class Controller {
 	 * @void
 	 */
 	public function run() {
+		add_action( 'woocommerce_after_shipping_calculator', array( $this, 'parcel_point_scripts' ) );
 		add_action( 'woocommerce_after_checkout_form', array( $this, 'parcel_point_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
 		add_action( 'wp_ajax_get_points', array( $this, 'get_points_callback' ) );
@@ -60,7 +61,7 @@ class Controller {
 	public function get_map_url() {
 		$token = Auth_Util::get_maps_token();
 		if ( null !== $token ) {
-			return str_replace( '${token}', $token, get_option( 'BW_MAP_BOOTSTRAP_URL' ) );
+			return str_replace( '${access_token}', $token, get_option( 'BW_MAP_BOOTSTRAP_URL' ) );
 		}
 		return null;
 	}
@@ -71,10 +72,6 @@ class Controller {
 	 * @void
 	 */
 	public function parcel_point_scripts() {
-		if ( ! Misc_Util::is_checkout_page() ) {
-			return;
-		}
-
 		$translations = array(
 			'error' => array(
 				'carrierNotFound' => __( 'Unable to find carrier', 'boxtal-woocommerce' ),

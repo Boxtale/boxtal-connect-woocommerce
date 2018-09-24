@@ -71,7 +71,7 @@ class Controller {
 	 */
 	public function get_order_tracking( $order_id ) {
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
-		$response = $lib->getOrderTracking( $order_id );
+		$response = $lib->getOrder( $order_id );
 		if ( $response->isError() ) {
 			return null;
 		}

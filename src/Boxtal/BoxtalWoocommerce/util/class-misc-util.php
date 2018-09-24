@@ -107,10 +107,6 @@ class Misc_Util {
 	 */
 	public static function should_display_parcel_point_link( $method ) {
 
-		if ( ! self::is_checkout_page() ) {
-			return false;
-		}
-
 		if ( ! in_array( $method->id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
 			return false;
 		}
