@@ -84,10 +84,10 @@ test.describe(
                 assert.eventually.ok( billingDetails.setAddress1( '4 boulevard des Capucines' ) );
                 assert.eventually.ok( billingDetails.setCity( 'Paris' ) );
                 assert.eventually.ok( billingDetails.setZip( '75009' ) );
-/*
+
                 const shippingMethods = new ComponentCheckoutShippingMethods(driver);
                 assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
-                assert.eventually.ok( shippingMethods.isDisplayedParcelPointLink() );
+/*                assert.eventually.ok( shippingMethods.isDisplayedParcelPointLink() );
                 assert.eventually.ok( shippingMethods.selectParcelPoint() );
 
                 checkoutPage.selectPaymentMethod( 'Check payments' );
