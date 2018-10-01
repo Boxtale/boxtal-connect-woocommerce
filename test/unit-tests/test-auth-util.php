@@ -28,6 +28,9 @@ class BW_Test_Auth_Util extends WP_UnitTestCase {
 	 * Test can_use_plugin function.
 	 */
 	public function test_can_use_plugin() {
+		update_option( 'BW_MAP_BOOTSTRAP_URL', 'http://anyurl' );
+		update_option( 'BW_MAP_TOKEN_URL', 'http://anyurl' );
+		update_option( 'BW_PP_OPERATORS', 'a:0:{}' );
 		Auth_Util::pair_plugin( 'test', 'test' );
 		update_option( 'BW_PAIRING_UPDATE', 'test' );
 		$this->assertFalse( Auth_Util::can_use_plugin() );

@@ -37,6 +37,7 @@ install_wp() {
         else
             activate_plugin_simple
         fi
+        $HOME/factory/common/test/patch-sandbox-configuration.sh $MULTISITE
 		return 0
 	fi
 
@@ -54,6 +55,7 @@ install_wp() {
             activate_plugin_simple
 	    fi
 	fi
+	$HOME/factory/common/test/patch-sandbox-configuration.sh $MULTISITE
 }
 
 install_db() {
