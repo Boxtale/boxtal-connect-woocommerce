@@ -87,8 +87,8 @@ test.describe(
 
                 const shippingMethods = new ComponentCheckoutShippingMethods(driver);
                 assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
-/*                assert.eventually.ok( shippingMethods.isDisplayedParcelPointLink() );
-                assert.eventually.ok( shippingMethods.selectParcelPoint() );
+                assert.eventually.ok( shippingMethods.isDisplayedParcelPointLink() );
+/*                assert.eventually.ok( shippingMethods.selectParcelPoint() );
 
                 checkoutPage.selectPaymentMethod( 'Check payments' );
                 checkoutPage.placeOrder();
