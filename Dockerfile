@@ -12,7 +12,8 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     sudo \
     nodejs \
     xvfb \
-    xauth
+    xauth \
+    vim
 
 RUN curl https://packages.sury.org/php/apt.gpg | apt-key add - \
  && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \

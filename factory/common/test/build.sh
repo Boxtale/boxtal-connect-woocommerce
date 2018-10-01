@@ -14,7 +14,6 @@ UNIT_TESTS_DIR='/tmp/unit-tests'
 WC_DIR='/tmp/woocommerce'
 MULTISITE_PRIMARY_URL='http://localhost'
 MULTISITE_ALTERNATE_URL='http://localhost/alternate'
-SANDBOX_API_URL='https://api.boxtal.build'
 wp="php wp-cli.phar"
 
 if [ ${TRAVIS} = "false" ]; then
@@ -43,8 +42,6 @@ install_wp() {
 
 	$HOME/factory/common/install-wp.sh $WP_VERSION $WC_VERSION
 	$HOME/factory/common/sync.sh $HOME
-    ESCAPED_APIURL=$(sed 's|/|\\/|g' <<< $SANDBOX_API_URL)
-	sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.com\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json"
 
 	if [[ $MULTISITE = "1" ]]; then
 	    $HOME/factory/common/install-multisite.sh
@@ -122,17 +119,11 @@ install_unit_tests() {
 
 activate_plugin_simple() {
     $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR
-    $wp option update BW_ACCESS_KEY 'access' --allow-root --path=$WP_CORE_DIR
-    $wp option update BW_SECRET_KEY 'secret' --allow-root --path=$WP_CORE_DIR
 }
 
 activate_plugin_multisite() {
     $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
-    $wp option update BW_ACCESS_KEY 'access' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
-    $wp option update BW_SECRET_KEY 'secret' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
     $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
-    $wp option update BW_ACCESS_KEY 'access' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
-    $wp option update BW_SECRET_KEY 'secret' --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
 }
 
 install_wp

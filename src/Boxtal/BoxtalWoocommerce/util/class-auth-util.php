@@ -217,8 +217,8 @@ class Auth_Util {
         $response = $lib->restClient->request( RestClient::$POST, get_option('BW_MAP_TOKEN_URL') );
 
 		if ( ! $response->isError() && property_exists( $response->response, 'accessToken' ) ) {
-			WC()->session->set( 'bw_token', $response->response->accessToken );
 			return $response->response->accessToken;
 		}
+		return null;
 	}
 }
