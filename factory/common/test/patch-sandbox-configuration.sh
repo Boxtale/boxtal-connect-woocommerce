@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "patching sandbox configuration"
+set -ex
+
 MULTISITE=${1-0}
 
 WP_CORE_DIR='/var/www/html'
