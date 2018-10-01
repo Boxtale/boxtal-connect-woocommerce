@@ -24,17 +24,17 @@ if [[ $RUN_E2E = "1" ]]; then
         $wp option update BW_SECRET_KEY $SECRET_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
         $wp option update BW_MAP_BOOTSTRAP_URL $SANDBOX_MAP_BOOTSTRAP_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
         $wp option update BW_MAP_TOKEN_URL $SANDBOX_MAP_TOKEN_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
-        $wp option update BW_PP_OPERATORS $PP_OPERATORS --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
+        $wp option update BW_PP_OPERATORS "$PP_OPERATORS" --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
         $wp option update BW_ACCESS_KEY $ACCESS_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
         $wp option update BW_SECRET_KEY $SECRET_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
         $wp option update BW_MAP_BOOTSTRAP_URL $SANDBOX_MAP_BOOTSTRAP_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
         $wp option update BW_MAP_TOKEN_URL $SANDBOX_MAP_TOKEN_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
-        $wp option update BW_PP_OPERATORS $PP_OPERATORS --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
+        $wp option update BW_PP_OPERATORS "$PP_OPERATORS" --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
     else
         $wp option update BW_ACCESS_KEY $ACCESS_KEY --allow-root --path=$WP_CORE_DIR
         $wp option update BW_SECRET_KEY $SECRET_KEY --allow-root --path=$WP_CORE_DIR
         $wp option update BW_MAP_BOOTSTRAP_URL $SANDBOX_MAP_BOOTSTRAP_URL --allow-root --path=$WP_CORE_DIR
         $wp option update BW_MAP_TOKEN_URL $SANDBOX_MAP_TOKEN_URL --allow-root --path=$WP_CORE_DIR
-        $wp option update BW_PP_OPERATORS $PP_OPERATORS --allow-root --path=$WP_CORE_DIR
+        $wp option update BW_PP_OPERATORS "$PP_OPERATORS" --allow-root --path=$WP_CORE_DIR
     fi
 fi
