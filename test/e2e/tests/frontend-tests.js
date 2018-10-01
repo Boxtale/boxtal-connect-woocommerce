@@ -69,8 +69,7 @@ test.describe(
 
 		test.it(
 			'Payment attempt with parcel point selection', () => {
-			    console.log("test");
-                /*const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
+                const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
                 guest.fromShopAddProductsToCart( 'BW test product' );
 
                 const checkoutPage = guest.open( PAGE.CHECKOUT );
@@ -90,7 +89,7 @@ test.describe(
                 assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
                 assert.eventually.ok( shippingMethods.isDisplayedParcelPointLink() );
                 assert.eventually.ok( shippingMethods.selectParcelPoint() );
-
+/*
                 checkoutPage.selectPaymentMethod( 'Check payments' );
                 checkoutPage.placeOrder();
                 Helper.waitTillUIBlockNotPresent( driver );
