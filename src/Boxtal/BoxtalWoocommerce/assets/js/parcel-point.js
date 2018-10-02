@@ -9,9 +9,7 @@
 
         init: function () {
             const self = this;
-            console.log("test1");
             self.on("body", "click", self.trigger, function() {
-                console.log("test2");
                 self.mapContainer = document.querySelector('#bw-map');
                 if (!self.mapContainer) {
                     self.initMap();
@@ -35,7 +33,6 @@
         },
 
         initMap: function() {
-            console.log("test3");
             const self = this;
             const mapClose = document.createElement("div");
             mapClose.setAttribute("class", "bw-close");
@@ -340,10 +337,8 @@
         }
     };
 
-    console.log("test-1");
     document.addEventListener(
         "DOMContentLoaded", function() {
-            console.log("test0");
             Components.parcelPointLinks.init();
         }
     );
