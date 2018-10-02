@@ -2,11 +2,8 @@
 
 sudo chown -R www-data:www-data /var/www/html
 sudo node_modules/gulp/bin/gulp.js css
-if [ ! -d "src/Boxtal/BoxtalWoocommerce/assets/css" ]; then
-  mkdir src/Boxtal/BoxtalWoocommerce/assets/css
-fi
-sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css/
-sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js/
+sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css
+sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalWoocommerce/assets/js
 sudo node_modules/gulp/bin/gulp.js js
 sudo rm -rf src/Boxtal/BoxtalPhp
 sudo mkdir -p src/Boxtal/BoxtalPhp
