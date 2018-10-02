@@ -33,6 +33,7 @@
         },
 
         initMap: function() {
+            console.log("test");
             const self = this;
             const mapClose = document.createElement("div");
             mapClose.setAttribute("class", "bw-close");
@@ -44,22 +45,22 @@
             const mapCanvas = document.createElement("div");
             mapCanvas.setAttribute("id", "bw-map-canvas");
 
-            const mapContainer = document.createElement("div");
-            mapContainer.setAttribute("id", "bw-map-container");
-            mapContainer.appendChild(mapCanvas);
+            const mapInner = document.createElement("div");
+            mapInner.setAttribute("id", "bw-map-container");
+            mapInner.appendChild(mapCanvas);
 
             const mapPPContainer = document.createElement("div");
             mapPPContainer.setAttribute("id", "bw-pp-container");
 
-            const mapInner = document.createElement("div");
-            mapInner.setAttribute("id", "bw-map-inner");
-            mapInner.appendChild(mapClose);
-            mapInner.appendChild(mapContainer);
-            mapInner.appendChild(mapPPContainer);
+            const mapOuter = document.createElement("div");
+            mapOuter.setAttribute("id", "bw-map-inner");
+            mapOuter.appendChild(mapClose);
+            mapOuter.appendChild(mapInner);
+            mapOuter.appendChild(mapPPContainer);
 
             self.mapContainer = document.createElement("div");
             self.mapContainer.setAttribute("id", "bw-map");
-            self.mapContainer.appendChild(mapInner);
+            self.mapContainer.appendChild(mapOuter);
             document.body.appendChild(self.mapContainer);
 
             mapboxgl.accessToken = 'whatever';
