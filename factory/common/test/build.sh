@@ -104,6 +104,7 @@ install_unit_tests() {
         cat /tmp/wp-latest.json
         grep '[0-9]+\.[0-9]+(\.[0-9]+)?' /tmp/wp-latest.json
         LATEST_VERSION=$(grep -o '"version":"[^"]*' /tmp/wp-latest.json | sed 's/"version":"//')
+        echo $LATEST_VERSION
         if [[ -z "$LATEST_VERSION" ]]; then
             echo "Latest WordPress version could not be found"
             exit 1
