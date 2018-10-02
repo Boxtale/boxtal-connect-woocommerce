@@ -65,6 +65,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 		Order_Util::save( $order );
 
 		$order_rest_controller = new Order();
+        $statuses = Order_Util::get_import_status_list();
 
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
@@ -74,7 +75,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 					'status'            => array(
 						'key'          => 'on-hold',
 						'translations' => array(
-							'en_US' => 'On hold',
+							'en_US' => isset( $statuses[ 'on-hold' ] ) ? $statuses[ 'on-hold' ] : null,
 						),
 					),
 					'shippingMethod'    => array(
@@ -180,6 +181,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 		Order_Util::save( $order );
 
 		$order_rest_controller = new Order();
+        $statuses = Order_Util::get_import_status_list();
 
 		$this->assertSame(
 			$order_rest_controller->get_orders(), array(
@@ -189,7 +191,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 					'status'            => array(
 						'key'          => 'on-hold',
 						'translations' => array(
-							'en_US' => 'On hold',
+							'en_US' => isset( $statuses[ 'on-hold' ] ) ? $statuses[ 'on-hold' ] : null,
 						),
 					),
 					'shippingMethod'    => array(

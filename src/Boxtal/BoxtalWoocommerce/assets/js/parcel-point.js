@@ -340,7 +340,7 @@
         }
     };
 
-    onsole.log("test-1");
+    console.log("test-1");
     document.addEventListener(
         "DOMContentLoaded", function() {
             console.log("test0");

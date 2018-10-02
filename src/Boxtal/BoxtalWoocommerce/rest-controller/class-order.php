@@ -9,6 +9,7 @@ namespace Boxtal\BoxtalWoocommerce\Rest_Controller;
 
 use Boxtal\BoxtalWoocommerce\Util\Api_Util;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
+use Boxtal\BoxtalWoocommerce\Util\Order_Item_Shipping_Util;
 use Boxtal\BoxtalWoocommerce\Util\Product_Util;
 use Boxtal\BoxtalWoocommerce\Util\Order_Util;
 use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
@@ -125,8 +126,8 @@ class Order {
 
 			$status           = Order_Util::get_status( $order );
 			$shipping_methods = $order->get_shipping_methods();
-			$shipping_method  = ! empty( $shipping_methods ) ? array_shift( $shipping_methods ) : null;
-			$result[]         = array(
+            $shipping_method  = ! empty( $shipping_methods ) ? array_shift( $shipping_methods ) : null;
+            $result[]         = array(
 				'internalReference' => '' . Order_Util::get_id( $order ),
 				'reference'         => '' . Order_Util::get_order_number( $order ),
 				'status'            => array(
@@ -135,12 +136,12 @@ class Order {
 						$current_language => isset( $statuses[ $status ] ) ? $statuses[ $status ] : $status,
 					),
 				),
-				'shippingMethod'    => is_object( $shipping_method ) ? array(
-					'key'          => $shipping_method->get_method_id(),
+				'shippingMethod'    => array(
+					'key'          => Order_Item_Shipping_Util::get_method_id($shipping_method),
 					'translations' => array(
-						$current_language => $shipping_method->get_name(),
+						$current_language =>  Order_Item_Shipping_Util::get_name($shipping_method),
 					),
-				) : null,
+				),
 				'shippingAmount'    => Order_Util::get_shipping_total( $order ),
 				'creationDate'      => Order_Util::get_date_created( $order ),
 				'orderAmount'       => Order_Util::get_total( $order ),
