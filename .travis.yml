@@ -42,7 +42,7 @@ install:
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - nvm install 10.1.0
   - which node
-  - sudo ln -s "$(which node)" /usr/local/bin/node
+  - sudo ln -s "$(which node)" /usr/bin/env/node
   - ls -l /usr/bin/env
   - composer install --prefer-dist
   - npm install
