@@ -26,7 +26,7 @@ class Order_Item_Shipping_Util {
 	 * @return string order item shipping key
 	 */
 	public static function get_method_id( $order_item_shipping ) {
-	    if (is_object($order_item_shipping) && property_exists($order_item_shipping, 'get_method_id')) {
+	    if (is_object($order_item_shipping) && method_exists($order_item_shipping, 'get_method_id')) {
 	        return $order_item_shipping->get_method_id();
         }
         return is_array($order_item_shipping) && isset($order_item_shipping['method_id']) ? $order_item_shipping['method_id'] : null;
@@ -39,7 +39,7 @@ class Order_Item_Shipping_Util {
      * @return string order item shipping name
      */
     public static function get_name( $order_item_shipping ) {
-        if (is_object($order_item_shipping) && property_exists($order_item_shipping, 'get_name')) {
+        if (is_object($order_item_shipping) && method_exists($order_item_shipping, 'get_name')) {
             return $order_item_shipping->get_name();
         }
         return is_array($order_item_shipping) && isset($order_item_shipping['name']) ? $order_item_shipping['name'] : null;
