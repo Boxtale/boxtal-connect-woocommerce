@@ -8,7 +8,7 @@ import {ComponentCheckout} from "wc-e2e-page-objects";
 const SELECTOR = '#shipping_method';
 const LAST_SHIPPING_METHOD_SELECTOR = By.css( '#shipping_method li:last-child input[type="radio"]' );
 const PARCEL_POINT_LINK_SELECTOR = By.css( '.bw-select-parcel' );
-const PARCEL_POINT_MAP_SELECTOR = By.id( 'bw-map-container' );
+const PARCEL_POINT_MAP_SELECTOR = By.css( '#bw-map-container' );
 const FIRST_PARCEL_POINT_SELECTOR = By.css( '#bw-pp-container tr:first-child a.bw-parcel-point-button' );
 
 export default class ComponentCheckoutShippingMethods extends ComponentCheckout {
