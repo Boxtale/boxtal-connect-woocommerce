@@ -126,8 +126,8 @@ class Order {
 
 			$status           = Order_Util::get_status( $order );
 			$shipping_methods = $order->get_shipping_methods();
-            $shipping_method  = ! empty( $shipping_methods ) ? array_shift( $shipping_methods ) : null;
-            $result[]         = array(
+			$shipping_method  = ! empty( $shipping_methods ) ? array_shift( $shipping_methods ) : null;
+			$result[]         = array(
 				'internalReference' => '' . Order_Util::get_id( $order ),
 				'reference'         => '' . Order_Util::get_order_number( $order ),
 				'status'            => array(
@@ -137,9 +137,9 @@ class Order {
 					),
 				),
 				'shippingMethod'    => array(
-					'key'          => Order_Item_Shipping_Util::get_method_id($shipping_method),
+					'key'          => Order_Item_Shipping_Util::get_method_id( $shipping_method ),
 					'translations' => array(
-						$current_language =>  Order_Item_Shipping_Util::get_name($shipping_method),
+						$current_language => Order_Item_Shipping_Util::get_name( $shipping_method ),
 					),
 				),
 				'shippingAmount'    => Order_Util::get_shipping_total( $order ),
