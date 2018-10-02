@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 sudo chown -R www-data:www-data /var/www/html
 sudo node_modules/gulp/bin/gulp.js css
 sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalWoocommerce/assets/css

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 WP_VERSION=${1-latest}
 WC_VERSION=${2-"2.6.14"}
 TRAVIS=${3-false}
