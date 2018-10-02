@@ -342,6 +342,7 @@
 
     document.addEventListener(
         "DOMContentLoaded", function() {
+            console.log("test0");
             Components.parcelPointLinks.init();
         }
     );
