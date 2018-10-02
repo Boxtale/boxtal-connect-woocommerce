@@ -41,7 +41,7 @@ install:
   - sudo apt-get install apache2 php${TRAVIS_PHP_VERSION} php${TRAVIS_PHP_VERSION}-mysql php${TRAVIS_PHP_VERSION}-mbstring php${TRAVIS_PHP_VERSION}-soap php${TRAVIS_PHP_VERSION}-curl php${TRAVIS_PHP_VERSION}-dom
   - if [[ $PHPUNIT_VERSION != "travis" ]]; then composer require phpunit/phpunit:${PHPUNIT_VERSION}; fi
   - nvm install 10.1.0
-  - node -v
+  - nvm alias default node
   - composer install --prefer-dist
   - npm install
   - npm install -g gulp
