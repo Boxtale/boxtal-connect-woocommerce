@@ -28,9 +28,9 @@ class Configuration_Util {
 	 */
 	public static function get_onboarding_link() {
 		$url    = BW_ONBOARDING_URL;
-		$params   = array(
+		$params = array(
 			'acceptLanguage' => get_locale(),
-			'email'          => get_option('admin_email'),
+			'email'          => get_option( 'admin_email' ),
 			'shopUrl'        => get_option( 'siteurl' ),
 			'shopType'       => 'woocommerce',
 		);
