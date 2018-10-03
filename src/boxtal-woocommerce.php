@@ -8,7 +8,7 @@
  * Text Domain: boxtal-woocommerce
  * Domain Path: /Boxtal/BoxtalWoocommerce/translation
  * Version: 0.1.0
- * WC requires at least: 3.0.0
+ * WC requires at least: 2.6.14
  * WC tested up to: 3.4.0
  *
  * @package Boxtal\BoxtalWoocommerce
@@ -50,8 +50,8 @@ function boxtal_woocommerce_init() {
 	$plugin['path']              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 	$plugin['url']               = plugin_dir_url( __FILE__ );
 	$plugin['version']           = '0.1.0';
-	$plugin['min-wc-version']    = '3.0.0';
-	$plugin['min-php-version']   = '5.3.0';
+	$plugin['min-wc-version']    = '2.6.14';
+	$plugin['min-php-version']   = '5.6.0';
 	$plugin['translation']       = 'boxtal_woocommerce_init_translation';
 	$plugin['check-environment'] = 'boxtal_woocommerce_check_environment';
 	$plugin['notice']            = 'boxtal_woocommerce_init_admin_notices';

@@ -141,6 +141,7 @@ class Notice_Controller {
 	public static function get_notice_instances() {
 		$notices          = self::get_notice_keys();
 		$notice_instances = array();
+
 		foreach ( $notices as $key ) {
 			$classname = 'Boxtal\BoxtalWoocommerce\Notice\\';
 			if ( ! in_array( $key, self::$core_notices, true ) ) {

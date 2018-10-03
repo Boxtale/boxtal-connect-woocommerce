@@ -28,19 +28,9 @@ class Configuration_Util {
 	 */
 	public static function get_onboarding_link() {
 		$url    = BW_ONBOARDING_URL;
-		$admins = get_super_admins();
-		if ( is_array( $admins ) && count( $admins ) > 0 ) {
-			$admin_user_login = array_shift( $admins );
-			$admin_user       = get_user_by( 'login', $admin_user_login );
-			$admin_user_id    = $admin_user->get( 'ID' );
-		} else {
-			$admin_user_id = 1;
-		}
-
-		$customer = new \WC_Customer( $admin_user_id );
 		$params   = array(
 			'acceptLanguage' => get_locale(),
-			'email'          => Customer_Util::get_email( $customer ),
+			'email'          => get_option('admin_email'),
 			'shopUrl'        => get_option( 'siteurl' ),
 			'shopType'       => 'woocommerce',
 		);

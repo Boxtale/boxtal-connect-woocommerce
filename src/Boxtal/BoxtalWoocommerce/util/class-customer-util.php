@@ -19,10 +19,19 @@ namespace Boxtal\BoxtalWoocommerce\Util;
  */
 class Customer_Util {
 
+    /**
+     * Get WC customer.
+     *
+     * @return \WC_Customer customer.
+     */
+    public static function get_customer() {
+        return WC()->customer;
+    }
+
 	/**
 	 * Get WC customer first name.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer first name.
 	 */
 	public static function get_first_name( $customer ) {
@@ -35,7 +44,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer first name.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $firstname desired first name.
 	 * @void.
 	 */
@@ -50,7 +59,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer last name.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer last name.
 	 */
 	public static function get_last_name( $customer ) {
@@ -63,7 +72,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer last name.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $lastname desired last name.
 	 * @void.
 	 */
@@ -78,7 +87,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer company.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing company.
 	 */
 	public static function get_billing_company( $customer ) {
@@ -91,7 +100,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer company.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $company desired company.
 	 * @void.
 	 */
@@ -106,7 +115,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer email.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer email.
 	 */
 	public static function get_email( $customer ) {
@@ -119,7 +128,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer email.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $email desired email.
 	 * @void.
 	 */
@@ -134,7 +143,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing phone.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing phone.
 	 */
 	public static function get_billing_phone( $customer ) {
@@ -147,7 +156,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing phone.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_phone desired billing phone.
 	 * @void.
 	 */
@@ -162,7 +171,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing address 1.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing address 1.
 	 */
 	public static function get_billing_address_1( $customer ) {
@@ -175,7 +184,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing address 1.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_address_1 desired billing address 1.
 	 * @void.
 	 */
@@ -190,7 +199,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing address 2.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing address 2.
 	 */
 	public static function get_billing_address_2( $customer ) {
@@ -203,7 +212,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing address 2.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_address_2 desired billing address 2.
 	 * @void.
 	 */
@@ -218,7 +227,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing city.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing city.
 	 */
 	public static function get_billing_city( $customer ) {
@@ -231,7 +240,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing city.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_city desired billing city.
 	 * @void.
 	 */
@@ -246,7 +255,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing postcode.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing postcode.
 	 */
 	public static function get_billing_postcode( $customer ) {
@@ -259,7 +268,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing postcode.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_postcode desired billing postcode.
 	 * @void.
 	 */
@@ -274,7 +283,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing state.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing state.
 	 */
 	public static function get_billing_state( $customer ) {
@@ -287,7 +296,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing state.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_state desired billing state.
 	 * @void.
 	 */
@@ -302,7 +311,7 @@ class Customer_Util {
 	/**
 	 * Get WC customer billing country.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @return string customer billing country.
 	 */
 	public static function get_billing_country( $customer ) {
@@ -315,7 +324,7 @@ class Customer_Util {
 	/**
 	 * Set WC customer billing country.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @param string      $billing_country desired billing country.
 	 * @void.
 	 */
@@ -327,10 +336,75 @@ class Customer_Util {
 		}
 	}
 
+    /**
+     * Get WC customer shipping address 1.
+     *
+     * @param \WC_Customer $customer woocommerce customer.
+     * @return string customer shipping address 1.
+     */
+    public static function get_shipping_address_1( $customer ) {
+        if ( method_exists( $customer, 'get_shipping_address_1' ) ) {
+            return $customer->get_shipping_address_1();
+        }
+        return $customer->shipping_address_1;
+    }
+
+    /**
+     * Get WC customer shipping address 2.
+     *
+     * @param \WC_Customer $customer woocommerce customer.
+     * @return string customer shipping address 2.
+     */
+    public static function get_shipping_address_2( $customer ) {
+        if ( method_exists( $customer, 'get_shipping_address_2' ) ) {
+            return $customer->get_shipping_address_2();
+        }
+        return $customer->shipping_address_2;
+    }
+
+    /**
+     * Get WC customer shipping city.
+     *
+     * @param \WC_Customer $customer woocommerce customer.
+     * @return string customer shipping city.
+     */
+    public static function get_shipping_city( $customer ) {
+        if ( method_exists( $customer, 'get_shipping_city' ) ) {
+            return $customer->get_shipping_city();
+        }
+        return $customer->shipping_city;
+    }
+
+    /**
+     * Get WC customer shipping postcode.
+     *
+     * @param \WC_Customer $customer woocommerce customer.
+     * @return string customer shipping postcode.
+     */
+    public static function get_shipping_postcode( $customer ) {
+        if ( method_exists( $customer, 'get_shipping_postcode' ) ) {
+            return $customer->get_shipping_postcode();
+        }
+        return $customer->shipping_postcode;
+    }
+
+    /**
+     * Get WC customer shipping country.
+     *
+     * @param \WC_Customer $customer woocommerce customer.
+     * @return string customer shipping country.
+     */
+    public static function get_shipping_country( $customer ) {
+        if ( method_exists( $customer, 'get_shipping_country' ) ) {
+            return $customer->get_shipping_country();
+        }
+        return $customer->shipping_country;
+    }
+
 	/**
 	 * Save.
 	 *
-	 * @param WC_Customer $customer woocommerce customer.
+	 * @param \WC_Customer $customer woocommerce customer.
 	 * @void.
 	 */
 	public static function save( $customer ) {

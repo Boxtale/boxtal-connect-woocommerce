@@ -9,6 +9,7 @@ namespace Boxtal\BoxtalWoocommerce\Shipping_Method\Parcel_Point;
 
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
+use Boxtal\BoxtalWoocommerce\Util\Customer_Util;
 use Boxtal\BoxtalWoocommerce\Util\Misc_Util;
 use Boxtal\BoxtalWoocommerce\Util\Shipping_Rate_Util;
 
@@ -184,11 +185,12 @@ class Controller {
 	 * @return array recipient address
 	 */
 	public static function get_recipient_address() {
+	    $customer = Customer_Util::get_customer();
 		return array(
-			'street'   => trim( WC()->customer->get_shipping_address_1() . ' ' . WC()->customer->get_shipping_address_2() ),
-			'city'     => trim( WC()->customer->get_shipping_city() ),
-			'postcode' => trim( WC()->customer->get_shipping_postcode() ),
-			'country'  => strtolower( WC()->customer->get_shipping_country() ),
+			'street'   => trim( Customer_Util::get_shipping_address_1($customer) . ' ' . Customer_Util::get_shipping_address_2($customer) ),
+			'city'     => trim( Customer_Util::get_shipping_city($customer) ),
+			'postcode' => trim( Customer_Util::get_shipping_postcode($customer) ),
+			'country'  => strtolower( Customer_Util::get_shipping_country($customer) ),
 		);
 	}
 

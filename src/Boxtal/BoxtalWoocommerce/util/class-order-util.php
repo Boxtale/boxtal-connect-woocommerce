@@ -492,9 +492,10 @@ class Order_Util {
 	 */
 	public static function get_date_created( $order ) {
 		if ( method_exists( $order, 'get_date_created' ) ) {
-			return $order->get_date_created()->date( 'Y-m-d H:i:s' );
+			return $order->get_date_created()->date( \WC_DateTime::W3C );
 		}
-		return $order->order_date;
+		$date = new \DateTime($order->order_date);
+		return $date->format(\DateTime::W3C);
 	}
 
 	/**

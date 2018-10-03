@@ -15,12 +15,12 @@ env:
   global:
     - PHPUNIT_VERSION="travis"
   matrix:
-    - WP_VERSION=4.4 WC_VERSION=2.6.14 WP_MULTISITE=0
+    - WP_VERSION=4.6 WC_VERSION=2.6.14 WP_MULTISITE=0
 
 matrix:
   include:
   - php: 5.6
-    env: WP_VERSION=4.2 WC_VERSION=2.6.14 WP_MULTISITE=0 RUN_E2E=0
+    env: WP_VERSION=4.6 WC_VERSION=2.6.14 WP_MULTISITE=0 RUN_E2E=0
   - php: 5.6
     env: WP_VERSION=4.7 WC_VERSION=3.0.3 WP_MULTISITE=0 RUN_E2E=1
   - php: 7.2
