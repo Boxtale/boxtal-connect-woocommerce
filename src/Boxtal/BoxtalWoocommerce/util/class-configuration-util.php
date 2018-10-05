@@ -59,7 +59,7 @@ class Configuration_Util {
 		delete_option( 'BW_MAP_BOOTSTRAP_URL' );
 		delete_option( 'BW_MAP_TOKEN_URL' );
 		delete_option( 'BW_PP_OPERATORS' );
-		delete_option( 'BW_TRACKING_EVENT' );
+		delete_option( 'BW_TRACKING_EVENTS' );
 		delete_option( 'BW_NOTICES' );
 		delete_option( 'BW_PAIRING_UPDATE' );
 		//phpcs:ignore

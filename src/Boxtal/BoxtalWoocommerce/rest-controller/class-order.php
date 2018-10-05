@@ -150,7 +150,7 @@ class Order {
 				'parcelPoint'       => $parcel_point,
 			);
 		}
-		return $result;
+		return array('orders' => $result);
 	}
 
 	/**
@@ -171,16 +171,17 @@ class Order {
 			Api_Util::send_api_response( 400 );
 		}
 
-		//phpcs:disable
-		update_option(
-			'BW_TRACKING_EVENT', array(
-				'order_id'          => $request['order_id'],
-				'carrier_reference' => $body->carrierReference,
-				'date'              => $body->trackingDate,
-				'code'              => $body->trackingCode,
-			)
-		);
+        $tracking_events = get_option('BW_TRACKING_EVENTS', array());
+        //phpcs:disable
+        $tracking_events[] =  array(
+            'order_id'          => $request['order_id'],
+            'carrier_reference' => $body->carrierReference,
+            'date'              => $body->trackingDate,
+            'code'              => $body->trackingCode,
+        );
         //phpcs:enable
+
+        update_option('BW_TRACKING_EVENTS', $tracking_events);
 
 		Api_Util::send_api_response( 200 );
 	}
