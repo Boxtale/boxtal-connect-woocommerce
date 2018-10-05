@@ -39,7 +39,7 @@ class Controller {
 	 * @void
 	 */
 	public function run() {
-		$this->handle_tracking_event_hook();
+		add_action( 'wp_loaded', array( $this, 'handle_tracking_event_hook' ) );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Controller {
 	 *
 	 * @void
 	 */
-	private function handle_tracking_event_hook() {
+	public function handle_tracking_event_hook() {
 		$tracking_events = get_option( 'BW_TRACKING_EVENTS', array() );
 
 		foreach ( $tracking_events as $tracking_event ) {
@@ -55,7 +55,6 @@ class Controller {
 			if ( empty( $tracking_event ) || ! isset( $tracking_event['order_id'], $tracking_event['date'], $tracking_event['code'], $tracking_event['carrier_reference'] ) ) {
 				continue;
 			}
-
 			$order_id            = $tracking_event['order_id'];
 			$carrier_reference   = $tracking_event['carrier_reference'];
 			$tracking_event_date = $tracking_event['date'];
