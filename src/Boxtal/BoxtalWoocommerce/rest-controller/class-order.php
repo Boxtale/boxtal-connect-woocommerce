@@ -47,7 +47,7 @@ class Order {
 		add_action(
 			'rest_api_init', function() {
 				register_rest_route(
-					'boxtal-woocommerce/v1', '/order/(?P<order_id>[*]+)/tracking', array(
+					'boxtal-woocommerce/v1', '/order/(?P<order_id>[\d]+)/tracking', array(
 						'methods'             => 'POST',
 						'callback'            => array( $this, 'tracking_event_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
@@ -150,13 +150,13 @@ class Order {
 				'parcelPoint'       => $parcel_point,
 			);
 		}
-		return array('orders' => $result);
+		return array( 'orders' => $result );
 	}
 
 	/**
 	 * Tracking event handler callback.
 	 *
-	 * @param WP_REST_Request $request request.
+	 * @param \WP_REST_Request $request request.
 	 * @void
 	 */
 	public function tracking_event_handler( $request ) {
@@ -166,23 +166,39 @@ class Order {
 		}
 
 		$body = Auth_Util::decrypt_body( $request->get_body() );
-		if ( ! ( is_object( $body ) && property_exists( $body, 'carrierReference' )
-			&& property_exists( $body, 'trackingDate' ) && property_exists( $body, 'trackingCode' ) ) ) {
+
+		if ( ! $this::parse_tracking_event( $request['order_id'], $body ) ) {
 			Api_Util::send_api_response( 400 );
 		}
 
-        $tracking_events = get_option('BW_TRACKING_EVENTS', array());
+		Api_Util::send_api_response( 200 );
+	}
+
+	/**
+	 * Parse tracking event.
+	 *
+	 * @param int    $order_id order id.
+	 * @param object $body request body.
+	 * @return boolean
+	 */
+	public static function parse_tracking_event( $order_id, $body ) {
+		if ( ! ( is_object( $body ) && property_exists( $body, 'carrierReference' )
+			&& property_exists( $body, 'trackingDate' ) && property_exists( $body, 'trackingCode' ) ) ) {
+			return false;
+		}
+
+		$tracking_events = get_option( 'BW_TRACKING_EVENTS', array() );
         //phpcs:disable
         $tracking_events[] =  array(
-            'order_id'          => $request['order_id'],
+            'order_id'          => $order_id,
             'carrier_reference' => $body->carrierReference,
             'date'              => $body->trackingDate,
             'code'              => $body->trackingCode,
         );
         //phpcs:enable
 
-        update_option('BW_TRACKING_EVENTS', $tracking_events);
+		update_option( 'BW_TRACKING_EVENTS', $tracking_events );
 
-		Api_Util::send_api_response( 200 );
+		return true;
 	}
 }

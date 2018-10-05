@@ -50,19 +50,19 @@ class Controller {
 	private function handle_tracking_event_hook() {
 		$tracking_events = get_option( 'BW_TRACKING_EVENTS', array() );
 
-		foreach ($tracking_events as $tracking_event) {
+		foreach ( $tracking_events as $tracking_event ) {
 
-            if ( empty( $tracking_event ) || ! isset( $tracking_event['order_id'], $tracking_event['date'], $tracking_event['code'], $tracking_event['carrier_reference'] ) ) {
-                continue;
-            }
+			if ( empty( $tracking_event ) || ! isset( $tracking_event['order_id'], $tracking_event['date'], $tracking_event['code'], $tracking_event['carrier_reference'] ) ) {
+				continue;
+			}
 
-            $order_id            = $tracking_event['order_id'];
-            $carrier_reference   = $tracking_event['carrier_reference'];
-            $tracking_event_date = $tracking_event['date'];
-            $tracking_event_code = $tracking_event['code'];
+			$order_id            = $tracking_event['order_id'];
+			$carrier_reference   = $tracking_event['carrier_reference'];
+			$tracking_event_date = $tracking_event['date'];
+			$tracking_event_code = $tracking_event['code'];
 
-            do_action( 'boxtal_tracking_event', $order_id, $carrier_reference, $tracking_event_date, $tracking_event_code );
-        }
+			do_action( 'boxtal_tracking_event', $order_id, $carrier_reference, $tracking_event_date, $tracking_event_code );
+		}
 
 		update_option( 'BW_TRACKING_EVENTS', array() ); // remove event in case some buggy code is hooked.
 	}
