@@ -2,7 +2,7 @@ vendor/
 composer.lock
 .idea/
 coverage.xml
-src/Boxtal/BoxtalWoocommerce/assets/css
-src/Boxtal/BoxtalWoocommerce/assets/js/*.min.js
-src/Boxtal/BoxtalWoocommerce/translation/*.mo
+src/Boxtal/BoxtalConnectWoocommerce/assets/css
+src/Boxtal/BoxtalConnectWoocommerce/assets/js/*.min.js
+src/Boxtal/BoxtalConnectWoocommerce/translation/*.mo
 node_modules/

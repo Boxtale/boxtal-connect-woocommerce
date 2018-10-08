@@ -1,8 +1,8 @@
 {
-  "name": "boxtal/boxtal-woocommerce-poc",
+  "name": "boxtal/boxtal-connect-woocommerce",
   "description": "Shipping plugin using boxtal API for Woocommerce",
-  "homepage": "https://github.com/boxtal/boxtal-woocommerce-poc",
-  "keywords": ["envoimoinscher", "boxtal", "boxtale", "php", "emc", "class", "api", "woocommerce"],
+  "homepage": "https://github.com/boxtal/boxtal-connect-woocommerce",
+  "keywords": ["envoimoinscher", "boxtal", "boxtale", "php", "emc", "class", "api", "woocommerce", "connect"],
   "license": "GPL-3.0+",
   "authors": [
     {

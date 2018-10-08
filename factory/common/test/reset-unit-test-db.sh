@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DB_NAME=boxtal_woocommerce_test
+DB_NAME=boxtal_connect_test
 DB_USER=dbadmin
 DB_PASS=dbpass
 

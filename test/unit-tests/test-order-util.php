@@ -5,7 +5,7 @@
  * @package Boxtal\Tests
  */
 
-use Boxtal\BoxtalWoocommerce\Util\Order_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Order_Util;
 
 
 /**

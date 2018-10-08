@@ -5,9 +5,9 @@
  * @package Boxtal\Tests
  */
 
-use Boxtal\BoxtalWoocommerce\Rest_Controller\Order;
-use Boxtal\BoxtalWoocommerce\Util\Product_Util;
-use Boxtal\BoxtalWoocommerce\Util\Order_Util;
+use Boxtal\BoxtalConnectWoocommerce\Rest_Controller\Order;
+use Boxtal\BoxtalConnectWoocommerce\Util\Product_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Order_Util;
 
 /**
  * Class BW_Test_Order.

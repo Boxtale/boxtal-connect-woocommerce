@@ -13,7 +13,7 @@ GitHub is for _bug reports and contributions only_ - if you have a support quest
 If something isn't working, congratulations you've found a bug! Help us fix it by submitting an issue report:
 
 * Make sure you have a [GitHub account](https://github.com/signup/free)
-* Search the [Existing Issues](https://github.com/Boxtale/boxtal-woocommerce-poc/issues) to be sure that the one you've noticed isn't already there
+* Search the [Existing Issues](https://github.com/Boxtale/boxtal-connect-woocommerce/issues) to be sure that the one you've noticed isn't already there
 * Submit a report for your issue
   * Clearly describe the issue (including steps to reproduce it if it's a bug)
   * Make sure you fill in the earliest version that you know has the issue
@@ -51,11 +51,11 @@ Your step is to set up your local work environment. Luckily we have included too
 `./factory/docker/run.sh <php_version> <wordpress_version> <woocommerce_version>`
 
 
-That's it! A fully configured wordpress with woocommerce will be running on your localhost. The Boxtal WooCommerce plugin will be preinstalled.
+That's it! A fully configured wordpress with woocommerce will be running on your localhost. The Boxtal Connect plugin will be preinstalled.
 
 __Please Note:__
 
-The running container will be named "boxtal_woocommerce", so if you want to run the command again to reset your container you should remove the container beforehand (`docker stop boxtal_woocommerce && docker rm boxtal_woocommerce`).
+The running container will be named "boxtal_connect_woocommerce", so if you want to run the command again to reset your container you should remove the container beforehand (`docker stop boxtal_connect_woocommerce && docker rm boxtal_connect_woocommerce`).
 
 #### Syncing code
 
@@ -87,8 +87,8 @@ To run code sniffing, run: `./factory/common/phpcs.sh`
 * When committing, reference your issue number (#1234) and include a note about the fix
 * Push the changes to your fork, this will trigger a build in travis
 * Make sure the travis build does not fail, that means code sniffing, unit tests and end-to-end tests must all be greenlit
-* Submit a pull request on the master branch of the WooCommerce repository. Existing maintenance branches will be maintained by Boxtal WooCommerce developers
-* Please **don't** add your localizations or update the .pot files - these will also be maintained by the Boxtal WooCommerce developers. To contribute to the localization of Boxtal WooCommerce, please join the [translate.wordpress.org project](https://translate.wordpress.org/projects/wp-plugins/boxtal-woocommerce).
+* Submit a pull request on the master branch of the WooCommerce repository. Existing maintenance branches will be maintained by Boxtal Connect developers
+* Please **don't** add your localizations or update the .pot files - these will also be maintained by the Boxtal Connect developers. To contribute to the localization of Boxtal Connect, please join the [translate.wordpress.org project](https://translate.wordpress.org/projects/wp-plugins/boxtal-connect).
 
 After you follow the step above, the next stage will be waiting on us to merge your Pull Request. We review them all, and make suggestions and changes as and if necessary.
 

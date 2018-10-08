@@ -7,7 +7,7 @@ WC_VERSION=${2-"2.6.14"}
 TRAVIS=${3-false}
 MULTISITE=${4-0}
 
-DB_NAME=boxtal_woocommerce_test
+DB_NAME=boxtal_connect_test
 DB_USER=dbadmin
 DB_PASS=dbpass
 DB_HOST=localhost
@@ -21,7 +21,7 @@ wp="php wp-cli.phar"
 if [ ${TRAVIS} = "false" ]; then
 	HOME='/home/docker'
 else
-	HOME='/home/travis/build/Boxtale/boxtal-woocommerce-poc'
+	HOME='/home/travis/build/Boxtale/boxtal-connect-woocommerce'
 fi
 
 download() {
@@ -122,12 +122,12 @@ install_unit_tests() {
 }
 
 activate_plugin_simple() {
-    $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR
+    $wp plugin activate boxtal-connect --allow-root --path=$WP_CORE_DIR
 }
 
 activate_plugin_multisite() {
-    $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
-    $wp plugin activate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
+    $wp plugin activate boxtal-connect --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
+    $wp plugin activate boxtal-connect --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
 }
 
 install_wp

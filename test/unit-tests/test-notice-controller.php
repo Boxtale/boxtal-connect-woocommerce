@@ -5,7 +5,7 @@
  * @package Boxtal\Tests
  */
 
-use Boxtal\BoxtalWoocommerce\Notice\Notice_Controller;
+use Boxtal\BoxtalConnectWoocommerce\Notice\Notice_Controller;
 
 
 /**

@@ -7,7 +7,7 @@ WP_VERSION=${1-latest}
 WC_VERSION=${2-3.3.5}
 
 TMPSITEURL="http://localhost"
-TMPSITETITLE="Boxtal Woocommerce test site"
+TMPSITETITLE="Boxtal Connect test site"
 TMPSITEADMINLOGIN="admin"
 TMPSITEADMINPWD="admin"
 TMPSITEADMINEMAIL="test_wordpress@boxtal.com"

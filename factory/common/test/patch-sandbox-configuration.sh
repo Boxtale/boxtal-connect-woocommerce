@@ -17,8 +17,8 @@ PP_OPERATORS='a:7:{i:0;O:8:"stdClass":2:{s:4:"code";s:4:"MONR";s:5:"label";s:13:
 
 SANDBOX_API_URL='https://api.boxtal.build'
 ESCAPED_APIURL=$(sed 's|/|\\/|g' <<< $SANDBOX_API_URL)
-sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.org\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json"
-sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.com\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json"
+sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.org\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-connect/Boxtal/BoxtalPhp/config.json"
+sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.com\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-connect/Boxtal/BoxtalPhp/config.json"
 
 if [[ $MULTISITE = "1" ]]; then
     $wp option update BW_ACCESS_KEY $ACCESS_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL

@@ -18,5 +18,5 @@ add_action( 'boxtal_tracking_event', 'my_tracking_function' );`
 
 Be aware that a WooCommerce can have several carrier references.
 
-## Contributing to Boxtal WooCommerce
-If you have a patch or have stumbled upon an issue with our plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/Boxtale/boxtal-woocommerce-poc/blob/master/.github/CONTRIBUTING.md) for more information how you can do this.
+## Contributing to Boxtal Connect
+If you have a patch or have stumbled upon an issue with our plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/Boxtale/boxtal-connect-woocommerce/blob/master/.github/CONTRIBUTING.md) for more information how you can do this.

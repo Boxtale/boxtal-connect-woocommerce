@@ -24,8 +24,8 @@ function _manually_load_plugin() {
 	require $wc_dir . '/tests/framework/helpers/class-wc-helper-product.php';
 	require $wc_dir . '/tests/framework/helpers/class-wc-helper-shipping.php';
 
-	// Load boxtal woocommerce plugin.
-	require __DIR__ . '/../src/boxtal-woocommerce.php';
+	// Load Boxtal Connect plugin.
+	require __DIR__ . '/../src/boxtal-connect.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

@@ -8,7 +8,7 @@ var gulp         = require( 'gulp' ),
 	cleanCSS     = require( 'gulp-clean-css' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
     concat 		 = require('gulp-concat'),
-	assetsDir    = 'src/Boxtal/BoxtalWoocommerce/assets';
+	assetsDir    = 'src/Boxtal/BoxtalConnectWoocommerce/assets';
 
 /* Error Notification
  ================================================================================== */

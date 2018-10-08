@@ -5,7 +5,7 @@
  * @package Boxtal\Tests
  */
 
-use Boxtal\BoxtalWoocommerce\Util\Auth_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
 
 
 /**

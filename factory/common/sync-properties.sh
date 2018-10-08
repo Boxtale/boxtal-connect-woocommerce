@@ -7,12 +7,12 @@ sh $HOME/properties
 
 if ! [ -z "$APIURL" ]; then
     ESCAPED_APIURL=$(sed 's|/|\\/|g' <<< $APIURL)
-    sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.com\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce/Boxtal/BoxtalPhp/config.json"
+    sudo -u www-data -H sh -c "sed -i \"s/apiUrl\\\": \\\"https:\/\/api.boxtal.com\\\"/apiUrl\\\": \\\"$ESCAPED_APIURL\\\"/\"  $WP_CORE_DIR/wp-content/plugins/boxtal-connect/Boxtal/BoxtalPhp/config.json"
 fi
 
 if ! [ -z "$ONBOARDINGURL" ]; then
     ESCAPED_ONBOARDINGURL=$(sed 's|/|\\/|g' <<< $ONBOARDINGURL)
-    sudo -u www-data -H sh -c "sed -i \"s/https:\/\/www.boxtal.com\/onboarding/$ESCAPED_ONBOARDINGURL/\" $WP_CORE_DIR/wp-content/plugins/boxtal-woocommerce/boxtal-woocommerce.php"
+    sudo -u www-data -H sh -c "sed -i \"s/https:\/\/www.boxtal.com\/onboarding/$ESCAPED_ONBOARDINGURL/\" $WP_CORE_DIR/wp-content/plugins/boxtal-connect/boxtal-connect.php"
 fi
 
 if ! [ -z "$WP_SITEURL" ]; then

@@ -3,7 +3,7 @@
 echo "starting multisite install"
 set -ex
 
-TMPSITETITLE="Boxtal Woocommerce alternate site"
+TMPSITETITLE="Boxtal Connect alternate site"
 TMPSITEADMINLOGIN="admin"
 TMPSITEADMINPWD="admin"
 TMPSITEADMINEMAIL="test_wordpress@boxtal.com"
@@ -14,7 +14,7 @@ wp="php wp-cli.phar"
 
 deactivate_plugins() {
     $wp plugin deactivate woocommerce --allow-root --path=$WP_CORE_DIR
-    $wp plugin deactivate boxtal-woocommerce --allow-root --path=$WP_CORE_DIR
+    $wp plugin deactivate boxtal-connect --allow-root --path=$WP_CORE_DIR
     $wp plugin deactivate wordpress-importer --allow-root --path=$WP_CORE_DIR
 }
 
