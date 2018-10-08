@@ -1,6 +1,6 @@
 === Boxtal Connect - The shipping solution for WooCommerce ===
 Contributors: Boxtal
-Tags: delivery, carrier, shipping, pickup, doortodoor, boxtal, envoimoinscher, mondialrelay, relaiscolis, laposte, colissimo, chronopost, dhl, tnt, ups, fedex
+Tags: expédition, shipping, boxtal, colissimo,chronopost, envoimoinscher , envoi, colis, relais, connect
 Requires at least: 4.6
 Tested up to: 4.9.8
 Requires PHP: 5.6
@@ -40,10 +40,24 @@ Ensuring the availability of our solution 24 hours a day is our priority: we con
 
 == Installation ==
 
-Minimum requirements:
+= Minimum requirements =
 * WooCommerce version : 2.6.14 or greater
 * WordPress version : 4.6 or greater
 * Php version : 5.6 or greater
+
+= Step by step guide =
+1. Download and activate our plugin from your WooCommerce backoffice
+2. Start the configuration wizard from WooCommerce
+3. Sign-in with your Boxtal user or create an account
+4. Confirm the url of your shop
+
+== FAQ ==
+
+= Is a SSL certificate required? =
+Boxtal plugin can function without one just fine. However, for your peace of mind and that of your customers, we strongly recommend that you have an SSL certificate that secures the access to your site.
+
+= Is Boxtal Connect free ? =
+Boxtal Connect by Boxtal is a free non-binding solution.
 
 == Changelog ==
 
