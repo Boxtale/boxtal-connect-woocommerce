@@ -12,16 +12,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="bw-tracking">
-	<?php if ( null !== $tracking ) : ?>
+    <?php //phpcs:ignore ?>
+	<?php if ( property_exists( $tracking, 'shipmentTrackings' ) && ! empty( $tracking->shipmentTrackings ) ) : ?>
 
-		<?php if ( 1 === count( $tracking ) ) : ?>
+        <?php //phpcs:ignore ?>
+		<?php if ( 1 === count( $tracking->shipmentTrackings ) ) : ?>
 			<p><?php esc_html_e( 'Your order has been sent in 1 shipment.', 'boxtal-woocommerce' ); ?></p>
 		<?php else : ?>
+            <?php //phpcs:disable ?>
 			<?php /* translators: 1) int number of shipments */ ?>
-			<p><?php echo esc_html( sprintf( __( 'Your order has been sent in %s shipments.', 'boxtal-woocommerce' ), count( $tracking ) ) ); ?></p>
+			<p><?php echo esc_html( sprintf( __( 'Your order has been sent in %s shipments.', 'boxtal-woocommerce' ), count( $tracking->shipmentTrackings ) ) ); ?></p>
+            <?php //phpcs:enable ?>
 		<?php endif; ?>
 
-		<?php foreach ( $tracking as $shipment ) : ?>
+        <?php //phpcs:ignore ?>
+		<?php foreach ( $tracking->shipmentTrackings as $shipment ) : ?>
 			<?php //phpcs:ignore ?>
 			<h4><?php echo sprintf( __( 'Shipment reference %s', 'boxtal-woocommerce' ), '<a href="' . esc_url( "anyurl" ) . '" target="_blank">' . $shipment->carrierReference . '</a>' ); ?></h4>
 			<?php if ( 1 === count( $shipment->packages ) ) : ?>
@@ -46,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php endforeach; ?>
 
 				<?php else : ?>
-					<p><?php esc_html_e( 'No tracking event for this shipment yet.', 'boxtal-woocommerce' ); ?></p>
+					<p><?php esc_html_e( 'No tracking event for this package yet.', 'boxtal-woocommerce' ); ?></p>
 				<?php endif; ?>
 				<br/>
 			<?php endforeach; ?>

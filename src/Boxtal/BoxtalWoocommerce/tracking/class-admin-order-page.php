@@ -63,7 +63,7 @@ class Admin_Order_Page {
 			)
 		);
 		$this->tracking = $controller->get_order_tracking( Order_Util::get_id( Order_Util::admin_get_order() ) );
-		if ( null === $this->tracking ) {
+		if ( null === $this->tracking || ! property_exists( $this->tracking, 'shipmentTrackings' ) || empty( $this->tracking->shipmentTrackings ) ) {
 			return;
 		}
 		if ( function_exists( 'wc_get_order_types' ) ) {
@@ -99,6 +99,8 @@ class Admin_Order_Page {
 		);
 		$order_id   = Order_Util::get_id( Order_Util::admin_get_order() );
 		$tracking   = $controller->get_order_tracking( $order_id );
-		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-view-modal-tracking.php';
+		if ( null !== $tracking ) {
+			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-view-modal-tracking.php';
+		}
 	}
 }

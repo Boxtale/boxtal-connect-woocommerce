@@ -59,6 +59,7 @@ COPY . $HOME
 RUN chown -R docker:docker $HOME
 RUN chmod -R +x $HOME/factory/common
 RUN $HOME/factory/common/sync.sh
+RUN $HOME/factory/docker/install-hook-tester.sh
 
 USER docker
 ENTRYPOINT $HOME/factory/docker/entrypoint.sh
