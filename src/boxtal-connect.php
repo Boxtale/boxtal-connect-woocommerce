@@ -28,6 +28,7 @@ use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Settings_Override;
 use Boxtal\BoxtalConnectWoocommerce\Tracking\Admin_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Tracking\Front_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Configuration_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Environment_Util;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
@@ -72,6 +73,41 @@ function boxtal_connect_init() {
 		}
 	}
 	$plugin->run();
+}
+
+register_uninstall_hook( __FILE__, 'boxtal_connect_uninstall_network' );
+/**
+ * Network uninstall.
+ *
+ * @param boolean $network_wide whether it is a network wide uninstall or not.
+ * @void
+ */
+function boxtal_connect_uninstall_network( $network_wide ) {
+	if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+		global $wpdb;
+		$current_blog = $wpdb->blogid;
+
+		//phpcs:ignore
+		$blog_ids = $wpdb->get_col( 'SELECT blog_id FROM ' . $wpdb->blogs );
+		foreach ( $blog_ids as $blog_id ) {
+            //phpcs:ignore
+			switch_to_blog( $blog_id );
+			boxtal_connect_uninstall_simple();
+		}
+        //phpcs:ignore
+		switch_to_blog( $current_blog );
+	} else {
+		boxtal_connect_uninstall_simple();
+	}
+}
+
+/**
+ * Simple uninstall.
+ *
+ * @void
+ */
+function boxtal_connect_uninstall_simple() {
+	Configuration_Util::delete_configuration();
 }
 
 /**
