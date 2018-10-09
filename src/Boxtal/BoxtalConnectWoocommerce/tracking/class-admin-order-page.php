@@ -63,7 +63,7 @@ class Admin_Order_Page {
 			)
 		);
 		$this->tracking = $controller->get_order_tracking( Order_Util::get_id( Order_Util::admin_get_order() ) );
-		if ( null === $this->tracking || ! property_exists( $this->tracking, 'shipmentTrackings' ) || empty( $this->tracking->shipmentTrackings ) ) {
+		if ( null === $this->tracking || ! property_exists( $this->tracking, 'shipmentTrackingList' ) || empty( $this->tracking->shipmentTrackingList ) ) {
 			return;
 		}
 		if ( function_exists( 'wc_get_order_types' ) ) {
