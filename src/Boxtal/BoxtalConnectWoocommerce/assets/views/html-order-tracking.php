@@ -28,16 +28,18 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php //phpcs:ignore ?>
 		<?php foreach ( $tracking->shipmentTrackings as $shipment ) : ?>
 			<?php //phpcs:ignore ?>
-			<h4><?php echo sprintf( __( 'Shipment reference %s', 'boxtal-connect' ), '<a href="' . esc_url( "anyurl" ) . '" target="_blank">' . $shipment->carrierReference . '</a>' ); ?></h4>
-			<?php if ( 1 === count( $shipment->packages ) ) : ?>
-				<p><?php esc_html_e( 'Your shipment has 1 package.', 'boxtal-connect' ); ?></p>
+			<h4><?php echo sprintf( __( 'Shipment reference %s', 'boxtal-connect' ), $shipment->carrierReference ); ?></h4>
+			<?php $package_count = count( $shipment->packages ); ?>
+			<?php if ( 1 === $package_count || 0 === $package_count ) : ?>
+				<?php /* translators: 1) int number of shipments */ ?>
+				<p><?php echo esc_html( sprintf( __( 'Your shipment has %s package.', 'boxtal-connect' ), $package_count ) ); ?></p>
 			<?php else : ?>
 				<?php /* translators: 1) int number of shipments */ ?>
-				<p><?php echo esc_html( sprintf( __( 'Your shipment has %s packages.', 'boxtal-connect' ), count( $shipment->packages ) ) ); ?></p>
+				<p><?php echo esc_html( sprintf( __( 'Your shipment has %s packages.', 'boxtal-connect' ), $package_count ) ); ?></p>
 			<?php endif; ?>
 			<?php foreach ( $shipment->packages as $package ) : ?>
                 <?php //phpcs:ignore ?>
-				<p><?php echo sprintf( __( 'Package reference %s:', 'boxtal-connect' ), $package->packageReference ); ?></p>
+				<p><?php echo sprintf( __( 'Package reference %s', 'boxtal-connect' ), '<a href="' . esc_url( $package->trackingUrl ) . '" target="_blank">' . $package->packageReference . '</a>' ); ?></p>
                 <?php //phpcs:ignore ?>
 				<?php if ( is_array( $package->trackingEvents ) && count( $package->trackingEvents ) > 0 ) : ?>
                     <?php //phpcs:ignore ?>
