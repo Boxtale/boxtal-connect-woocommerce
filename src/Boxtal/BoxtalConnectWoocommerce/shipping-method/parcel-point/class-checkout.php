@@ -27,20 +27,21 @@ class Checkout {
 	 * @void
 	 */
 	public function run() {
-		add_action( 'woocommerce_checkout_order_processed', array( $this, 'order_created' ) );
+		add_action( 'woocommerce_checkout_order_processed', array( $this, 'order_created' ), 10, 2 );
 	}
 
 	/**
 	 * Add parcel point info to order.
 	 *
 	 * @param string $order_id the order id.
+	 * @param array  $posted_data posted data.
 	 * @void
 	 */
-	public function order_created( $order_id ) {
+	public function order_created( $order_id, $posted_data ) {
 	    // phpcs:ignore
-		if ( isset( $_REQUEST['shipping_method'][0] ) ) {
+		if ( isset( $posted_data['shipping_method'][0] ) ) {
             // phpcs:ignore
-			$carrier  = sanitize_text_field( wp_unslash( $_REQUEST['shipping_method'][0] ) );
+			$carrier  = sanitize_text_field( wp_unslash( $posted_data['shipping_method'][0] ) );
 			if ( WC()->session ) {
 				$closest_point = Controller::get_closest_point( $carrier );
 				if ( null !== $closest_point ) {

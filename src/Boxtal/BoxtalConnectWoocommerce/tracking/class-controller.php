@@ -70,7 +70,7 @@ class Controller {
 	 * Get order tracking.
 	 *
 	 * @param string $order_id \WC_Order id.
-	 * @return array tracking
+	 * @return object tracking
 	 */
 	public function get_order_tracking( $order_id ) {
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
