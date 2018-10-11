@@ -46,9 +46,9 @@
             self.map.addControl(new mapboxgl.NavigationControl());
 
             const logoImg = document.createElement("img");
-            logoImg.setAttribute("src", "https://resource.boxtal.com/images/boxtal-maps.svg");
+            logoImg.setAttribute("src", mapLogoImageUrl);
             const logoLink = document.createElement("a");
-            logoLink.setAttribute("href", "https://www.boxtal.com");
+            logoLink.setAttribute("href", mapLogoHrefUrl);
             logoLink.setAttribute("target", "_blank");
             logoLink.appendChild(logoImg);
             const logoContainer = document.createElement("div");
