@@ -7,6 +7,8 @@
 
 namespace Boxtal\BoxtalConnectWoocommerce\Util;
 
+use Boxtal\BoxtalConnectWoocommerce\Plugin;
+
 /**
  * Api util class.
  *
@@ -27,6 +29,8 @@ class Api_Util {
 	 * @void
 	 */
 	public static function send_api_response( $code, $body = null ) {
+		$boxtal_connect = Plugin::getInstance();
+		header( 'X-Version: ' . $boxtal_connect['version'] );
 		http_response_code( $code );
 		if ( null !== $body ) {
             // phpcs:ignore

@@ -20,6 +20,13 @@ namespace Boxtal\BoxtalConnectWoocommerce;
 class Plugin implements \ArrayAccess {
 
 	/**
+	 * Plugin instance content.
+	 *
+	 * @var Plugin
+	 */
+	public static $instance;
+
+	/**
 	 * Store content.
 	 *
 	 * @var contents
@@ -32,7 +39,17 @@ class Plugin implements \ArrayAccess {
 	 * @void
 	 */
 	public function __construct() {
-		$this->contents = array();
+		$this->contents  = array();
+		$this::$instance = $this;
+	}
+
+	/**
+	 * Get plugin instance.
+	 *
+	 * @return Plugin
+	 */
+	public static function getInstance() {
+		return self::$instance;
 	}
 
 	/**

@@ -141,6 +141,11 @@ class Shop {
 			Api_Util::send_api_response( 400 );
 		}
 
+		//phpcs:ignore
+		if ( ! is_object( $body ) || ! property_exists( $body, 'accessKey' ) || $body->accessKey !== Auth_Util::get_access_key() ) {
+			Api_Util::send_api_response( 403 );
+		}
+
 		Configuration_Util::delete_configuration();
 		Api_Util::send_api_response( 200 );
 	}

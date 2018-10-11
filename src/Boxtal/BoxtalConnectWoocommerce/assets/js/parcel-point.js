@@ -7,31 +7,6 @@
         map: null,
         markers: [],
 
-        init: function () {
-            const self = this;
-            self.on("body", "click", self.trigger, function() {
-                self.mapContainer = document.querySelector('#bw-map');
-                if (!self.mapContainer) {
-                    self.initMap();
-                }
-
-                self.on("body", "click", ".bw-parcel-point-button", function() {
-                    self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-label"), this.getAttribute("data-operator"))
-                        .then(function(label) {
-                            self.initSelectedParcelPoint();
-                             const target = document.querySelector(".bw-parcel-name");
-                            target.innerHTML = label;
-                            self.closeMap();
-                        })
-                        .catch(function(err) {
-                            self.showError(err);
-                        });
-                });
-                self.openMap();
-                self.getPoints();
-            });
-        },
-
         initMap: function() {
             const self = this;
             const mapClose = document.createElement("div");
@@ -69,6 +44,46 @@
                 zoom: 14
             });
             self.map.addControl(new mapboxgl.NavigationControl());
+
+            const logoImg = document.createElement("img");
+            logoImg.setAttribute("src", "https://resource.boxtal.com/images/boxtal-maps.svg");
+            const logoLink = document.createElement("a");
+            logoLink.setAttribute("href", "https://www.boxtal.com");
+            logoLink.setAttribute("target", "_blank");
+            logoLink.appendChild(logoImg);
+            const logoContainer = document.createElement("div");
+            logoContainer.setAttribute("id", "bw-boxtal-logo");
+            logoContainer.appendChild(logoLink);
+
+            const mapTopLeftCorner = document.querySelector(".mapboxgl-ctrl-top-left");
+            if (mapTopLeftCorner) {
+                mapTopLeftCorner.appendChild(logoContainer);
+            }
+        },
+
+        init: function () {
+            const self = this;
+            self.on("body", "click", self.trigger, function() {
+                self.mapContainer = document.querySelector("#bw-map");
+                if (!self.mapContainer) {
+                    self.initMap();
+                }
+
+                self.on("body", "click", ".bw-parcel-point-button", function() {
+                    self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-label"), this.getAttribute("data-operator"))
+                        .then(function(label) {
+                            self.initSelectedParcelPoint();
+                             const target = document.querySelector(".bw-parcel-name");
+                            target.innerHTML = label;
+                            self.closeMap();
+                        })
+                        .catch(function(err) {
+                            self.showError(err);
+                        });
+                });
+                self.openMap();
+                self.getPoints();
+            });
         },
 
         openMap: function() {
