@@ -99,8 +99,9 @@ class Admin_Order_Page {
 		);
 		$order_id   = Order_Util::get_id( Order_Util::admin_get_order() );
 		$tracking   = $controller->get_order_tracking( $order_id );
-		if ( null !== $tracking ) {
-			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-view-modal-tracking.php';
+		if ( null === $this->tracking || ! property_exists( $this->tracking, 'shipmentTrackingList' ) || empty( $this->tracking->shipmentTrackingList ) ) {
+			return;
 		}
+		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-view-modal-tracking.php';
 	}
 }

@@ -37,25 +37,25 @@ class Configuration_Util {
 		return $url . '?' . http_build_query( $params );
 	}
 
-    /**
-     * Get map logo href url.
-     *
-     * @return string map logo href url
-     */
-    public static function get_map_logo_href_url() {
-        $url = get_option('BW_MAP_LOGO_HREF_URL');
-        return false !== $url ? $url : null;
-    }
+	/**
+	 * Get map logo href url.
+	 *
+	 * @return string map logo href url
+	 */
+	public static function get_map_logo_href_url() {
+		$url = get_option( 'BW_MAP_LOGO_HREF_URL' );
+		return false !== $url ? $url : null;
+	}
 
-    /**
-     * Get map logo image url.
-     *
-     * @return string map logo image url
-     */
-    public static function get_map_logo_image_url() {
-        $url = get_option('BW_MAP_LOGO_IMAGE_URL');
-        return false !== $url ? $url : null;
-    }
+	/**
+	 * Get map logo image url.
+	 *
+	 * @return string map logo image url
+	 */
+	public static function get_map_logo_image_url() {
+		$url = get_option( 'BW_MAP_LOGO_IMAGE_URL' );
+		return false !== $url ? $url : null;
+	}
 
 	/**
 	 * Has configuration.
@@ -63,7 +63,7 @@ class Configuration_Util {
 	 * @return boolean
 	 */
 	public static function has_configuration() {
-		return false !== get_option( 'BW_MAP_BOOTSTRAP_URL' ) && false !== get_option( 'BW_MAP_TOKEN_URL' ) && false !== get_option( 'BW_PP_OPERATORS' );
+		return false !== get_option( 'BW_MAP_BOOTSTRAP_URL' ) && false !== get_option( 'BW_MAP_TOKEN_URL' ) && false !== get_option( 'BW_PP_NETWORKS' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Configuration_Util {
 		delete_option( 'BW_MAP_TOKEN_URL' );
 		delete_option( 'BW_MAP_LOGO_IMAGE_URL' );
 		delete_option( 'BW_MAP_LOGO_HREF_URL' );
-		delete_option( 'BW_PP_OPERATORS' );
+		delete_option( 'BW_PP_NETWORKS' );
 		delete_option( 'BW_TRACKING_EVENTS' );
 		delete_option( 'BW_NOTICES' );
 		delete_option( 'BW_PAIRING_UPDATE' );
@@ -103,60 +103,60 @@ class Configuration_Util {
 	 * @return boolean
 	 */
 	public static function parse_configuration( $body ) {
-		return self::parse_parcel_point_operators( $body ) && self::parse_map_configuration( $body );
+		return self::parse_parcel_point_networks( $body ) && self::parse_map_configuration( $body );
 	}
 
 	/**
-	 * Parse parcel point operators response.
+	 * Parse parcel point networks response.
 	 *
 	 * @param object $body body.
 	 * @return boolean
 	 */
-	private static function parse_parcel_point_operators( $body ) {
-		if ( is_object( $body ) && property_exists( $body, 'parcelPointOperators' ) ) {
+	private static function parse_parcel_point_networks( $body ) {
+		if ( is_object( $body ) && property_exists( $body, 'parcelPointNetworks' ) ) {
 
-			$stored_operators = get_option( 'BW_PP_OPERATORS' );
-			if ( is_array( $stored_operators ) ) {
-				$removed_operators = $stored_operators;
+			$stored_networks = get_option( 'BW_PP_NETWORKS' );
+			if ( is_array( $stored_networks ) ) {
+				$removed_networks = $stored_networks;
                 //phpcs:ignore
-                foreach ( $body->parcelPointOperators as $new_operator ) {
-					foreach ( $stored_operators as $key => $old_operator ) {
-						if ( $new_operator->code === $old_operator->code ) {
-							unset( $removed_operators[ $key ] );
+                foreach ( $body->parcelPointNetworks as $new_network ) {
+					foreach ( $stored_networks as $key => $old_network ) {
+						if ( $new_network->code === $old_network->code ) {
+							unset( $removed_networks[ $key ] );
 						}
 					}
 				}
 
-				if ( count( $removed_operators ) > 0 ) {
+				if ( count( $removed_networks ) > 0 ) {
 					Notice_Controller::add_notice(
 						Notice_Controller::$custom, array(
 							'status'  => 'warning',
-							'message' => __( 'There\'s been a change in the parcel point operator list, we\'ve adapted your shipping method configuration. Please check that everything is in order.', 'boxtal-connect' ),
+							'message' => __( 'There\'s been a change in the parcel point network list, we\'ve adapted your shipping method configuration. Please check that everything is in order.', 'boxtal-connect' ),
 						)
 					);
 				}
 
                 //phpcs:ignore
-                $added_operators = $body->parcelPointOperators;
+                $added_networks = $body->parcelPointNetworks;
                 //phpcs:ignore
-                foreach ( $body->parcelPointOperators as $new_operator ) {
-					foreach ( $stored_operators as $key => $old_operator ) {
-						if ( $new_operator->code === $old_operator->code ) {
-							unset( $added_operators[ $key ] );
+                foreach ( $body->parcelPointNetworks as $new_network ) {
+					foreach ( $stored_networks as $key => $old_network ) {
+						if ( $new_network->code === $old_network->code ) {
+							unset( $added_networks[ $key ] );
 						}
 					}
 				}
-				if ( count( $added_operators ) > 0 ) {
+				if ( count( $added_networks ) > 0 ) {
 					Notice_Controller::add_notice(
 						Notice_Controller::$custom, array(
 							'status'  => 'info',
-							'message' => __( 'There\'s been a change in the parcel point operator list, you can add the extra parcel point operator(s) to your shipping method configuration.', 'boxtal-connect' ),
+							'message' => __( 'There\'s been a change in the parcel point network list, you can add the extra parcel point network(s) to your shipping method configuration.', 'boxtal-connect' ),
 						)
 					);
 				}
 			}
             //phpcs:ignore
-            update_option('BW_PP_OPERATORS', $body->parcelPointOperators);
+            update_option('BW_PP_NETWORKS', $body->parcelPointNetworks);
 			return true;
 		}
 		return false;
@@ -170,7 +170,7 @@ class Configuration_Util {
 	 */
 	private static function parse_map_configuration( $body ) {
 		if ( is_object( $body ) && property_exists( $body, 'mapsBootstrapUrl' ) && property_exists( $body, 'mapsTokenUrl' )
-            && property_exists( $body, 'mapsLogoImageUrl' ) && property_exists( $body, 'mapsLogoHrefUrl' )) {
+			&& property_exists( $body, 'mapsLogoImageUrl' ) && property_exists( $body, 'mapsLogoHrefUrl' ) ) {
             //phpcs:ignore
             update_option('BW_MAP_BOOTSTRAP_URL', $body->mapsBootstrapUrl);
             //phpcs:ignore

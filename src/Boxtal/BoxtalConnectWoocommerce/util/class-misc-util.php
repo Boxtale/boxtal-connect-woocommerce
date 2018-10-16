@@ -145,23 +145,23 @@ class Misc_Util {
 	}
 
 	/**
-	 * Get active parcel point operators for shipping method.
+	 * Get active parcel point networks for shipping method.
 	 *
 	 * @param array $settings shipping rate settings.
-	 * @return array $operators
+	 * @return array $networks
 	 */
-	public static function get_active_parcel_point_operators( $settings ) {
-		if ( null === $settings['bw_parcel_point_operators'] || ! is_array( $settings['bw_parcel_point_operators'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
+	public static function get_active_parcel_point_networks( $settings ) {
+		if ( null === $settings['bw_parcel_point_networks'] || ! is_array( $settings['bw_parcel_point_networks'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
 			return array();
 		}
-		$operators = get_option( 'BW_PP_OPERATORS' );
-		if ( false === $operators || ! is_array( $operators ) ) {
+		$networks = get_option( 'BW_PP_NETWORKS' );
+		if ( false === $networks || ! is_array( $networks ) ) {
 			return array();
 		}
-		$operators_array = array();
-		foreach ( $operators as $operator ) {
-			$operators_array[] = $operator->code;
+		$networks_array = array();
+		foreach ( $networks as $network ) {
+			$networks_array[] = $network->code;
 		}
-		return array_intersect( $operators_array, $settings['bw_parcel_point_operators'] );
+		return array_intersect( $networks_array, $settings['bw_parcel_point_networks'] );
 	}
 }

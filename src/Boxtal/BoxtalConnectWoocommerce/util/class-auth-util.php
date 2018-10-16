@@ -29,13 +29,8 @@ class Auth_Util {
 	 * @return boolean|void
 	 */
 	public static function authenticate( $request ) {
-        // phpcs:ignore
-        $public_key = file_get_contents(realpath(plugin_dir_path(__DIR__)) . DIRECTORY_SEPARATOR . 'resource' . DIRECTORY_SEPARATOR . 'publickey');
-		$decrypted  = '';
-		if ( openssl_public_decrypt( base64_decode( $request->get_body() ), $decrypted, $public_key ) ) {
-			return true;
-		}
-		return Api_Util::send_api_response( 401 );
+		$body = $request->get_body();
+		return null === self::decrypt_body( $body ) ? Api_Util::send_api_response( 401 ) : true;
 	}
 
 	/**
@@ -90,17 +85,28 @@ class Auth_Util {
 	/**
 	 * Request body decryption.
 	 *
-	 * @param string $body encrypted body.
+	 * @param string $json_body encrypted body.
 	 * @return mixed
 	 */
-	public static function decrypt_body( $body ) {
-        // phpcs:ignore
-        $public_key = file_get_contents(realpath(plugin_dir_path(__DIR__)) . DIRECTORY_SEPARATOR . 'resource' . DIRECTORY_SEPARATOR . 'publickey');
-		$decrypted  = '';
-		if ( openssl_public_decrypt( base64_decode( $body ), $decrypted, $public_key ) ) {
-			return json_decode( $decrypted );
+	public static function decrypt_body( $json_body ) {
+
+		$body = json_decode( $json_body );
+
+		if ( null === $body || ! is_object( $body ) || ! property_exists( $body, 'encryptedKey' ) || ! property_exists( $body, 'encryptedData' ) ) {
+			return null;
 		}
-		return null;
+
+		//phpcs:ignore
+		$key = self::decrypt_public_key( $body->encryptedKey );
+
+		if ( null === $key ) {
+			return null;
+		}
+
+        //phpcs:ignore
+		$data = self::encrypt_rc4( base64_decode( $body->encryptedData ), $key );
+
+		return json_decode( $data );
 	}
 
 	/**
@@ -149,6 +155,22 @@ class Auth_Util {
 		$encrypted  = '';
 		if ( openssl_public_encrypt( $str, $encrypted, $public_key ) ) {
 			return $encrypted;
+		}
+		return null;
+	}
+
+	/**
+	 * Decrypt with public key.
+	 *
+	 * @param string $str to decrypt.
+	 * @return mixed
+	 */
+	public static function decrypt_public_key( $str ) {
+        // phpcs:ignore
+        $public_key = file_get_contents(realpath(plugin_dir_path(__DIR__)) . DIRECTORY_SEPARATOR . 'resource' . DIRECTORY_SEPARATOR . 'publickey');
+		$decrypted  = '';
+		if ( openssl_public_decrypt( base64_decode( $str ), $decrypted, $public_key ) ) {
+			return json_decode( $decrypted );
 		}
 		return null;
 	}

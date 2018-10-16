@@ -58,7 +58,7 @@ test.describe(
 				/* configure shipping methods */
 				const shippingZone = new WPAdminWCSettingsShippingZoneEdit( driver, { url: manager.getPageUrl( '/wp-admin/admin.php?page=wc-settings&tab=shipping&zone_id=0' ) });
                 shippingZone.addFlatRate("0");
-                shippingZone.addFlatRate("5", 'Mondial Relay');
+                shippingZone.addFlatRate("5", 'Relais colis');
 				/* end of configure shipping methods */
 
 				storeOwner.logout();
@@ -89,7 +89,7 @@ test.describe(
                 assert.eventually.ok( shippingMethods.checkLastShippingMethod() );
                 assert.eventually.ok( shippingMethods.isDisplayedParcelPointLink() );
                 assert.eventually.ok( shippingMethods.selectParcelPoint() );
-/*
+
                 checkoutPage.selectPaymentMethod( 'Check payments' );
                 checkoutPage.placeOrder();
                 Helper.waitTillUIBlockNotPresent( driver );
@@ -98,14 +98,14 @@ test.describe(
 
                 assert.eventually.ok(
                     orderReceivedPage.hasText( 'Order received' )
-                );*/
+                );
             }
 		);
 
 		// Close the browser after finished testing.
 		test.after(
 			() => {
-            	manager.quitBrowser();
+            	//manager.quitBrowser();
 			}
 		);
 

@@ -41,7 +41,13 @@ if ( ! defined( 'ABSPATH' ) ) {
             <?php //phpcs:ignore ?>
 			<?php foreach ( $shipment->packageTrackingList as $package ) : ?>
                 <?php //phpcs:ignore ?>
-				<p><?php echo sprintf( __( 'Package reference %s', 'boxtal-connect' ), '<a href="' . esc_url( $package->trackingUrl ) . '" target="_blank">' . $package->packageReference . '</a>' ); ?></p>
+                <?php if ( null !== $package->trackingUrl ) : ?>
+                    <?php //phpcs:ignore ?>
+					<p><?php echo sprintf( __( 'Package reference %s', 'boxtal-connect' ), '<a href="' . esc_url( $package->trackingUrl ) . '" target="_blank">' . $package->packageReference . '</a>' ); ?></p>
+				<?php else : ?>
+                    <?php //phpcs:ignore ?>
+					<p><?php echo esc_html( sprintf( __( 'Package reference %s', 'boxtal-connect' ), $package->packageReference ) ); ?></p>
+				<?php endif; ?>
                 <?php //phpcs:ignore ?>
 				<?php if ( is_array( $package->trackingEventList ) && count( $package->trackingEventList ) > 0 ) : ?>
                     <?php //phpcs:ignore ?>

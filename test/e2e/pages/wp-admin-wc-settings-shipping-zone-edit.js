@@ -21,7 +21,7 @@ const VALIDATE_SHIPPING_METHOD_SELECTOR = By.id( 'btn-ok' );
 const SHIPPING_METHOD_TITLE_SELECTOR = By.css( '.wc-shipping-zone-method-rows tr:last-child .wc-shipping-zone-method-title' );
 const EDIT_LAST_SHIPPING_METHOD_SELECTOR = By.css( '.wc-shipping-zone-method-rows tr:last-child .row-actions .wc-shipping-zone-method-settings' );
 const RATE_INPUT_SELECTOR = By.id( 'woocommerce_flat_rate_cost' );
-const PARCEL_POINT_OPERATORS_SELECTOR = By.id( 'woocommerce_flat_rate_bw_parcel_point_operators' );
+const PARCEL_POINT_NETWORKS_SELECTOR = By.id( 'woocommerce_flat_rate_bw_parcel_point_networks' );
 
 /**
  * The admin Shipping: Shipping Options screen
@@ -74,46 +74,46 @@ export default class WPAdminWCSettingsShippingZoneEdit extends WPAdminWCSettings
      * Add flat rate.
      *
      * @param float rate to be set.
-     * @param array parcel point operators to be set.
+     * @param array parcel point networks to be set.
      * @return {Promise}   Promise that evaluates to `true` if flat rate is successfully added, `false` otherwise.
      */
-    addFlatRate(rate, parcelPointOperators) {
-        return this.addShippingMethod('Flat rate').then(() => this.editFlatRate(rate, parcelPointOperators));
+    addFlatRate(rate, parcelPointNetworks) {
+        return this.addShippingMethod('Flat rate').then(() => this.editFlatRate(rate, parcelPointNetworks));
     }
 
     /**
      * Edit flat rate.
      *
      * @param string rate to be set.
-     * @param string parcel point operator to be set.
+     * @param string parcel point networks to be set.
      * @return {Promise}   Promise that evaluates to `true` if flat rate is successfully edited, `false` otherwise.
      */
-    editFlatRate(rate, parcelPointOperator) {
+    editFlatRate(rate, parcelPointNetworks) {
         const self = this;
         return helper.mouseMoveTo( self.driver, SHIPPING_METHOD_TITLE_SELECTOR ).then( () => {
             return self.driver.findElement( EDIT_LAST_SHIPPING_METHOD_SELECTOR ).then( (button1) => {
                 return button1.click().then( () => {
                     return helper.setWhenSettable( self.driver, RATE_INPUT_SELECTOR, rate ).then( () => {
-                            if (typeof parcelPointOperator == "undefined") {
-                                return self.driver.findElement( VALIDATE_SHIPPING_METHOD_SELECTOR ).then( (button2) => {
-                                    return button2.click().then( () => {
-                                        return true;
-                                    }, () => {
-                                        return false;
-                                    } );
-                                });
-                            }
-                            return helper.selectOption( self.driver, PARCEL_POINT_OPERATORS_SELECTOR, parcelPointOperator ).then( () => {
-                                    return self.driver.findElement( VALIDATE_SHIPPING_METHOD_SELECTOR ).then( (button2) => {
-                                        return button2.click().then( () => {
-                                            return true;
-                                        }, () => {
-                                            return false;
-                                        } );
-                                    });
+                        if (typeof parcelPointNetworks == "undefined") {
+                            return self.driver.findElement( VALIDATE_SHIPPING_METHOD_SELECTOR ).then( (button2) => {
+                                return button2.click().then( () => {
+                                    return true;
                                 }, () => {
-                                return false;
+                                    return false;
+                                } );
                             });
+                        }
+                        return helper.selectOption( self.driver, PARCEL_POINT_NETWORKS_SELECTOR, parcelPointNetworks ).then( () => {
+                            return self.driver.findElement( VALIDATE_SHIPPING_METHOD_SELECTOR ).then( (button2) => {
+                                return button2.click().then( () => {
+                                    return true;
+                                }, () => {
+                                    return false;
+                                } );
+                            });
+                            }, () => {
+                            return false;
+                        });
                         }, () => {
                         return false;
                     });

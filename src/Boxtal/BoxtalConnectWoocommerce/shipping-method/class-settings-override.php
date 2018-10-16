@@ -66,14 +66,14 @@ class Settings_Override {
 	 * @return array $form_fields
 	 */
 	public function add_form_field( $form_fields ) {
-		$carrier_options                          = Controller::get_operator_options();
-		$form_fields['bw_parcel_point_operators'] = array(
+		$network_options                         = Controller::get_network_options();
+		$form_fields['bw_parcel_point_networks'] = array(
 			'title'       => __( 'Parcel points map display (Boxtal Connect)', 'boxtal-connect' ),
 			'type'        => 'multiselect',
-			'description' => __( 'Choose one or more parcel point carriers in order to display a parcel point map for this shipping method. Use ctrl+click to select several carriers.', 'boxtal-connect' ),
-			'options'     => $carrier_options,
+			'description' => __( 'Choose one or more parcel point networks in order to display a parcel point map for this shipping method. Use ctrl+click to select several networks.', 'boxtal-connect' ),
+			'options'     => $network_options,
 			'default'     => array(),
-			'class'       => 'wc-enhanced-select bw-parcel-point-operators-dropdown',
+			'class'       => 'wc-enhanced-select bw-parcel-point-networks-dropdown',
 		);
 		return $form_fields;
 	}

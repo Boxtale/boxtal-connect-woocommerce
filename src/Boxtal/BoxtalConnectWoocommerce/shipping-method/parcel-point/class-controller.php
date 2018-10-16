@@ -118,15 +118,15 @@ class Controller {
 	}
 
 	/**
-	 * Get parcel point operator options
+	 * Get parcel point network options
 	 *
-	 * @return array operator options
+	 * @return array network options
 	 */
-	public static function get_operator_options() {
-		$carriers = get_option( 'BW_PP_OPERATORS' );
+	public static function get_network_options() {
+		$networks = get_option( 'BW_PP_NETWORKS' );
 		$options  = array();
-		foreach ( $carriers as $carrier ) {
-			$options[ $carrier->code ] = $carrier->label;
+		foreach ( $networks as $network => $carrier_array ) {
+			$options[ $network ] = implode( ', ', $carrier_array );
 		}
 		return $options;
 	}
@@ -216,13 +216,13 @@ class Controller {
 			return false;
 		}
 
-		$operators = Misc_Util::get_active_parcel_point_operators( $settings );
-		if ( empty( $operators ) ) {
+		$networks = Misc_Util::get_active_parcel_point_networks( $settings );
+		if ( empty( $networks ) ) {
 			return false;
 		}
 
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
-		$response = $lib->getParcelPoints( $address, $operators );
+		$response = $lib->getParcelPoints( $address, $networks );
 
 		if ( ! $response->isError() && property_exists( $response->response, 'parcelPoints' ) && is_array( $response->response->parcelPoints ) && count( $response->response->parcelPoints ) > 0 ) {
 			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), $response->response );
