@@ -193,7 +193,7 @@ class Controller {
 		return array(
 			'street'   => trim( Customer_Util::get_shipping_address_1( $customer ) . ' ' . Customer_Util::get_shipping_address_2( $customer ) ),
 			'city'     => trim( Customer_Util::get_shipping_city( $customer ) ),
-			'postcode' => trim( Customer_Util::get_shipping_postcode( $customer ) ),
+			'zipCode' => trim( Customer_Util::get_shipping_postcode( $customer ) ),
 			'country'  => strtolower( Customer_Util::get_shipping_country( $customer ) ),
 		);
 	}

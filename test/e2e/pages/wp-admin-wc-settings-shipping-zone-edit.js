@@ -104,13 +104,14 @@ export default class WPAdminWCSettingsShippingZoneEdit extends WPAdminWCSettings
                             });
                         }
                         return helper.selectOption( self.driver, PARCEL_POINT_NETWORKS_SELECTOR, parcelPointNetworks ).then( () => {
-                            return self.driver.findElement( VALIDATE_SHIPPING_METHOD_SELECTOR ).then( (button2) => {
+                            console.log(parcelPointNetworks);
+                            /*return self.driver.findElement( VALIDATE_SHIPPING_METHOD_SELECTOR ).then( (button2) => {
                                 return button2.click().then( () => {
                                     return true;
                                 }, () => {
                                     return false;
                                 } );
-                            });
+                            });*/
                             }, () => {
                             return false;
                         });
