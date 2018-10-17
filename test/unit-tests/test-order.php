@@ -48,7 +48,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 		Order_Util::set_billing_email( $order, 'jsnow@boxtal.com' );
 		Order_Util::set_billing_phone( $order, '0612341234' );
 		Order_Util::add_meta_data( $order, 'bw_parcel_point_code', 'XXXXXX' );
-		Order_Util::add_meta_data( $order, 'bw_parcel_point_operator', 'MONR' );
+		Order_Util::add_meta_data( $order, 'bw_parcel_point_network', 'MONR_NETWORK' );
 		Order_Util::save( $order );
 		$order->update_status( 'wc-on-hold' );
 
@@ -112,8 +112,8 @@ class BW_Test_Order extends WP_UnitTestCase {
 							),
 						),
 						'parcelPoint'       => array(
-							'code'     => 'XXXXXX',
-							'operator' => 'MONR',
+							'code'    => 'XXXXXX',
+							'network' => 'MONR_NETWORK',
 						),
 					),
 				),
@@ -162,7 +162,7 @@ class BW_Test_Order extends WP_UnitTestCase {
 		Order_Util::set_billing_email( $order, 'jsnow@boxtal.com' );
 		Order_Util::set_billing_phone( $order, '0612341234' );
 		Order_Util::add_meta_data( $order, 'bw_parcel_point_code', 'XXXXXX' );
-		Order_Util::add_meta_data( $order, 'bw_parcel_point_operator', 'MONR' );
+		Order_Util::add_meta_data( $order, 'bw_parcel_point_network', 'MONR_NETWORK' );
 		Order_Util::save( $order );
 		$order->update_status( 'wc-on-hold' );
 		foreach ( $order->get_items( 'line_item' ) as $item ) {
@@ -229,8 +229,8 @@ class BW_Test_Order extends WP_UnitTestCase {
 							),
 						),
 						'parcelPoint'       => array(
-							'code'     => 'XXXXXX',
-							'operator' => 'MONR',
+							'code'    => 'XXXXXX',
+							'network' => 'MONR_NETWORK',
 						),
 					),
 				),
