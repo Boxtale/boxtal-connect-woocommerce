@@ -1,5 +1,6 @@
 vendor/
 composer.lock
+package-lock.json
 .idea/
 coverage.xml
 src/Boxtal/BoxtalConnectWoocommerce/assets/css
