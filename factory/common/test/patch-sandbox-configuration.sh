@@ -25,16 +25,16 @@ if [[ $MULTISITE = "1" ]]; then
     $wp option update BW_SECRET_KEY $SECRET_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
     $wp option update BW_MAP_BOOTSTRAP_URL $SANDBOX_MAP_BOOTSTRAP_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
     $wp option update BW_MAP_TOKEN_URL $SANDBOX_MAP_TOKEN_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_PRIMARY_URL
-    mysql -u dbadmin -pdbpass -D "woocommerce" -e "INSERT INTO wp_options (option_name, option_value) VALUES ('BW_PP_NETWORKS', '$PP_NETWORKS') ON DUPLICATE KEY UPDATE option_value='$PP_OPERATORS';"
+    mysql -u dbadmin -pdbpass -D "woocommerce" -e "INSERT INTO wp_options (option_name, option_value) VALUES ('BW_PP_NETWORKS', '$PP_NETWORKS') ON DUPLICATE KEY UPDATE option_value='$PP_NETWORKS';"
     $wp option update BW_ACCESS_KEY $ACCESS_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
     $wp option update BW_SECRET_KEY $SECRET_KEY --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
     $wp option update BW_MAP_BOOTSTRAP_URL $SANDBOX_MAP_BOOTSTRAP_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
     $wp option update BW_MAP_TOKEN_URL $SANDBOX_MAP_TOKEN_URL --allow-root --path=$WP_CORE_DIR --url=$MULTISITE_ALTERNATE_URL
-    mysql -u dbadmin -pdbpass -D "woocommerce" -e "INSERT INTO wp_2_options (option_name, option_value) VALUES ('BW_PP_NETWORKS', '$PP_NETWORKS') ON DUPLICATE KEY UPDATE option_value='$PP_OPERATORS';"
+    mysql -u dbadmin -pdbpass -D "woocommerce" -e "INSERT INTO wp_2_options (option_name, option_value) VALUES ('BW_PP_NETWORKS', '$PP_NETWORKS') ON DUPLICATE KEY UPDATE option_value='$PP_NETWORKS';"
 else
     $wp option update BW_ACCESS_KEY $ACCESS_KEY --allow-root --path=$WP_CORE_DIR
     $wp option update BW_SECRET_KEY $SECRET_KEY --allow-root --path=$WP_CORE_DIR
     $wp option update BW_MAP_BOOTSTRAP_URL $SANDBOX_MAP_BOOTSTRAP_URL --allow-root --path=$WP_CORE_DIR
     $wp option update BW_MAP_TOKEN_URL $SANDBOX_MAP_TOKEN_URL --allow-root --path=$WP_CORE_DIR
-    mysql -u dbadmin -pdbpass -D "woocommerce" -e "INSERT INTO wp_options (option_name, option_value) VALUES ('BW_PP_NETWORKS', '$PP_NETWORKS') ON DUPLICATE KEY UPDATE option_value='$PP_OPERATORS';"
+    mysql -u dbadmin -pdbpass -D "woocommerce" -e "INSERT INTO wp_options (option_name, option_value) VALUES ('BW_PP_NETWORKS', '$PP_NETWORKS') ON DUPLICATE KEY UPDATE option_value='$PP_NETWORKS';"
 fi

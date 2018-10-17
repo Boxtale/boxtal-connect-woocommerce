@@ -116,11 +116,11 @@ class Order {
 
 			$parcel_point          = null;
 			$parcel_point_code     = Order_Util::get_meta( $order, 'bw_parcel_point_code' );
-			$parcel_point_operator = Order_Util::get_meta( $order, 'bw_parcel_point_operator' );
-			if ( $parcel_point_code && $parcel_point_operator ) {
+			$parcel_point_network = Order_Util::get_meta( $order, 'bw_parcel_point_network' );
+			if ( $parcel_point_code && $parcel_point_network ) {
 				$parcel_point = array(
 					'code'     => $parcel_point_code,
-					'operator' => $parcel_point_operator,
+					'network' => $parcel_point_network,
 				);
 			}
 

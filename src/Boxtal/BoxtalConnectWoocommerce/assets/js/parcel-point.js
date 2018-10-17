@@ -70,11 +70,11 @@
                 }
 
                 self.on("body", "click", ".bw-parcel-point-button", function() {
-                    self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-label"), this.getAttribute("data-operator"))
-                        .then(function(label) {
+                    self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-name"), this.getAttribute("data-network"))
+                        .then(function(name) {
                             self.initSelectedParcelPoint();
                              const target = document.querySelector(".bw-parcel-name");
-                            target.innerHTML = label;
+                            target.innerHTML = name;
                             self.closeMap();
                         })
                         .catch(function(err) {
@@ -113,9 +113,9 @@
             const self = this;
 
             self.getParcelPoints().then(function(parcelPointResponse) {
-                self.addParcelPointMarkers(parcelPointResponse['parcelPoints']);
-                self.fillParcelPointPanel(parcelPointResponse['parcelPoints']);
-                self.addRecipientMarker(parcelPointResponse['origin']);
+                self.addParcelPointMarkers(parcelPointResponse['nearbyParcelPoints']);
+                self.fillParcelPointPanel(parcelPointResponse['nearbyParcelPoints']);
+                self.addRecipientMarker(parcelPointResponse['searchLocation']);
                 self.setMapBounds();
             }).catch(function(err) {
                 self.showError(err);
@@ -158,20 +158,20 @@
 
         addParcelPointMarker: function(point) {
             const self = this;
-            let info ="<div class='bw-marker-popup'><b>"+point.label+'</b><br/>'+
-                '<a href="#" class="bw-parcel-point-button" data-code="'+point.code+'" data-label="'+point.label+'" data-operator="'+point.operator+'"><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
-                point.address.street+", "+point.address.postalCode+" "+point.address.city+"<br/>"+"<b>" + translations.text.openingHours +
+            let info ="<div class='bw-marker-popup'><b>"+point.parcelPoint.name+'</b><br/>'+
+                '<a href="#" class="bw-parcel-point-button" data-code="'+point.parcelPoint.code+'" data-name="'+point.parcelPoint.name+'" data-network="'+point.parcelPoint.network+'"><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
+                point.parcelPoint.location.street+", "+point.parcelPoint.location.zipCode+" "+point.parcelPoint.location.city+"<br/>"+"<b>" + translations.text.openingHours +
                 "</b><br/>"+'<div class="bw-parcel-point-schedule">';
 
-            for (let i = 0, l = point.schedule.length; i < l; i++) {
-                const day = point.schedule[i];
+            for (let i = 0, l = point.parcelPoint.openingDays.length; i < l; i++) {
+                const day = point.parcelPoint.openingDays[i];
 
-                if (day.timePeriods.length > 0) {
+                if (day.openingPeriods.length > 0) {
                     info += '<span class="bw-parcel-point-day">'+translations.day[day.weekday]+'</span>';
 
-                    for (let j = 0, t = day.timePeriods.length; j < t; j++) {
-                        const timePeriod = day.timePeriods[j];
-                        info += ' ' + self.formatHours(timePeriod.openingTime) +'-'+self.formatHours(timePeriod.closingTime);
+                    for (let j = 0, t = day.openingPeriods.length; j < t; j++) {
+                        const openingPeriod = day.openingPeriods[j];
+                        info += ' ' + self.formatHours(openingPeriod.openingTime) +'-'+self.formatHours(openingPeriod.closingTime);
                     }
                     info += '<br/>';
                 }
@@ -187,13 +187,13 @@
                 element: el,
 
             })
-                .setLngLat(new mapboxgl.LngLat(parseFloat(point.coordinates.longitude), parseFloat(point.coordinates.latitude)))
+                .setLngLat(new mapboxgl.LngLat(parseFloat(point.parcelPoint.location.position.longitude), parseFloat(point.parcelPoint.location.position.latitude)))
                 .setPopup(popup)
                 .addTo(self.map);
 
             self.markers.push(marker);
 
-            self.addRightColMarkerEvent(marker, point.code);
+            self.addRightColMarkerEvent(marker, point.parcelPoint.code);
         },
 
         addRightColMarkerEvent: function(marker, code) {
@@ -210,7 +210,7 @@
             return time;
         },
 
-        addRecipientMarker: function(latlon) {
+        addRecipientMarker: function(location) {
             const self = this;
 
             const el = document.createElement('div');
@@ -222,7 +222,7 @@
             const marker = new mapboxgl.Marker({
                 element: el,
             })
-                .setLngLat(new mapboxgl.LngLat(parseFloat(latlon.longitude), parseFloat(latlon.latitude)))
+                .setLngLat(new mapboxgl.LngLat(parseFloat(location.position.longitude), parseFloat(location.position.latitude)))
                 .addTo(self.map);
 
             self.markers.push(marker);
@@ -253,10 +253,10 @@
                 const point = parcelPoints[i];
                 html += '<tr>';
                 html += '<td>' + this.getMarkerHtmlElement(i+1).outerHTML;
-                html += '<div class="bw-parcel-point-title"><a class="bw-show-info-' + point.code + '">' + point.label + '</a></div><br/>';
-                html += point.address.street + '<br/>';
-                html += point.address.postalCode + ' ' + point.address.city + '<br/>';
-                html += '<a class="bw-parcel-point-button" data-code="'+point.code+'" data-label="'+point.label+'" data-operator="'+point.operator+'"><b>'+translations.text.chooseParcelPoint+'</b></a>';
+                html += '<div class="bw-parcel-point-title"><a class="bw-show-info-' + point.parcelPoint.code + '">' + point.parcelPoint.name + '</a></div><br/>';
+                html += point.parcelPoint.location.street + '<br/>';
+                html += point.parcelPoint.location.zipCode + ' ' + point.parcelPoint.location.city + '<br/>';
+                html += '<a class="bw-parcel-point-button" data-code="'+point.parcelPoint.code+'" data-name="'+point.parcelPoint.name+'" data-network="'+point.parcelPoint.network+'"><b>'+translations.text.chooseParcelPoint+'</b></a>';
                 html += '</td>';
                 html += '</tr>';
             }
@@ -278,7 +278,7 @@
             return el;
         },
 
-        selectPoint: function(code, label, operator) {
+        selectPoint: function(code, name, network) {
             const self = this;
             return new Promise(function(resolve, reject) {
                 const carrier = self.getSelectedCarrier();
@@ -291,7 +291,7 @@
                         if (setPointRequest.response.success === false) {
                             reject(setPointRequest.response.data.message);
                         } else {
-                            resolve(label);
+                            resolve(name);
                         }
                     }
                 };
@@ -302,7 +302,7 @@
                 );
                 setPointRequest.responseType = "json";
                 setPointRequest.send("action=set_point&carrier="+ encodeURIComponent(carrier) +"&code=" + encodeURIComponent(code)
-                    + "&label=" + encodeURIComponent(label) + "&operator=" + encodeURIComponent(operator));
+                    + "&name=" + encodeURIComponent(name) + "&network=" + encodeURIComponent(network));
             });
         },
 

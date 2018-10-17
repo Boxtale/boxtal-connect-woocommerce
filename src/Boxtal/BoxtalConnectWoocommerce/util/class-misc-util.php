@@ -151,16 +151,17 @@ class Misc_Util {
 	 * @return array $networks
 	 */
 	public static function get_active_parcel_point_networks( $settings ) {
-		if ( null === $settings['bw_parcel_point_networks'] || ! is_array( $settings['bw_parcel_point_networks'] ) || empty( $settings['bw_parcel_point_operators'] ) ) {
+		if ( null === $settings['bw_parcel_point_networks'] || ! is_array( $settings['bw_parcel_point_networks'] ) || empty( $settings['bw_parcel_point_networks'] ) ) {
 			return array();
 		}
+
 		$networks = get_option( 'BW_PP_NETWORKS' );
-		if ( false === $networks || ! is_array( $networks ) ) {
+		if ( false === $networks || ! is_object( $networks ) ) {
 			return array();
 		}
 		$networks_array = array();
-		foreach ( $networks as $network ) {
-			$networks_array[] = $network->code;
+		foreach ( $networks as $network => $network_carriers ) {
+			$networks_array[] = $network;
 		}
 		return array_intersect( $networks_array, $settings['bw_parcel_point_networks'] );
 	}

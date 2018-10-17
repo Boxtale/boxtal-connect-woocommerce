@@ -119,10 +119,10 @@ class Configuration_Util {
 			if ( is_array( $stored_networks ) ) {
 				$removed_networks = $stored_networks;
                 //phpcs:ignore
-                foreach ( $body->parcelPointNetworks as $new_network ) {
-					foreach ( $stored_networks as $key => $old_network ) {
-						if ( $new_network->code === $old_network->code ) {
-							unset( $removed_networks[ $key ] );
+                foreach ( $body->parcelPointNetworks as $new_network => $new_network_carriers ) {
+					foreach ( $stored_networks as $old_network => $old_network_carriers ) {
+						if ( $new_network === $old_network ) {
+							unset( $removed_networks[ $old_network ] );
 						}
 					}
 				}
@@ -139,10 +139,10 @@ class Configuration_Util {
                 //phpcs:ignore
                 $added_networks = $body->parcelPointNetworks;
                 //phpcs:ignore
-                foreach ( $body->parcelPointNetworks as $new_network ) {
-					foreach ( $stored_networks as $key => $old_network ) {
-						if ( $new_network->code === $old_network->code ) {
-							unset( $added_networks[ $key ] );
+                foreach ( $body->parcelPointNetworks as $new_network => $new_network_carriers ) {
+					foreach ( $stored_networks as $old_network => $old_network_carriers ) {
+						if ( $new_network === $old_network ) {
+							unset( $added_networks[ $old_network ] );
 						}
 					}
 				}

@@ -156,25 +156,26 @@ class Controller {
 	public function set_point_callback() {
 		header( 'Content-Type: application/json; charset=utf-8' );
         // phpcs:ignore
-        if ( ! isset( $_REQUEST['carrier'], $_REQUEST['operator'], $_REQUEST['code'], $_REQUEST['label'] ) ) {
+        if ( ! isset( $_REQUEST['carrier'], $_REQUEST['network'], $_REQUEST['code'], $_REQUEST['name'] ) ) {
 			wp_send_json_error( array( 'message' => 'could not set point' ) );
 		}
         // phpcs:ignore
         $carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
         // phpcs:ignore
-        $operator = sanitize_text_field( wp_unslash( $_REQUEST['operator'] ) );
+        $network = sanitize_text_field( wp_unslash( $_REQUEST['network'] ) );
         // phpcs:ignore
         $code     = sanitize_text_field( wp_unslash( $_REQUEST['code'] ) );
         // phpcs:ignore
-        $label     = sanitize_text_field( wp_unslash( $_REQUEST['label'] ) );
+        $name     = sanitize_text_field( wp_unslash( $_REQUEST['name'] ) );
 		if ( WC()->session ) {
-			WC()->session->set(
-				'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $carrier ), (object) [
-					'operator' => $operator,
-					'code'     => $code,
-					'label'    => $label,
-				]
-			);
+			$parcel_point = new \stdClass();
+			//phpcs:disable
+            $parcel_point->parcelPoint          = new \stdClass();
+            $parcel_point->parcelPoint->network = $network;
+            $parcel_point->parcelPoint->code    = $code;
+            $parcel_point->parcelPoint->name    = $name;
+            //phpcs:enable
+			WC()->session->set( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $carrier ), $parcel_point );
 		} else {
 			wp_send_json_error( array( 'message' => 'could not set point. Woocommerce sessions are not enabled!' ) );
 		}
@@ -224,7 +225,8 @@ class Controller {
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
 		$response = $lib->getParcelPoints( $address, $networks );
 
-		if ( ! $response->isError() && property_exists( $response->response, 'parcelPoints' ) && is_array( $response->response->parcelPoints ) && count( $response->response->parcelPoints ) > 0 ) {
+		if ( ! $response->isError() && property_exists( $response->response, 'nearbyParcelPoints' ) && is_array( $response->response->nearbyParcelPoints )
+			&& count( $response->response->nearbyParcelPoints ) > 0 ) {
 			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), $response->response );
 			return true;
 		}
@@ -241,9 +243,9 @@ class Controller {
 		if ( WC()->session ) {
 			$parcel_points = WC()->session->get( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $id ), null );
             //phpcs:ignore
-			if ( property_exists( $parcel_points, 'parcelPoints' ) && is_array( $parcel_points->parcelPoints ) && count( $parcel_points->parcelPoints ) > 0 ) {
+			if ( property_exists( $parcel_points, 'nearbyParcelPoints' ) && is_array( $parcel_points->nearbyParcelPoints ) && count( $parcel_points->nearbyParcelPoints ) > 0 ) {
                 //phpcs:ignore
-			    return $parcel_points->parcelPoints[0];
+			    return $parcel_points->nearbyParcelPoints[0];
 			}
 		}
 		return null;

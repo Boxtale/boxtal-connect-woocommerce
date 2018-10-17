@@ -44,9 +44,11 @@ class Label_Override {
 				$chosen_parcel_point = Controller::get_chosen_point( $method->id );
 				if ( null === $chosen_parcel_point ) {
 					$closest_parcel_point = Controller::get_closest_point( $method->id );
-					$full_label          .= '<br/><span class="bw-parcel-client">' . __( 'Closest parcel point:', 'boxtal-connect' ) . ' <span class="bw-parcel-name">' . $closest_parcel_point->label . '</span></span>';
+					//phpcs:ignore
+					$full_label          .= '<br/><span class="bw-parcel-client">' . __( 'Closest parcel point:', 'boxtal-connect' ) . ' <span class="bw-parcel-name">' . $closest_parcel_point->parcelPoint->name . '</span></span>';
 				} else {
-					$full_label .= '<br/><span class="bw-parcel-client">' . __( 'Your parcel point:', 'boxtal-connect' ) . ' <span class="bw-parcel-name">' . $chosen_parcel_point->label . '</span></span>';
+                    //phpcs:ignore
+					$full_label .= '<br/><span class="bw-parcel-client">' . __( 'Your parcel point:', 'boxtal-connect' ) . ' <span class="bw-parcel-name">' . $chosen_parcel_point->parcelPoint->name . '</span></span>';
 				}
 				$full_label .= '<br/><span class="bw-select-parcel">' . __( 'Choose another', 'boxtal-connect' ) . '</span>';
 			}

@@ -53,8 +53,10 @@ class Checkout {
 					}
 
 					$order = new \WC_Order( $order_id );
-					Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->code );
-					Order_Util::add_meta_data( $order, 'bw_parcel_point_operator', $point->operator );
+					//phpcs:ignore
+                    Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->parcelPoint->code );
+                    //phpcs:ignore
+                    Order_Util::add_meta_data( $order, 'bw_parcel_point_network', $point->parcelPoint->network );
 					Order_Util::save( $order );
 				}
 			}
