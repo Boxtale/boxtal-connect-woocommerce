@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name: Boxtal Connect
- * Plugin URI: https://www.boxtal.com
  * Description: Manage multiple carriers using one single plugin and reduce your shipping costs without commitments or any contract to sign.
  * Author: API Boxtal
  * Author URI: https://www.boxtal.com
@@ -9,7 +8,7 @@
  * Domain Path: /Boxtal/BoxtalConnectWoocommerce/translation
  * Version: 1.0.0
  * WC requires at least: 2.6.14
- * WC tested up to: 3.4.0
+ * WC tested up to: 3.4.6
  *
  * @package Boxtal\BoxtalConnectWoocommerce
  */
