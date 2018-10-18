@@ -105,7 +105,6 @@ export default class WPAdminWCSettingsShippingZoneEdit extends WPAdminWCSettings
      */
     editFlatRate(title, rate, parcelPointNetworks) {
         const self = this;
-        console.log(title);
         return helper.mouseMoveTo( self.driver, LAST_SHIPPING_METHOD_TITLE_SELECTOR ).then( () => {
             return self.driver.findElement( EDIT_LAST_SHIPPING_METHOD_SELECTOR ).then( (button1) => {
                 return button1.click().then( () => {

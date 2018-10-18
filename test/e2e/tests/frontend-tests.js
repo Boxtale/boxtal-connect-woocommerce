@@ -57,10 +57,10 @@ test.describe(
 
 				/* configure shipping methods */
 				const shippingZone = new WPAdminWCSettingsShippingZoneEdit( driver, { url: manager.getPageUrl( '/wp-admin/admin.php?page=wc-settings&tab=shipping&zone_id=0' ) });
-                shippingZone.addFlatRate("shipping method 1", "0", []).then(() => {shippingZone.addFlatRate("shipping method 2", "5", ["Chronopost"]);});
+                shippingZone.addFlatRate("shipping method 1", "0", []).then(() => {shippingZone.addFlatRate("shipping method 2", "5", ["Chronopost", "Relais colis"]);});
 				/* end of configure shipping methods */
 
-				//storeOwner.logout();
+				storeOwner.logout();
 			}
 		);
 
@@ -68,7 +68,7 @@ test.describe(
 
 		test.it(
 			'Payment attempt with parcel point selection', () => {
-                /*const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
+                const guest = new GuestCustomerFlow( driver, { baseUrl: config.get( 'url' ) } );
                 guest.fromShopAddProductsToCart( 'BW test product' );
 
                 const checkoutPage = guest.open( PAGE.CHECKOUT );
@@ -97,7 +97,7 @@ test.describe(
 
                 assert.eventually.ok(
                     orderReceivedPage.hasText( 'Order received' )
-                );*/
+                );
             }
 		);
 

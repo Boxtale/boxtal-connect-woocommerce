@@ -1,4 +1,5 @@
 import { WebDriverHelper as helper } from 'wp-e2e-webdriver';
+import { By } from 'selenium-webdriver';
 
 /**
  * Wait for element, located by `selector`, until present and multiselection is applied. Timeout
@@ -17,22 +18,11 @@ import { WebDriverHelper as helper } from 'wp-e2e-webdriver';
 export function multiselect( driver, selector, options ) {
     return helper.waitTillPresentAndDisplayed( driver, selector).then( (element) => {
         const promises = [];
-        console.log('test0');
         options.forEach(function(item, index) {
-            console.log('tests');
-            /*if (0 === index) {
-                driver.actions().keyDown( Key.CTRL ).perform();
-            }*/
-            promises.push(element.findElement(_seleniumWebdriver.By.xpath('.//option[contains(text(),"' + item + '")]')).then(
-                (option) => {option.click().then(() => {console.log('tests2');return true;}, () => {return false;})},
-                () => {return false;}
-            ));
-            /*if ((options.length - 1) === index) {
-                driver.actions().keyUp( Key.CTRL ).perform();
-            }*/
+            let promise = driver.actions().keyDown('\uE009').click(driver.findElement(By.xpath('//option[contains(text(),"' + item + '")]'))).keyUp('\uE009').perform();
+            promises.push(promise);
         });
         return Promise.all(promises).then(() => {
-            console.log(values);
             return true;
         }, () => {return false;});
     }, () => {return false;} );
