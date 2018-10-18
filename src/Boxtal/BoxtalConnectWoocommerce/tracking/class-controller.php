@@ -73,30 +73,6 @@ class Controller {
 	 * @return object tracking
 	 */
 	public function get_order_tracking( $order_id ) {
-	    return json_decode('{
-  "reference": "reference order",
-  "shipmentsTracking": [
-    {
-      "reference": "reference shipment",
-      "parcelsTracking": [
-        {
-          "reference": "reference parcel",
-          "status": "A",
-          "trackingUrl": "http://anyurl",
-          "trackingEvents": [
-            {
-              "date": "1977-04-22T06:00:00Z",
-              "message": "message",
-              "status": "A"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}');
-
-
 		$lib      = new ApiClient( Auth_Util::get_access_key(), Auth_Util::get_secret_key() );
 		$response = $lib->getOrder( $order_id );
 		if ( $response->isError() ) {
