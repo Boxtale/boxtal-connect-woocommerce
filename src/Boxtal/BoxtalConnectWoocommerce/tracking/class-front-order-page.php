@@ -58,7 +58,7 @@ class Front_Order_Page {
 		$controller->tracking_styles();
 		$tracking = $controller->get_order_tracking( Order_Util::get_id( $order ) );
 		//phpcs:ignore
-		if ( null !== $tracking && property_exists( $tracking, 'shipmentTrackingList' ) && ! empty( $tracking->shipmentTrackingList ) ) {
+		if ( null !== $tracking && property_exists( $tracking, 'shipmentsTracking' ) && ! empty( $tracking->shipmentsTracking ) ) {
 			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-front-order-tracking.php';
 		}
 	}
