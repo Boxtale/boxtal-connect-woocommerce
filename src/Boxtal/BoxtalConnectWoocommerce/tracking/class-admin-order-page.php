@@ -99,6 +99,7 @@ class Admin_Order_Page {
 		);
 		$order_id   = Order_Util::get_id( Order_Util::admin_get_order() );
 		$tracking   = $controller->get_order_tracking( $order_id );
+		//phpcs:ignore
 		if ( null === $tracking || ! property_exists( $tracking, 'shipmentsTracking' ) || empty( $tracking->shipmentsTracking ) ) {
 			return;
 		}

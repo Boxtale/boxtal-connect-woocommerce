@@ -59,6 +59,13 @@ Boxtal plugin can function without one just fine. However, for your peace of min
 = Is Boxtal Connect free ? =
 Boxtal Connect by Boxtal is a free non-binding solution.
 
+== Screenshots ==
+
+1. Display the pick-up location map
+2. Import your orders in 1 click
+3. Manage your shipment easily
+4. Track all your shipments online
+
 == Changelog ==
 
 = 1.0.0 =
