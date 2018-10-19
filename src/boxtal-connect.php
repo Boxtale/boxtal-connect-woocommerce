@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Boxtal Connect
- * Description: Manage multiple carriers using one single plugin and reduce your shipping costs without commitments or any contract to sign.
+ * Description: Managing your shipments becomes easier with our free plugin Boxtal! Save time and enjoy negotiated rates with 15 carriers: Colissimo, Mondial Relay...
  * Author: API Boxtal
  * Author URI: https://www.boxtal.com
  * Text Domain: boxtal-connect
