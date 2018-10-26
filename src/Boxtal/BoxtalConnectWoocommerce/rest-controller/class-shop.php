@@ -34,7 +34,7 @@ class Shop {
 			'rest_api_init', function() {
 				register_rest_route(
 					'boxtal-connect/v1', '/shop/pair', array(
-						'methods'             => 'PATCH',
+						'methods'             => 'POST',
 						'callback'            => array( $this, 'pairing_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)
@@ -45,8 +45,8 @@ class Shop {
 		add_action(
 			'rest_api_init', function() {
 				register_rest_route(
-					'boxtal-connect/v1', '/shop/configuration', array(
-						'methods'             => 'PATCH',
+					'boxtal-connect/v1', '/shop/update-configuration', array(
+						'methods'             => 'POST',
 						'callback'            => array( $this, 'update_configuration_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)
@@ -57,8 +57,8 @@ class Shop {
 		add_action(
 			'rest_api_init', function() {
 				register_rest_route(
-					'boxtal-connect/v1', '/shop/configuration', array(
-						'methods'             => 'DELETE',
+					'boxtal-connect/v1', '/shop/delete-configuration', array(
+						'methods'             => 'POST',
 						'callback'            => array( $this, 'delete_configuration_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)

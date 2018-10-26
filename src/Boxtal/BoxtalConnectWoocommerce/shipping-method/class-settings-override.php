@@ -38,6 +38,8 @@ class Settings_Override {
 	 * @void
 	 */
 	public function run() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'shipping_settings_styles' ) );
+
 		$shipping_methods = WC()->shipping->get_shipping_methods();
 		foreach ( $shipping_methods as $shipping_method ) {
 			add_filter( 'woocommerce_shipping_instance_form_fields_' . $shipping_method->id, array( $this, 'add_form_field' ) );
@@ -51,11 +53,11 @@ class Settings_Override {
 	 * @param string $hook hook name.
 	 * @void
 	 */
-	public function shipping_settings_scripts( $hook ) {
+	public function shipping_settings_styles( $hook ) {
         // phpcs:ignore
         $current_tab = isset( $_GET['tab'] ) && ! empty( $_GET['tab'] ) ? urldecode( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) : '';
 		if ( 'woocommerce_page_wc-settings' === $hook && 'shipping' === $current_tab ) {
-			wp_enqueue_script( 'bw_shipping_settings', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/shipping-settings.min.js', array(), $this->plugin_version );
+			wp_enqueue_style( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/css/shipping-method.css', array(), $this->plugin_version );
 		}
 	}
 

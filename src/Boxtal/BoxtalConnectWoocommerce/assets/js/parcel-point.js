@@ -68,21 +68,21 @@
                 if (!self.mapContainer) {
                     self.initMap();
                 }
-
-                self.on("body", "click", ".bw-parcel-point-button", function() {
-                    self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-name"), this.getAttribute("data-network"))
-                        .then(function(name) {
-                            self.initSelectedParcelPoint();
-                             const target = document.querySelector(".bw-parcel-name");
-                            target.innerHTML = name;
-                            self.closeMap();
-                        })
-                        .catch(function(err) {
-                            self.showError(err);
-                        });
-                });
                 self.openMap();
                 self.getPoints();
+            });
+
+            self.on("body", "click", ".bw-parcel-point-button", function() {
+                self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-name"), this.getAttribute("data-network"))
+                    .then(function(name) {
+                        self.initSelectedParcelPoint();
+                        const target = document.querySelector(".bw-parcel-name");
+                        target.innerHTML = name;
+                        self.closeMap();
+                    })
+                    .catch(function(err) {
+                        self.showError(err);
+                    });
             });
         },
 

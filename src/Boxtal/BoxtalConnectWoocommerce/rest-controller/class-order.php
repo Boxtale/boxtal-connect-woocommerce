@@ -36,7 +36,7 @@ class Order {
 			'rest_api_init', function() {
 				register_rest_route(
 					'boxtal-connect/v1', '/order', array(
-						'methods'             => 'PATCH',
+						'methods'             => 'POST',
 						'callback'            => array( $this, 'retrieve_orders_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)

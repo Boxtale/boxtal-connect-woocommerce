@@ -16,7 +16,7 @@ Boxtal is the multi-shop and multi-carrier shipping solution for ecommerce. It a
 
 With our negotiated rates for 15 carriers, with no contract and no minimum volume requirement, you offer the best delivery rates to your customers. offering free delivery becomes cheaper for you!
 
-Maximize your chances to convert by offering the 3 types of shipping expected by your customers: the economic collection point (Mondial Relay, Relais Colis ...), home delivery in 48H (Colissimo) or the express for the most hurried ones (Chronopost, UPS, Fedex, TNT, DHL ...).
+Maximize your chances to convert by offering the 3 types of shipping expected by your customers: the economic collection point (Mondial Relay, Relais Colis, ...), home delivery in 48H (Colissimo) or the express for the most hurried ones (Chronopost, UPS, Fedex, TNT, DHL, ...).
 
 The Boxtal Connect plugin can display the pick-up location map for carriers of your choice. And it's as simple as a checkbox in your backoffice.
 
@@ -41,9 +41,9 @@ Ensuring the availability of our solution 24 hours a day is our priority: we con
 == Installation ==
 
 = Minimum requirements =
-* WooCommerce version : 2.6.14 or greater
-* WordPress version : 4.6 or greater
-* Php version : 5.6 or greater
+* WooCommerce version: 2.6.14 or greater
+* WordPress version: 4.6 or greater
+* Php version: 5.6 or greater
 
 = Step by step guide =
 1. Download and activate our plugin from your WooCommerce backoffice
@@ -54,9 +54,9 @@ Ensuring the availability of our solution 24 hours a day is our priority: we con
 == FAQ ==
 
 = Is a SSL certificate required? =
-Boxtal plugin can function without one just fine. However, for your peace of mind and that of your customers, we strongly recommend that you have an SSL certificate that secures the access to your site.
+Boxtal Connect can function without one just fine. However, for your peace of mind and that of your customers, we strongly recommend that you have an SSL certificate that secures the access to your site.
 
-= Is Boxtal Connect free ? =
+= Is Boxtal Connect free? =
 Boxtal Connect by Boxtal is a free non-binding solution.
 
 == Screenshots ==
