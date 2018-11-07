@@ -104,7 +104,7 @@ test.describe(
 		// Close the browser after finished testing.
 		test.after(
 			() => {
-            	//manager.quitBrowser();
+            	manager.quitBrowser();
 			}
 		);
 

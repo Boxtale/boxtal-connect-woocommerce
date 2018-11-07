@@ -84,6 +84,7 @@ install_unit_tests() {
 		mkdir -p $UNIT_TESTS_DIR
     else
         rm -rf $UNIT_TESTS_DIR
+        mkdir -p $UNIT_TESTS_DIR
     fi
 
     # define test tag

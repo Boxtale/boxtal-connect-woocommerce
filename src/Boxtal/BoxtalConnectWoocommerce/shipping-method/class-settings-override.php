@@ -39,12 +39,20 @@ class Settings_Override {
 	 */
 	public function run() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'shipping_settings_styles' ) );
+		add_filter( 'woocommerce_shipping_methods', array( $this, 'shipping_methods_settings_override' ) );
+	}
 
-		$shipping_methods = WC()->shipping->get_shipping_methods();
-		foreach ( $shipping_methods as $shipping_method ) {
-			add_filter( 'woocommerce_shipping_instance_form_fields_' . $shipping_method->id, array( $this, 'add_form_field' ) );
+	/**
+	 * Add extra field to shipping methods.
+	 *
+	 * @param array $shipping_methods wc shipping methods.
+	 * @return array
+	 */
+	public function shipping_methods_settings_override( $shipping_methods ) {
+		foreach ( $shipping_methods as $shipping_method => $classname ) {
+			add_filter( 'woocommerce_shipping_instance_form_fields_' . $shipping_method, array( $this, 'add_form_field' ) );
 		}
-
+		return $shipping_methods;
 	}
 
 	/**

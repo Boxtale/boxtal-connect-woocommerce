@@ -44,7 +44,7 @@ class BW_Test_Auth_Util extends WP_UnitTestCase {
 	public function test_pairing_update() {
 		$this->assertFalse( get_option( 'BW_PAIRING_UPDATE' ) );
 		Auth_Util::start_pairing_update( 'test' );
-		$this->assertSame( get_option( 'BW_PAIRING_UPDATE' ), 'test' );
+		$this->assertEquals( get_option( 'BW_PAIRING_UPDATE' ), 'test' );
 		Auth_Util::end_pairing_update();
 		$this->assertFalse( get_option( 'BW_PAIRING_UPDATE' ) );
 	}
