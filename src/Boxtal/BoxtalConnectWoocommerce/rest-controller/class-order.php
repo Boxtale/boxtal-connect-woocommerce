@@ -86,7 +86,12 @@ class Order {
 		$result           = array();
 		$statuses         = Order_Util::get_import_status_list();
 		$current_language = get_locale();
-		foreach ( wc_get_orders( array( 'status' => array_keys( $statuses ) ) ) as $order ) {
+		foreach ( wc_get_orders(
+			array(
+				'status' => array_keys( $statuses ),
+				'limit'  => -1,
+			)
+		) as $order ) {
 			$recipient = array(
 				'firstname'    => Misc_Util::not_empty_or_null( Order_Util::get_shipping_first_name( $order ) ),
 				'lastname'     => Misc_Util::not_empty_or_null( Order_Util::get_shipping_last_name( $order ) ),
