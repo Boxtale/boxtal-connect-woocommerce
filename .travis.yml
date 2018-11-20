@@ -59,7 +59,7 @@ before_script:
   - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'localhost' WITH GRANT OPTION;"
   - sudo chown -R travis:travis /var/www/html
   - bash factory/common/test/build.sh $WP_VERSION $WC_VERSION true $WP_MULTISITE
-  - bash factory/travis/travis.sh
+  - bash factory/travis/travis.sh $RUN_CODE_COVERAGE
 
 script:
   - if [[ $PHPUNIT_VERSION = "travis" ]] && [[ $WP_MULTISITE = "0" ]]; then phpunit -v --debug; fi
