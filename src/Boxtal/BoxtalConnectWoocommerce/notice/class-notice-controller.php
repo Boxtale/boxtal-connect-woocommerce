@@ -283,7 +283,9 @@ class Notice_Controller {
 		if ( ! $response->isError() ) {
 			Auth_Util::end_pairing_update();
 			Notice_Controller::remove_notice( self::$pairing_update );
-			Notice_Controller::add_notice( self::$pairing, array( 'result' => 1 ) );
+			if ( '1' === $approve ) {
+				Notice_Controller::add_notice( self::$pairing, array( 'result' => 1 ) );
+			}
 			wp_send_json( true );
 		} else {
 			wp_send_json_error( 'pairing validation failed' );
