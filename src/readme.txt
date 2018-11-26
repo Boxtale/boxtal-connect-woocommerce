@@ -4,7 +4,7 @@ Tags: expédition, shipping, boxtal, colissimo,chronopost, envoimoinscher , envo
 Requires at least: 4.6
 Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 
 Managing your shipments becomes easier with our free plugin Boxtal! Save time and enjoy negotiated rates with 15 carriers: Colissimo, Mondial Relay...
 
@@ -67,6 +67,10 @@ Boxtal Connect by Boxtal is a free non-binding solution.
 4. Track all your shipments online
 
 == Changelog ==
+
+= 1.0.4 =
+* fixed nonce naming conflicts with other plugins
+* improved pairing update process
 
 = 1.0.3 =
 * removed default limit for order retrieval
