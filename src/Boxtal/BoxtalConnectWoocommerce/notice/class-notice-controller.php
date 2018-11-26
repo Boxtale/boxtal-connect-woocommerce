@@ -121,7 +121,7 @@ class Notice_Controller {
 	 */
 	public function notice_scripts() {
 		wp_enqueue_script( 'bw_notices', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/notices.min.js', array(), $this->plugin_version );
-		wp_localize_script( 'bw_notices', 'ajax_nonce', $this->ajax_nonce );
+		wp_localize_script( 'bw_notices', 'bwNoticeAjaxNonce', $this->ajax_nonce );
 	}
 
 	/**
