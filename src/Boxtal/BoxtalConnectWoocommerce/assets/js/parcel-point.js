@@ -145,7 +145,7 @@
                     "application/x-www-form-urlencoded"
                 );
                 httpRequest.responseType = "json";
-                httpRequest.send("action=get_points&carrier=" + encodeURIComponent(carrier));
+                httpRequest.send("action=bw_get_points&carrier=" + encodeURIComponent(carrier));
             });
         },
 
@@ -301,7 +301,7 @@
                     "application/x-www-form-urlencoded"
                 );
                 setPointRequest.responseType = "json";
-                setPointRequest.send("action=set_point&carrier="+ encodeURIComponent(carrier) +"&code=" + encodeURIComponent(code)
+                setPointRequest.send("action=bw_set_point&carrier="+ encodeURIComponent(carrier) +"&code=" + encodeURIComponent(code)
                     + "&name=" + encodeURIComponent(name) + "&network=" + encodeURIComponent(network));
             });
         },

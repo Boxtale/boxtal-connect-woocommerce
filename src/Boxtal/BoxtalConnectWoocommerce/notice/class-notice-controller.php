@@ -102,13 +102,13 @@ class Notice_Controller {
 		if ( ! empty( $notices ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'notice_scripts' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'notice_styles' ) );
-			add_action( 'wp_ajax_hide_notice', array( $this, 'hide_notice_callback' ) );
+			add_action( 'wp_ajax_bw_hide_notice', array( $this, 'hide_notice_callback' ) );
 
 			foreach ( $notices as $notice ) {
 				add_action( 'admin_notices', array( $notice, 'render' ) );
 
 				if ( 'pairing-update' === $notice->type ) {
-					add_action( 'wp_ajax_pairing_update_validate', array( $this, 'pairing_update_validate_callback' ) );
+					add_action( 'wp_ajax_bw_pairing_update_validate', array( $this, 'pairing_update_validate_callback' ) );
 				}
 			}
 		}
@@ -253,6 +253,7 @@ class Notice_Controller {
 	 * @void
 	 */
 	public function hide_notice_callback() {
+
 		check_ajax_referer( 'boxtale_woocommerce_notice', 'security' );
 		header( 'Content-Type: application/json; charset=utf-8' );
 		if ( ! isset( $_REQUEST['notice_id'] ) ) {

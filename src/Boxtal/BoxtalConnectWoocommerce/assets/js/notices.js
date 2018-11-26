@@ -28,7 +28,7 @@
                     );
                     httpRequest.responseType = "json";
                     const noticeId = notice.getAttribute("rel");
-                    httpRequest.send("action=hide_notice&notice_id=" + encodeURIComponent(noticeId) + "&security=" + encodeURIComponent(bwNoticeAjaxNonce));
+                    httpRequest.send("action=bw_hide_notice&notice_id=" + encodeURIComponent(noticeId) + "&security=" + encodeURIComponent(bwNoticeAjaxNonce));
                 });
 
                 self.on("body", "click", ".bw-pairing-update-validate", function() {
@@ -50,7 +50,7 @@
                     );
                     httpRequest.responseType = "json";
                     const approve = notice.getAttribute("bw-pairing-update-validate");
-                    httpRequest.send("action=pairing_update_validate&approve=" + encodeURIComponent(approve) + "&security=" + encodeURIComponent(bwNoticeAjaxNonce));
+                    httpRequest.send("action=bw_pairing_update_validate&approve=" + encodeURIComponent(approve) + "&security=" + encodeURIComponent(bwNoticeAjaxNonce));
                 });
             }
         },

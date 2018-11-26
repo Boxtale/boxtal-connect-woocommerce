@@ -47,12 +47,10 @@ class Controller {
 		add_action( 'woocommerce_after_shipping_calculator', array( $this, 'parcel_point_scripts' ) );
 		add_action( 'woocommerce_after_checkout_form', array( $this, 'parcel_point_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'parcel_point_styles' ) );
-		add_action( 'wp_ajax_get_points', array( $this, 'get_points_callback' ) );
-		add_action( 'wp_ajax_nopriv_get_points', array( $this, 'get_points_callback' ) );
-		add_action( 'wp_ajax_set_point', array( $this, 'set_point_callback' ) );
-		add_action( 'wp_ajax_nopriv_set_point', array( $this, 'set_point_callback' ) );
-		add_action( 'wp_ajax_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
-		add_action( 'wp_ajax_nopriv_get_recipient_address', array( $this, 'get_recipient_address_callback' ) );
+		add_action( 'wp_ajax_bw_get_points', array( $this, 'get_points_callback' ) );
+		add_action( 'wp_ajax_nopriv_bw_get_points', array( $this, 'get_points_callback' ) );
+		add_action( 'wp_ajax_bw_set_point', array( $this, 'set_point_callback' ) );
+		add_action( 'wp_ajax_nopriv_bw_set_point', array( $this, 'set_point_callback' ) );
 	}
 
 	/**
