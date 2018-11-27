@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalConnectWoocommerce\Util;
 
 use Boxtal\BoxtalConnectWoocommerce\Plugin;
+use Boxtal\BoxtalPhp\RestClient;
 
 /**
  * Environment util class.
@@ -28,6 +29,10 @@ class Environment_Util {
 	 * @return string $message
 	 */
 	public static function check_errors( $plugin ) {
+		if ( false === RestClient::healthcheck() ) {
+			return __( 'Boxtal Connect - You need either the curl extension or allow_url_fopen activated on your server for the Boxtal Connect plugin to work.', 'boxtal-connect' );
+		}
+
 		if ( version_compare( PHP_VERSION, $plugin['min-php-version'], '<' ) ) {
 			/* translators: 1) int version 2) int version */
 			$message = __( 'Boxtal Connect - The minimum PHP version required for this plugin is %1$s. You are running %2$s.', 'boxtal-connect' );
