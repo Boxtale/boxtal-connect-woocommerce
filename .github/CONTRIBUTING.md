@@ -2,7 +2,7 @@
 
 Community made patches, bug reports and contributions are welcome on this project.
 
-When contributing please ensure you follow the guidelines below to help us keep on top of things.
+When contributing please ensure you follow the guidelines below to help us stay on top of things.
 
 __Please Note:__
 
@@ -30,7 +30,7 @@ Our plugin base structure follows the [Plugin Container pattern](https://www.sma
 
 #### Standards
 
-Our plugin follows as closely as possible Wordpress and PHP and [Wordpress](https://make.wordpress.org/core/handbook/coding-standards/php/) coding standards. Optionally it's possible install [EditorConfig](http://editorconfig.org/) on your editor to auto configure with indentation, line endings and other settings.
+Our plugin follows as closely as possible PHP and [Wordpress](https://make.wordpress.org/core/handbook/coding-standards/php/) coding standards. Optionally it's possible to install [EditorConfig](http://editorconfig.org/) on your editor to auto configure with indentation, line endings and other settings.
 
 As a rule, we will consider a PHP code sniffing green light as a sign you code is compliant with the standards.
 

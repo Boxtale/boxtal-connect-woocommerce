@@ -36,6 +36,9 @@ class Shipping_Rate_Util {
 	 * @return string $settings_key shipping rate settings key
 	 */
 	private static function get_settings_key( $method ) {
+		if ( false === strpos( $method->id, ':' ) ) {
+			return null;
+		}
 		list($method_name, $method_instance_id) = explode( ':', $method->id );
 		return 'woocommerce_' . $method_name . '_' . $method_instance_id . '_settings';
 	}
