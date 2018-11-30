@@ -26,22 +26,23 @@ If something isn't working, congratulations you've found a bug! Help us fix it b
 
 #### Plugin base structure
 
-Our plugin base structure follows the [Plugin Container pattern](https://www.smashingmagazine.com/2015/05/how-to-use-autoloading-and-a-plugin-container-in-wordpress-plugins/), for better code maintainability and modularity.
+Our plugin base structure implements the [Plugin Container pattern](https://www.smashingmagazine.com/2015/05/how-to-use-autoloading-and-a-plugin-container-in-wordpress-plugins/), for better code maintainability and modularity.
 
 #### Standards
 
 Our plugin follows as closely as possible PHP and [Wordpress](https://make.wordpress.org/core/handbook/coding-standards/php/) coding standards. Optionally it's possible to install [EditorConfig](http://editorconfig.org/) on your editor to auto configure with indentation, line endings and other settings.
 
-As a rule, we will consider a PHP code sniffing green light as a sign you code is compliant with the standards.
+As a rule, we will consider a PHP code sniffing green light as a sign your code is compliant with the standards.
 
 ### Local work environment
 
 #### Building an image
 
-Your step is to set up your local work environment. Luckily we have included tools to easily generate a working wordpress site with everything you need to start modifying our plugin.
+Your first step is to set up your local work environment. Luckily we have included tools to easily generate a working wordpress site with everything you need to start modifying our plugin.
 * Install [docker](https://www.docker.com/)
 * Clear your 80 port. For instance, if you have a local apache running on port 80, you should stop it
 * Clone this repository, then command prompt into it
+* Install PHP, or better yet multiple php versions support (when building with composer, your php version should match le php version of the image you are building)
 * Install [composer](https://getcomposer.org/)
 * Run `composer install`
 * Install [node and npm](https://docs.npmjs.com/getting-started/installing-node#installing-npm-from-the-nodejs-site)
@@ -49,9 +50,13 @@ Your step is to set up your local work environment. Luckily we have included too
 * Build your own docker image with this command: `./factory/docker/build.sh <php_version> <wordpress_version> <woocommerce_version>` (if you don't want to spend time debugging the build process, we strongly recommand that you stay inside the versions tested in the `.travis.yml` file)
 * Run the image with: 
 `./factory/docker/run.sh <php_version> <wordpress_version> <woocommerce_version>`
+* if you run the image with some environment variables, you can also set the Boxtal environment to our test environment: APIURL=https://api.boxtal.build, ONBOARDINGURL=https://www.boxtal.build/onboarding
 
+That's it! A fully configured wordpress with WooCommerce will be running on http://localhost. The Boxtal Connect plugin will be pre-installed.
 
-That's it! A fully configured wordpress with woocommerce will be running on your localhost. The Boxtal Connect plugin will be preinstalled.
+Admin login/pwd will be admin/admin
+
+Mysql login/pwd will be dbadmin/dbpass
 
 __Please Note:__
 
@@ -63,7 +68,7 @@ Building an image each time you change the plugin code is a nice feature, but it
 
 #### Multisite
 
-You can also transform your running container into a multisite: `./factory/docker/install-multisite.sh`
+You can also transform your running container into a multisite Worpress install: `./factory/docker/install-multisite.sh`
 
 #### Testing
 
@@ -87,8 +92,8 @@ To run code sniffing, run: `./factory/common/phpcs.sh`
 * When committing, reference your issue number (#1234) and include a note about the fix
 * Push the changes to your fork, this will trigger a build in travis
 * Make sure the travis build does not fail, that means code sniffing, unit tests and end-to-end tests must all be greenlit
-* Submit a pull request on the master branch of the WooCommerce repository. Existing maintenance branches will be maintained by Boxtal Connect developers
-* Please **don't** add your localizations or update the .pot files - these will also be maintained by the Boxtal Connect developers. To contribute to the localization of Boxtal Connect, please join the [translate.wordpress.org project](https://translate.wordpress.org/projects/wp-plugins/boxtal-connect).
+* Submit a pull request on the master branch of the Boxtal Connect repository
+* Please **don't** add your localizations or update the .pot files - these will also be maintained by the Boxtal Connect developers. To contribute to the localization of Boxtal Connect, please join the [translate.wordpress.org project](https://translate.wordpress.org/projects/wp-plugins/boxtal-connect)
 
 After you follow the step above, the next stage will be waiting on us to merge your Pull Request. We review them all, and make suggestions and changes as and if necessary.
 
