@@ -47,7 +47,7 @@ Your first step is to set up your local work environment. Luckily we have includ
 * Run `composer install`
 * Install [node and npm](https://docs.npmjs.com/getting-started/installing-node#installing-npm-from-the-nodejs-site)
 * Run `npm install`
-* Build your own docker image with this command: `./factory/docker/build.sh <php_version> <wordpress_version> <woocommerce_version>` (if you don't want to spend time debugging the build process, we strongly recommand that you stay inside the versions tested in the `.travis.yml` file)
+* Build your own docker image with this command: `./factory/docker/build.sh <php_version> <wordpress_version> <woocommerce_version>` (if you don't want to spend time debugging the build process, we strongly recommend that you stay inside the versions tested in the `.travis.yml` file)
 * Run the image with: 
 `./factory/docker/run.sh <php_version> <wordpress_version> <woocommerce_version>`
 * if you run the image with some environment variables, you can also set the Boxtal environment to our test environment: APIURL=https://api.boxtal.build, ONBOARDINGURL=https://www.boxtal.build/onboarding
