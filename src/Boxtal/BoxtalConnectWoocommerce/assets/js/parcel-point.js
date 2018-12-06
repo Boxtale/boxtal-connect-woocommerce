@@ -310,6 +310,7 @@
             for (let i = 0; i < this.markers.length; i++) {
                 this.markers[i].remove();
             }
+            this.markers = [];
         },
 
         getSelectedCarrier: function() {
