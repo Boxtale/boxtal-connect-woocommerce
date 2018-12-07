@@ -185,7 +185,7 @@
 
             const marker = new mapboxgl.Marker({
                 element: el,
-
+				anchor: 'bottom'
             })
                 .setLngLat(new mapboxgl.LngLat(parseFloat(point.parcelPoint.location.position.longitude), parseFloat(point.parcelPoint.location.position.latitude)))
                 .setPopup(popup)
