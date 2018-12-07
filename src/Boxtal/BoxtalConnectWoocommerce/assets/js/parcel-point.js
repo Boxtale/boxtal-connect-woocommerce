@@ -221,6 +221,7 @@
 
             const marker = new mapboxgl.Marker({
                 element: el,
+				anchor: 'bottom'
             })
                 .setLngLat(new mapboxgl.LngLat(parseFloat(location.position.longitude), parseFloat(location.position.latitude)))
                 .addTo(self.map);
