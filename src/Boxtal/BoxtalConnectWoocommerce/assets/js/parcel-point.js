@@ -215,9 +215,6 @@
 
             const el = document.createElement('div');
             el.className = 'bw-marker-recipient';
-            el.style.backgroundImage = "url('" + imgDir + "marker-recipient.png')";
-            el.style.width = '30px';
-            el.style.height = '35px';
 
             const marker = new mapboxgl.Marker({
                 element: el,
@@ -268,14 +265,7 @@
         getMarkerHtmlElement: function(index) {
             const el = document.createElement('div');
             el.className = 'bw-marker';
-            el.style.backgroundImage = "url('" + imgDir + "marker.png')";
             el.innerHTML = index;
-            el.style.color = '#fff';
-            el.style.fontSize = '14px';
-            el.style.textAlign = 'center';
-            el.style.paddingTop = '6px';
-            el.style.width = '28px';
-            el.style.height = '35px';
             return el;
         },
 

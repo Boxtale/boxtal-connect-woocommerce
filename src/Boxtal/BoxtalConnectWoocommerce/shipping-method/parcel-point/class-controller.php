@@ -99,7 +99,6 @@ class Controller {
 		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/parcel-point.min.js', array( 'bw_mapbox_gl' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
-		wp_localize_script( 'bw_shipping', 'imgDir', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/img/' );
 		wp_localize_script( 'bw_shipping', 'mapUrl', $this->get_map_url() );
 		wp_localize_script( 'bw_shipping', 'mapLogoImageUrl', Configuration_Util::get_map_logo_image_url() );
 		wp_localize_script( 'bw_shipping', 'mapLogoHrefUrl', Configuration_Util::get_map_logo_href_url() );
