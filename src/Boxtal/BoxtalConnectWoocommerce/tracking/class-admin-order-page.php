@@ -47,6 +47,7 @@ class Admin_Order_Page {
 		);
 		add_action( 'admin_enqueue_scripts', array( $controller, 'tracking_styles' ) );
 		add_filter( 'add_meta_boxes_shop_order', array( $this, 'add_tracking_to_admin_order_page' ), 10, 2 );
+		add_filter( 'woocommerce_admin_order_preview_get_order_details', array( $this, 'order_view_modal_details' ) );
 		add_filter( 'woocommerce_admin_order_preview_end', array( $this, 'order_view_modal' ) );
 	}
 
@@ -86,23 +87,42 @@ class Admin_Order_Page {
 	}
 
 	/**
-	 * Order view modal.
+	 * Order view modal details.
 	 *
-	 * @void
+	 * @param array $order_details order details sent to template.
+	 *
+	 * @return array
 	 */
-	public function order_view_modal() {
+	public function order_view_modal_details( $order_details ) {
 		$controller = new Controller(
 			array(
 				'url'     => $this->plugin_url,
 				'version' => $this->plugin_version,
 			)
 		);
-		$order_id   = Order_Util::get_id( Order_Util::admin_get_order() );
-		$tracking   = $controller->get_order_tracking( $order_id );
+
+		if ( ! isset( $order_details['order_number'] ) ) {
+			return $order_details;
+		}
+		$tracking = $controller->get_order_tracking( $order_details['order_number'] );
+
 		//phpcs:ignore
 		if ( null === $tracking || ! property_exists( $tracking, 'shipmentsTracking' ) || empty( $tracking->shipmentsTracking ) ) {
-			return;
+			return $order_details;
 		}
+		ob_start();
 		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-view-modal-tracking.php';
+		$html                           = ob_get_clean();
+		$order_details['tracking_html'] = $html;
+		return $order_details;
+	}
+
+	/**
+	 * Order view modal.
+	 *
+	 * @void
+	 */
+	public function order_view_modal() {
+		include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-admin-order-view-modal-print-tracking.php';
 	}
 }
