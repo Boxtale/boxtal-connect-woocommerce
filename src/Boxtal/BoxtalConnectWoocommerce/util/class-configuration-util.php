@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalConnectWoocommerce\Util;
 
 use Boxtal\BoxtalConnectWoocommerce\Notice\Notice_Controller;
+use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point\Controller;
 
 /**
  * Configuration util class.
@@ -63,7 +64,7 @@ class Configuration_Util {
 	 * @return boolean
 	 */
 	public static function has_configuration() {
-		return false !== get_option( 'BW_MAP_BOOTSTRAP_URL' ) && false !== get_option( 'BW_MAP_TOKEN_URL' ) && false !== get_option( 'BW_PP_NETWORKS' );
+		return false !== get_option( 'BW_MAP_BOOTSTRAP_URL' ) && false !== get_option( 'BW_MAP_TOKEN_URL' ) && false !== Controller::get_network_list();
 	}
 
 	/**
@@ -107,6 +108,15 @@ class Configuration_Util {
 	}
 
 	/**
+	 * Is first activation.
+	 *
+	 * @return boolean
+	 */
+	public static function is_first_activation() {
+		return false === get_option( 'BW_NOTICES' );
+	}
+
+	/**
 	 * Parse parcel point networks response.
 	 *
 	 * @param object $body body.
@@ -115,7 +125,7 @@ class Configuration_Util {
 	private static function parse_parcel_point_networks( $body ) {
 		if ( is_object( $body ) && property_exists( $body, 'parcelPointNetworks' ) ) {
 
-			$stored_networks = get_option( 'BW_PP_NETWORKS' );
+			$stored_networks = Controller::get_network_list();
 			if ( is_array( $stored_networks ) ) {
 				$removed_networks = $stored_networks;
                 //phpcs:ignore

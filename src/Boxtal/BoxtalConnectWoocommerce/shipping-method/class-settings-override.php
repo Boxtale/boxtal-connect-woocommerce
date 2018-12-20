@@ -50,7 +50,9 @@ class Settings_Override {
 	 */
 	public function shipping_methods_settings_override( $shipping_methods ) {
 		foreach ( $shipping_methods as $shipping_method => $classname ) {
-			add_filter( 'woocommerce_shipping_instance_form_fields_' . $shipping_method, array( $this, 'add_form_field' ) );
+			if ( 'boxtal_connect' !== $shipping_method ) {
+				add_filter( 'woocommerce_shipping_instance_form_fields_' . $shipping_method, array( $this, 'add_form_field' ) );
+			}
 		}
 		return $shipping_methods;
 	}
@@ -80,7 +82,7 @@ class Settings_Override {
 		$form_fields['bw_parcel_point_networks'] = array(
 			'title'       => __( 'Parcel points map display (Boxtal Connect)', 'boxtal-connect' ),
 			'type'        => 'multiselect',
-			'description' => __( 'Choose one or more parcel point networks in order to display a parcel point map for this shipping method. Use ctrl+click to select several networks.', 'boxtal-connect' ),
+			'description' => __( 'Deprecated. Use the Boxtal Connect rate shipping method instead.', 'boxtal-connect' ),
 			'options'     => $network_options,
 			'default'     => array(),
 			'class'       => 'wc-enhanced-select bw-parcel-point-networks-dropdown',

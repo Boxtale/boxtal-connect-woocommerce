@@ -253,7 +253,6 @@ class Notice_Controller {
 	 * @void
 	 */
 	public function hide_notice_callback() {
-
 		check_ajax_referer( 'boxtale_woocommerce_notice', 'security' );
 		header( 'Content-Type: application/json; charset=utf-8' );
 		if ( ! isset( $_REQUEST['notice_id'] ) ) {

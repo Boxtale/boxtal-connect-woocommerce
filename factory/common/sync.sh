@@ -6,6 +6,8 @@ sudo chown -R www-data:www-data /var/www/html
 sudo node_modules/gulp/bin/gulp.js css
 sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalConnectWoocommerce/assets/css
 sudo cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalConnectWoocommerce/assets/js
+sudo cp -R node_modules/tail.select/css/tail.select-bootstrap3.css src/Boxtal/BoxtalConnectWoocommerce/assets/css
+sudo cp -R node_modules/tail.select/js/tail.select-full.js src/Boxtal/BoxtalConnectWoocommerce/assets/js
 sudo node_modules/gulp/bin/gulp.js js
 sudo rm -rf src/Boxtal/BoxtalPhp
 sudo mkdir -p src/Boxtal/BoxtalPhp

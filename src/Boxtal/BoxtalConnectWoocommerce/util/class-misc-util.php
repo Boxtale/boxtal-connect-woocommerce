@@ -29,6 +29,26 @@ class Misc_Util {
 	}
 
 	/**
+	 * Return floatval if value is not empty, null otherwise.
+	 *
+	 * @param mixed $value value to be checked.
+	 * @return mixed $value
+	 */
+	public static function parse_float_or_null( $value ) {
+		return '' === $value ? null : floatval( $value );
+	}
+
+	/**
+	 * Return floatval if value is not empty, null otherwise.
+	 *
+	 * @param mixed $value value to be checked.
+	 * @return mixed $value
+	 */
+	public static function convert_comma( $value ) {
+		return false === strpos( $value, '.' ) ? str_replace( ',', '.', $value ) : $value;
+	}
+
+	/**
 	 * Return base64 encoded value if not null.
 	 *
 	 * @param mixed $value value to be encoded.
@@ -107,7 +127,7 @@ class Misc_Util {
 	 */
 	public static function should_display_parcel_point_link( $method ) {
 
-		if ( ! in_array( $method->id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
+		if ( ! in_array( Shipping_Rate_Util::get_id( $method ), WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
 			return false;
 		}
 
@@ -151,11 +171,11 @@ class Misc_Util {
 	 * @return array $networks
 	 */
 	public static function get_active_parcel_point_networks( $settings ) {
-		if ( null === $settings['bw_parcel_point_networks'] || ! is_array( $settings['bw_parcel_point_networks'] ) || empty( $settings['bw_parcel_point_networks'] ) ) {
+		if ( ! isset( $settings['bw_parcel_point_networks'] ) || null === $settings['bw_parcel_point_networks'] || ! is_array( $settings['bw_parcel_point_networks'] ) || empty( $settings['bw_parcel_point_networks'] ) ) {
 			return array();
 		}
 
-		$networks = get_option( 'BW_PP_NETWORKS' );
+		$networks = Controller::get_network_list();
 		if ( false === $networks || ! is_object( $networks ) ) {
 			return array();
 		}
@@ -164,5 +184,55 @@ class Misc_Util {
 			$networks_array[] = $network;
 		}
 		return array_intersect( $networks_array, $settings['bw_parcel_point_networks'] );
+	}
+
+	/**
+	 * Retrocompatible way to add tooltip.
+	 *
+	 * @param string $tooltip tooltip.
+	 *
+	 * @void
+	 */
+	public static function echo_tooltip( $tooltip ) {
+		if ( function_exists( 'wc_help_tip' ) ) {
+			echo wc_help_tip( $tooltip ); // WPCS: XSS ok.
+		} else {
+			echo '<img class="help_tip" data-tip="' . esc_attr( $tooltip ) . '" src="' . esc_url( WC()->plugin_url() ) . '/assets/images/help.png" height="16" width="16" />';
+		}
+	}
+
+	/**
+	 * Strip encoded double quotes of an array keys.
+	 *
+	 * @param array $array array.
+	 *
+	 * @return array
+	 */
+	public static function array_keys_strip_encoded_double_quotes( $array ) {
+		$new_array = array();
+		foreach ( $array as $key => $value ) {
+			$key               = str_replace( '%22', '', $key );
+			$key               = str_replace( '&quot;', '"', $key );
+			$new_array[ $key ] = $value;
+		}
+		return $new_array;
+	}
+
+	/**
+	 * Strip double quotes of an array keys.
+	 *
+	 * @param array $array array.
+	 *
+	 * @return array
+	 */
+	public static function array_keys_strip_double_quotes( $array ) {
+		$new_array = array();
+		foreach ( $array as $key => $value ) {
+			$key               = str_replace( '%22', '', $key );
+			$key               = str_replace( '&quot;', '', $key );
+			$key               = str_replace( '"', '', $key );
+			$new_array[ $key ] = $value;
+		}
+		return $new_array;
 	}
 }

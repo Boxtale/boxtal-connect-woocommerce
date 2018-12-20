@@ -28,7 +28,9 @@ use Boxtal\BoxtalConnectWoocommerce\Tracking\Admin_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Tracking\Front_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Configuration_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Database_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Environment_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Shipping_Method_Util;
 
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/plugin.php';
@@ -65,13 +67,60 @@ function boxtal_connect_init() {
 			$plugin['front-order-page']                  = 'boxtal_connect_front_order_page';
 			$plugin['admin-order-page']                  = 'boxtal_connect_admin_order_page';
 			$plugin['rest-controller-order']             = 'boxtal_connect_rest_controller_order';
+			$plugin['boxtal-connect-shipping-method']    = 'boxtal_connect_shipping_method';
 			$plugin['shipping-method-settings-override'] = 'boxtal_connect_shipping_method_settings_override';
+			$plugin['shipping-method-controller']        = 'boxtal_connect_shipping_method_controller';
 			$plugin['parcel-point-label-override']       = 'boxtal_connect_parcel_point_label_override';
 			$plugin['parcel-point-controller']           = 'boxtal_connect_parcel_point_controller';
 			$plugin['parcel-point-checkout']             = 'boxtal_connect_parcel_point_checkout';
 		}
 	}
 	$plugin->run();
+}
+
+register_activation_hook( __FILE__, 'boxtal_connect_activate_network' );
+/**
+ * Network activation.
+ *
+ * @param boolean $network_wide whether it is a network wide activation or not.
+ * @void
+ */
+function boxtal_connect_activate_network( $network_wide ) {
+	if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+		global $wpdb;
+		$current_blog = $wpdb->blogid;
+
+		//phpcs:ignore
+		$blog_ids = $wpdb->get_col( 'SELECT blog_id FROM ' . $wpdb->blogs );
+		foreach ( $blog_ids as $blog_id ) {
+			//phpcs:ignore
+			switch_to_blog( $blog_id );
+			boxtal_connect_activate_simple();
+		}
+		//phpcs:ignore
+		switch_to_blog( $current_blog );
+	} else {
+		boxtal_connect_activate_simple();
+	}
+}
+
+/**
+ * Simple activation.
+ *
+ * @void
+ */
+function boxtal_connect_activate_simple() {
+	Database_Util::create_tables();
+
+	if ( ! Configuration_Util::is_first_activation() && Auth_Util::can_use_plugin() && Shipping_Method_Util::is_used_deprecated_parcel_point_field() ) {
+		Notice_Controller::add_notice(
+			Notice_Controller::$custom, array(
+				'status'       => 'warning',
+				'message'      => __( 'Boxtal Connect - from version 1.1.0, use of parcel point map additional field on shipping methods is deprecated. Use the Boxtal Connect rate method instead.', 'boxtal-connect' ),
+				'autodestruct' => false,
+			)
+		);
+	}
 }
 
 register_uninstall_hook( __FILE__, 'boxtal_connect_uninstall_network' );
@@ -107,6 +156,44 @@ function boxtal_connect_uninstall_network( $network_wide ) {
  */
 function boxtal_connect_uninstall_simple() {
 	Configuration_Util::delete_configuration();
+}
+
+add_action( 'wpmu_new_blog', 'boxtal_connect_network_activated', 10, 6 );
+/**
+ * Runs activation for a plugin on a new site if plugin is already set as network activated on multisite
+ *
+ * @param int    $blog_id blog id of the created blog.
+ * @param int    $user_id user id of the user creating the blog.
+ * @param string $domain domain used for the new blog.
+ * @param string $path path to the new blog.
+ * @param int    $site_id site id.
+ * @param array  $meta meta data.
+ *
+ * @void
+ */
+function boxtal_connect_network_activated( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+	if ( is_plugin_active_for_network( 'boxtal-connect/boxtal-connect.php' ) ) {
+		//phpcs:ignore
+		switch_to_blog( $blog_id );
+		boxtal_connect_activate_simple();
+		restore_current_blog();
+	}
+}
+
+
+add_action( 'wpmu_drop_tables', 'boxtal_connect_uninstall_multisite_instance' );
+/**
+ * Runs uninstall for a plugin on a multisite site if site is deleted
+ *
+ * @param array $tables the site tables to be dropped.
+ * @param int   $blog_id the id of the site to drop tables for.
+ *
+ * @return array
+ */
+function boxtal_connect_uninstall_multisite_instance( $tables, $blog_id ) {
+	global $wpdb;
+	$tables[] = $wpdb->prefix . 'bw_pricing_items';
+	return $tables;
 }
 
 /**
@@ -230,6 +317,38 @@ function boxtal_connect_init_admin_notices( $plugin ) {
 }
 
 /**
+ * Boxtal connect shipping method init.
+ *
+ * @void
+ */
+function boxtal_connect_shipping_method_init() {
+	add_action( 'woocommerce_shipping_init', 'Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Shipping_Method' );
+}
+
+/**
+ * Add boxtal connect shipping method.
+ *
+ * @param array $methods woocommerce loaded shipping methods.
+ *
+ * @return array
+ */
+function boxtal_connect_shipping_method_add( $methods ) {
+	$methods['boxtal_connect'] = 'Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Shipping_Method';
+	return $methods;
+}
+
+/**
+ * Add boxtal connect shipping method.
+ *
+ * @param array $plugin plugin array.
+ * @void
+ */
+function boxtal_connect_shipping_method( $plugin ) {
+	add_action( 'woocommerce_shipping_init', 'boxtal_connect_shipping_method_init' );
+	add_filter( 'woocommerce_shipping_methods', 'boxtal_connect_shipping_method_add' );
+}
+
+/**
  * Return settings override singleton.
  *
  * @param array $plugin plugin array.
@@ -243,6 +362,23 @@ function boxtal_connect_shipping_method_settings_override( $plugin ) {
 	}
 
 	$object = new Settings_Override( $plugin );
+	return $object;
+}
+
+/**
+ * Shipping method controller.
+ *
+ * @param array $plugin plugin array.
+ * @return Controller $object
+ */
+function boxtal_connect_shipping_method_controller( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Controller( $plugin );
 	return $object;
 }
 

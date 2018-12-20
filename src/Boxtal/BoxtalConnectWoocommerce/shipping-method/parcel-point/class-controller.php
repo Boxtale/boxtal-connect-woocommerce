@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point;
 
 use Boxtal\BoxtalConnectWoocommerce\Util\Configuration_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Shipping_Method_Util;
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Customer_Util;
@@ -115,12 +116,21 @@ class Controller {
 	}
 
 	/**
+	 * Get network list
+	 *
+	 * @return array network list
+	 */
+	public static function get_network_list() {
+		return get_option( 'BW_PP_NETWORKS' );
+	}
+
+	/**
 	 * Get parcel point network options
 	 *
 	 * @return array network options
 	 */
 	public static function get_network_options() {
-		$networks = get_option( 'BW_PP_NETWORKS' );
+		$networks = self::get_network_list();
 		$options  = array();
 		foreach ( $networks as $network => $carrier_array ) {
 			$options[ $network ] = implode( ', ', $carrier_array );
@@ -204,7 +214,7 @@ class Controller {
 	 */
 	public static function init_points( $address, $method ) {
 		if ( WC()->session ) {
-			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), null );
+			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( Shipping_Rate_Util::get_id( $method ) ), null );
 		} else {
 			return false;
 		}
@@ -214,7 +224,14 @@ class Controller {
 			return false;
 		}
 
-		$networks = Misc_Util::get_active_parcel_point_networks( $settings );
+		if ( 'boxtal_connect' !== Shipping_Rate_Util::get_method_id( $method ) ) {
+			$networks = Misc_Util::get_active_parcel_point_networks( $settings );
+		} else {
+			$networks = WC()->session->get( 'bw_parcel_point_networks_' . Shipping_Rate_Util::get_id( $method ), null );
+			if ( null === $networks ) {
+				return false;
+			}
+		}
 		if ( empty( $networks ) ) {
 			return false;
 		}
@@ -224,7 +241,7 @@ class Controller {
 
 		if ( ! $response->isError() && property_exists( $response->response, 'nearbyParcelPoints' ) && is_array( $response->response->nearbyParcelPoints )
 			&& count( $response->response->nearbyParcelPoints ) > 0 ) {
-			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( $method->id ), $response->response );
+			WC()->session->set( 'bw_parcel_points_' . Shipping_Rate_Util::get_clean_id( Shipping_Rate_Util::get_id( $method ) ), $response->response );
 			return true;
 		}
 		return false;

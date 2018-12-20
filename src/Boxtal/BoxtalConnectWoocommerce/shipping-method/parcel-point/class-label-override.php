@@ -8,6 +8,7 @@
 namespace Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point;
 
 use Boxtal\BoxtalConnectWoocommerce\Util\Misc_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Shipping_Rate_Util;
 
 /**
  * Label_Override class.
@@ -40,10 +41,11 @@ class Label_Override {
 	public function change_shipping_label( $full_label, $method ) {
 		if ( Misc_Util::should_display_parcel_point_link( $method ) ) {
 			$points_response = Controller::init_points( Controller::get_recipient_address(), $method );
+
 			if ( $points_response ) {
-				$chosen_parcel_point = Controller::get_chosen_point( $method->id );
+				$chosen_parcel_point = Controller::get_chosen_point( Shipping_Rate_Util::get_id( $method ) );
 				if ( null === $chosen_parcel_point ) {
-					$closest_parcel_point = Controller::get_closest_point( $method->id );
+					$closest_parcel_point = Controller::get_closest_point( Shipping_Rate_Util::get_id( $method ) );
 					//phpcs:ignore
 					$full_label          .= '<br/><span class="bw-parcel-client">' . __( 'Closest parcel point:', 'boxtal-connect' ) . ' <span class="bw-parcel-name">' . $closest_parcel_point->parcelPoint->name . '</span></span>';
 				} else {
