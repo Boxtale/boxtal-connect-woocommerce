@@ -7,6 +7,8 @@
 
 namespace Boxtal\BoxtalConnectWoocommerce\Util;
 
+use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point\Controller;
+
 /**
  * Misc util class.
  *
