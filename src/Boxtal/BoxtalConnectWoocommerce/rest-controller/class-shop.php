@@ -48,7 +48,7 @@ class Shop {
 					'boxtal-connect/v1', '/shop/update-configuration', array(
 						'methods'             => 'POST',
 						'callback'            => array( $this, 'update_configuration_handler' ),
-						'permission_callback' => array( $this, 'authenticate' ),
+						'permission_callback' => array( $this, 'authenticate_access_key' ),
 					)
 				);
 			}
@@ -60,7 +60,7 @@ class Shop {
 					'boxtal-connect/v1', '/shop/delete-configuration', array(
 						'methods'             => 'POST',
 						'callback'            => array( $this, 'delete_configuration_handler' ),
-						'permission_callback' => array( $this, 'authenticate' ),
+						'permission_callback' => array( $this, 'authenticate_access_key' ),
 					)
 				);
 			}
@@ -75,6 +75,16 @@ class Shop {
 	 */
 	public function authenticate( $request ) {
 		return Auth_Util::authenticate( $request );
+	}
+
+	/**
+	 * Call to auth helper class authenticate access key function.
+	 *
+	 * @param WP_REST_Request $request request.
+	 * @return WP_Error|boolean
+	 */
+	public function authenticate_access_key( $request ) {
+		return Auth_Util::authenticate_access_key( $request );
 	}
 
 	/**
@@ -141,11 +151,6 @@ class Shop {
 			Api_Util::send_api_response( 400 );
 		}
 
-		//phpcs:ignore
-		if ( ! is_object( $body ) || ! property_exists( $body, 'accessKey' ) || $body->accessKey !== Auth_Util::get_access_key() ) {
-			Api_Util::send_api_response( 403 );
-		}
-
 		Configuration_Util::delete_configuration();
 		Api_Util::send_api_response( 200 );
 	}
@@ -158,10 +163,6 @@ class Shop {
 	 */
 	public function update_configuration_handler( $request ) {
 		$body = Auth_Util::decrypt_body( $request->get_body() );
-
-		if ( null === $body ) {
-			Api_Util::send_api_response( 400 );
-		}
 
 		if ( Configuration_Util::parse_configuration( $body ) ) {
 			Api_Util::send_api_response( 200 );

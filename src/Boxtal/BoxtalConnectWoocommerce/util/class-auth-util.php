@@ -34,6 +34,26 @@ class Auth_Util {
 	}
 
 	/**
+	 * API request validation with access key check.
+	 *
+	 * @param \WP_REST_Request $request request.
+	 * @return boolean|void
+	 */
+	public static function authenticate_access_key( $request ) {
+		$decrypted_body = self::decrypt_body( $request->get_body() );
+		if ( null === $decrypted_body ) {
+			Api_Util::send_api_response( 401 );
+		}
+
+		//phpcs:ignore
+		if ( is_object( $decrypted_body ) && property_exists( $decrypted_body, 'accessKey' ) && self::get_access_key() === $decrypted_body->accessKey ) {
+			return true;
+		}
+
+		Api_Util::send_api_response( 403 );
+	}
+
+	/**
 	 * Is plugin paired.
 	 *
 	 * @return boolean

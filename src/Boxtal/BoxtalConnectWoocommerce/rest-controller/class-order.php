@@ -64,7 +64,7 @@ class Order {
 	 * @return \WP_Error|boolean
 	 */
 	public function authenticate( $request ) {
-		return Auth_Util::authenticate( $request );
+		return Auth_Util::authenticate_access_key( $request );
 	}
 
 	/**
