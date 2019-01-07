@@ -15,8 +15,9 @@
 					httpRequest.onreadystatechange = function(data) {
 						if (httpRequest.readyState === 4) {
 							if (httpRequest.status === 200) {
+								const data = typeof httpRequest.response === 'object' && httpRequest.response !== null ? httpRequest.response.data : JSON.parse(httpRequest.response).data;
 								const tableBody = self.getTableBody();
-								tableBody.insertAdjacentHTML('beforeend', httpRequest.response.data);
+								tableBody.insertAdjacentHTML('beforeend', data);
 								self.initSelect('#bw-rates-table tbody tr:last-child .bw-tail-select');
 							} else {
 								console.log("Error: " + httpRequest.status);
@@ -62,8 +63,62 @@
 				});
 
 				self.initSelect(".bw-tail-select");
+
+				self.submitForm = self.submitForm.bind(self);
+
+				document.getElementById("mainform").addEventListener("submit", self.submitForm);
             }
         },
+
+		submitForm: function(e) {
+        	const self = this;
+			e.preventDefault();
+			const pricingItems = [];
+			const pricingRows = document.querySelectorAll('.pricing-item');
+			if (pricingRows.length > 0) {
+				for (let i = 0; i < pricingRows.length; i++) {
+					const element = pricingRows[i];
+					const pricingItem = {
+						'price-from': element.querySelector("[name='pricing-items["+i+"][\"price-from\"]']").value,
+						'price-to': element.querySelector("[name='pricing-items["+i+"][\"price-to\"]']").value,
+						'weight-from': element.querySelector("[name='pricing-items["+i+"][\"weight-from\"]']").value,
+						'weight-to': element.querySelector("[name='pricing-items["+i+"][\"weight-to\"]']").value,
+						'shipping-class': Array.apply(null, element.querySelector("[name='pricing-items["+i+"][\"shipping-class\"][]']").options).filter(option => option.selected).map(option => option.value),
+						'parcel-point-network': Array.apply(null, element.querySelector("[name='pricing-items["+i+"][\"parcel-point-network\"][]']").options).filter(option => option.selected).map(option => option.value),
+						'pricing': element.querySelector("[name='pricing-items["+i+"][\"pricing\"]']").value,
+						'flat-rate': element.querySelector("[name='pricing-items["+i+"][\"flat-rate\"]']").value
+					};
+					pricingItems.push(pricingItem);
+				}
+			}
+
+			// disable inputs to prevent them from being posted in PHP
+			const inputs = document.querySelectorAll('.pricing-item input, .pricing-item select');
+			if (inputs.length > 0) {
+				for (let i = 0; i < inputs.length; i++) {
+					const input = inputs[i];
+					input.disabled = true;
+				}
+			}
+
+			const el = document.createElement("input");
+			el.setAttribute("type", "hidden");
+			el.setAttribute("name", "pricing-items");
+			el.value = JSON.stringify(pricingItems);
+
+			const saveInput = document.createElement("input");
+			saveInput.setAttribute("type", "hidden");
+			saveInput.setAttribute("name", "save");
+			saveInput.value = document.querySelector('button[type="submit"]').value;
+
+			document.querySelector(self.trigger).appendChild(el);
+			document.querySelector(self.trigger).appendChild(saveInput); // necessary for WC submission to work.
+
+			document.getElementById("mainform").removeEventListener("submit", self.submitForm);
+			document.getElementById("mainform").submit();
+
+			return true;
+		},
 
 		initSelect: function(selector) {
         	const self = this;

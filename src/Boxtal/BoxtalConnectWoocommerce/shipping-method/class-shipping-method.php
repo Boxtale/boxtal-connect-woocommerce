@@ -112,10 +112,9 @@ class Shipping_Method extends \WC_Shipping_Method {
 	 * @void
 	 */
 	public function process_admin_options() {
-
 		parent::process_admin_options();
 		//phpcs:ignore
-		$pricing_items = isset($_POST['pricing-items']) ? $_POST['pricing-items'] : null;
+		$pricing_items = isset($_POST['pricing-items']) ? json_decode(stripslashes($_POST['pricing-items'])) : null;
 		Controller::save_pricing_items( $this, $pricing_items );
 	}
 

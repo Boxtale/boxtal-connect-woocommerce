@@ -8,7 +8,8 @@ var gulp         = require( 'gulp' ),
 	cleanCSS     = require( 'gulp-clean-css' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
     concat 		 = require('gulp-concat'),
-	assetsDir    = 'src/Boxtal/BoxtalConnectWoocommerce/assets';
+	assetsDir    = 'src/Boxtal/BoxtalConnectWoocommerce/assets',
+	babel 		 = require('gulp-babel');
 
 /* Error Notification
  ================================================================================== */
@@ -25,6 +26,7 @@ var onError = function (err) {
 // JS concat & minify task for local wordpress
 gulp.task('js', function () {
     return gulp.src([assetsDir + '/js/*.js', '!' + assetsDir + '/js/*.min.js'])
+		.pipe(babel({ presets: ['es2015-ie', 'es2015', 'stage-3'] }))
         .pipe(plumber( {errorHandler: onError} ))
         .pipe(uglify())
         .pipe(rename({ suffix: '.min' }))

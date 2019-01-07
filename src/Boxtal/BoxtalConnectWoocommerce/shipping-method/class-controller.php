@@ -76,7 +76,8 @@ class Controller {
 	 */
 	public function shipping_method_scripts() {
 		wp_enqueue_script( 'bw_tail_select', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/tail.select-full.min.js', array(), $this->plugin_version );
-		wp_enqueue_script( 'bw_shipping_method', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/shipping-method.min.js', array( 'bw_tail_select' ), $this->plugin_version );
+		wp_enqueue_script( 'bw_polyfills', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/polyfills.min.js', array(), $this->plugin_version );
+		wp_enqueue_script( 'bw_shipping_method', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/shipping-method.min.js', array( 'bw_tail_select', 'bw_polyfills' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping_method', 'bwShippingMethodAjaxNonce', $this->ajax_nonce );
 		wp_localize_script( 'bw_shipping_method', 'bwLocale', substr( get_locale(), 0, 2 ) );
 	}
@@ -169,13 +170,11 @@ class Controller {
 	 * Get shipping method pricing items.
 	 *
 	 * @param string $method shipping method id.
-	 * @param array  $pricing_items_raw posted pricing items.
+	 * @param array  $pricing_items posted pricing items.
 	 *
 	 * @void
 	 */
-	public static function save_pricing_items( $method, $pricing_items_raw ) {
-
-		$pricing_items = Shipping_Method_Util::clean_pricing_items( $pricing_items_raw );
+	public static function save_pricing_items( $method, $pricing_items ) {
 
 		self::delete_pricing_items( $method );
 
@@ -186,14 +185,14 @@ class Controller {
 				array(
 					'pricing_id'               => $id,
 					'shipping_method_instance' => Shipping_Method_Util::get_unique_identifier( $method ),
-					'price_from'               => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item['price-from'] ) ),
-					'price_to'                 => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item['price-to'] ) ),
-					'weight_from'              => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item['weight-from'] ) ),
-					'weight_to'                => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item['weight-to'] ) ),
-					'shipping_class'           => isset( $pricing_item['shipping-class'] ) ? implode( '|', $pricing_item['shipping-class'] ) : 'none',
-					'parcel_point_network'     => isset( $pricing_item['parcel-point-network'] ) ? implode( '|', $pricing_item['parcel-point-network'] ) : null,
-					'pricing'                  => $pricing_item['pricing'],
-					'flat_rate'                => self::$rate === $pricing_item['pricing'] ? floatval( Misc_Util::convert_comma( $pricing_item['flat-rate'] ) ) : null,
+					'price_from'               => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'price-from'} ) ),
+					'price_to'                 => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'price-to'} ) ),
+					'weight_from'              => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'weight-from'} ) ),
+					'weight_to'                => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'weight-to'} ) ),
+					'shipping_class'           => ! empty( $pricing_item->{'shipping-class'} ) ? implode( '|', $pricing_item->{'shipping-class'} ) : 'none',
+					'parcel_point_network'     => ! empty( $pricing_item->{'parcel-point-network'} ) ? implode( '|', $pricing_item->{'parcel-point-network'} ) : null,
+					'pricing'                  => $pricing_item->{'pricing'},
+					'flat_rate'                => self::$rate === $pricing_item->{'pricing'} ? floatval( Misc_Util::convert_comma( $pricing_item->{'flat-rate'} ) ) : null,
 				),
 				array(
 					'%d',

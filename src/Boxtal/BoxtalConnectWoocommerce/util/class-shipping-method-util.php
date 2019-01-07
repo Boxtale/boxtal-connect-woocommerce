@@ -31,23 +31,6 @@ class Shipping_Method_Util {
 	}
 
 	/**
-	 * Clean posted pricing items.
-	 *
-	 * @param array $pricing_items_raw posted pricing items.
-	 *
-	 * @return array $pricing_items cleaned pricing items
-	 */
-	public static function clean_pricing_items( $pricing_items_raw ) {
-		$pricing_items = array();
-		if ( null !== $pricing_items_raw ) {
-			foreach ( $pricing_items_raw as $id => $pricing_item_raw ) {
-				$pricing_items[ $id ] = Misc_Util::array_keys_strip_encoded_double_quotes( $pricing_item_raw );
-			}
-		}
-		return $pricing_items;
-	}
-
-	/**
 	 * Get existing shipping classes + "none" shipping class.
 	 *
 	 * @return array $shipping_classes shipping classes
