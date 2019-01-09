@@ -96,8 +96,10 @@ class Controller {
 				'SUNDAY'    => __( 'sunday', 'boxtal-connect' ),
 			),
 		);
-		wp_enqueue_script( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/mapbox-gl.min.js', array(), $this->plugin_version );
-		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/parcel-point.min.js', array( 'bw_mapbox_gl' ), $this->plugin_version );
+		wp_enqueue_script( 'bw_promise_polyfill', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/promise-polyfill.min.js', array(), $this->plugin_version );
+		wp_enqueue_script( 'bw_polyfills', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/polyfills.min.js', array(), $this->plugin_version );
+		wp_enqueue_script( 'bw_mapbox_gl', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/mapbox-gl.min.js', array( 'bw_polyfills' ), $this->plugin_version );
+		wp_enqueue_script( 'bw_shipping', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/parcel-point.min.js', array( 'bw_mapbox_gl', 'bw_polyfills', 'bw_promise_polyfill' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping', 'translations', $translations );
 		wp_localize_script( 'bw_shipping', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 		wp_localize_script( 'bw_shipping', 'mapUrl', $this->get_map_url() );

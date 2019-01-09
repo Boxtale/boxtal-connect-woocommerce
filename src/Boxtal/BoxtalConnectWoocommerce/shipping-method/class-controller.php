@@ -75,8 +75,8 @@ class Controller {
 	 * @void
 	 */
 	public function shipping_method_scripts() {
-		wp_enqueue_script( 'bw_tail_select', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/tail.select-full.min.js', array(), $this->plugin_version );
 		wp_enqueue_script( 'bw_polyfills', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/polyfills.min.js', array(), $this->plugin_version );
+		wp_enqueue_script( 'bw_tail_select', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/tail.select-full.min.js', array( 'bw_polyfills' ), $this->plugin_version );
 		wp_enqueue_script( 'bw_shipping_method', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/js/shipping-method.min.js', array( 'bw_tail_select', 'bw_polyfills' ), $this->plugin_version );
 		wp_localize_script( 'bw_shipping_method', 'bwShippingMethodAjaxNonce', $this->ajax_nonce );
 		wp_localize_script( 'bw_shipping_method', 'bwLocale', substr( get_locale(), 0, 2 ) );

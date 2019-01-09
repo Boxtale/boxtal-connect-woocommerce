@@ -38,7 +38,7 @@
 						self.parseNodeChildrenSpecificTypeAction(lastLine, ['SELECT', 'INPUT'], function(item) {
 							if ('SELECT' === item.tagName) {
 								const name = item.getAttribute('name');
-								const options = Array.from(item.selectedOptions);
+								const options = self.getSelectedOptions(item);
 								if (options.length > 0) {
 									options.map(option => {
 										values.push(name + "=" + encodeURIComponent(option.value));
@@ -69,6 +69,29 @@
 				document.getElementById("mainform").addEventListener("submit", self.submitForm);
             }
         },
+
+		getSelectedOptions: function(sel, fn) {
+			var opts = [], opt;
+
+			// loop through options in select list
+			for (var i=0, len=sel.options.length; i<len; i++) {
+				opt = sel.options[i];
+
+				// check if selected
+				if ( opt.selected ) {
+					// add to array of option elements to return from this function
+					opts.push(opt);
+
+					// invoke optional callback function if provided
+					if (fn) {
+						fn(opt);
+					}
+				}
+			}
+
+			// return array containing references to selected option elements
+			return opts;
+		},
 
 		submitForm: function(e) {
         	const self = this;

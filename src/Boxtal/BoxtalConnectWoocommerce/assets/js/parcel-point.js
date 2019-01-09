@@ -37,11 +37,11 @@
             self.mapContainer.appendChild(mapOuter);
             document.body.appendChild(self.mapContainer);
 
-            mapboxgl.accessToken = 'whatever';
             self.map =  new mapboxgl.Map({
                 container: 'bw-map-canvas',
                 style: mapUrl,
-                zoom: 14
+                zoom: 14,
+				accessToken: 'whatever'
             });
             self.map.addControl(new mapboxgl.NavigationControl());
 
@@ -132,10 +132,11 @@
                 const httpRequest = new XMLHttpRequest();
                 httpRequest.onreadystatechange = function() {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.response.success === false) {
-                            reject(httpRequest.response.data.message);
+						const response = typeof httpRequest.response === 'object' && httpRequest.response !== null ? httpRequest.response : JSON.parse(httpRequest.response);
+						if (false === response.success) {
+                            reject(response.data.message);
                         } else {
-                            resolve(httpRequest.response);
+                            resolve(response);
                         }
                     }
                 };
@@ -279,8 +280,9 @@
                 const setPointRequest = new XMLHttpRequest();
                 setPointRequest.onreadystatechange = function() {
                     if (setPointRequest.readyState === 4) {
-                        if (setPointRequest.response.success === false) {
-                            reject(setPointRequest.response.data.message);
+						const response = typeof setPointRequest.response === 'object' && setPointRequest.response !== null ? setPointRequest.response : JSON.parse(setPointRequest.response);
+                        if (false === response.success) {
+							reject(response.data.message);
                         } else {
                             resolve(name);
                         }

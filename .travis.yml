@@ -47,8 +47,6 @@ install:
   - npm install -g gulp
   - npm install -g gulp-cli
   - mkdir -p src/Boxtal/BoxtalConnectWoocommerce/assets/css
-  - cp -R node_modules/mapbox-gl/dist/mapbox-gl.css src/Boxtal/BoxtalConnectWoocommerce/assets/css
-  - cp -R node_modules/mapbox-gl/dist/mapbox-gl.js src/Boxtal/BoxtalConnectWoocommerce/assets/js
 
 before_script:
   - sudo a2enmod actions

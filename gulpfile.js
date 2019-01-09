@@ -1,13 +1,12 @@
 var gulp         = require( 'gulp' ),
 	less         = require( 'gulp-less' ),
 	plumber      = require( 'gulp-plumber' ),
-	path         = require( 'path' ),
-    uglify 		 = require('gulp-uglify-es').default,
+	terser 		 = require('gulp-terser'),
     rename 		 = require('gulp-rename'),
 	notify       = require( 'gulp-notify' ),
 	cleanCSS     = require( 'gulp-clean-css' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
-    concat 		 = require('gulp-concat'),
+	mergeStream  = require( 'merge-stream' ),
 	assetsDir    = 'src/Boxtal/BoxtalConnectWoocommerce/assets',
 	babel 		 = require('gulp-babel');
 
@@ -25,29 +24,65 @@ var onError = function (err) {
 
 // JS concat & minify task for local wordpress
 gulp.task('js', function () {
-    return gulp.src([assetsDir + '/js/*.js', '!' + assetsDir + '/js/*.min.js'])
-		.pipe(babel({ presets: ['es2015-ie', 'es2015', 'stage-3'] }))
-        .pipe(plumber( {errorHandler: onError} ))
-        .pipe(uglify())
-        .pipe(rename({ suffix: '.min' }))
+    return mergeStream(
+			gulp.src(
+			[
+				assetsDir + '/js/*.js',
+				'!' + assetsDir + '/js/polyfills.js',
+				'!' + assetsDir + '/js/*.min.js'
+			])
+			.pipe(babel({ presets: ['es2015'] }))
+			.pipe(plumber( {errorHandler: onError} ))
+			.pipe(terser({
+				ie8: true
+			}))
+			.pipe(rename({ suffix: '.min' })),
+			gulp.src(
+			[
+				assetsDir + '/js/polyfills.js',
+				'node_modules/mapbox-gl/dist/mapbox-gl.js'
+			])
+			.pipe(terser({
+				ie8: true,
+				compress: false
+			}))
+			.pipe(rename({ suffix: '.min' })),
+			gulp.src(
+			[
+				'node_modules/tail.select/js/tail.select-full.min.js'
+			]),
+			gulp.src(
+			[
+				'node_modules/promise-polyfill/dist/polyfill.min.js'
+			])
+			.pipe(rename("promise-polyfill.min.js"))
+		)
         .pipe(gulp.dest(assetsDir + '/js'));
 });
 
 // Styles task for local wordpress
 gulp.task(
 	'css', function () {
-		return gulp.src( [assetsDir + '/less/*.less'] )
-		.pipe( plumber( {errorHandler: onError} ) )
-		.pipe( less() )
-		.pipe(
-			autoprefixer(
-				{
-					browsers: ['last 2 versions', '>1%', 'ie 9'],
-					cascade: false
-				}
+		return mergeStream(
+			gulp.src( [assetsDir + '/less/*.less'] )
+			.pipe( plumber( {errorHandler: onError} ) )
+			.pipe( less() )
+			.pipe(
+				autoprefixer(
+					{
+						browsers: ['last 2 versions', '>1%', 'ie 9'],
+						cascade: false
+					}
+				)
+			)
+			.pipe( cleanCSS( {compatibility: 'ie8'} ) ),
+			gulp.src(
+				[
+					'node_modules/mapbox-gl/dist/mapbox-gl.css',
+					'node_modules/tail.select/css/tail.select-bootstrap3.css'
+				]
 			)
 		)
-		.pipe( cleanCSS( {compatibility: 'ie8'} ) )
 		.pipe( gulp.dest( assetsDir + '/css' ) );
 	}
 );
