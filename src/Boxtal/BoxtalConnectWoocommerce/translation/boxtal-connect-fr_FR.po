@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal connect 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-26 11:24+0100\n"
-"PO-Revision-Date: 2018-12-26 11:24+0100\n"
+"POT-Creation-Date: 2019-01-09 17:28+0100\n"
+"PO-Revision-Date: 2019-01-09 17:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -160,6 +160,27 @@ msgstr "oui"
 msgid "no"
 msgstr "non"
 
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:17
+msgid "Statuses associated to tracking events"
+msgstr "Statuts associés à des événements de suivi"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:18
+msgid "Associate your order statuses to tracking events."
+msgstr "Associez vos statuts de commandes à des événements de suivi."
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:26
+msgid "Tracking event: order shipped"
+msgstr "Événement de suivi : commande expédiée"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:36
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:64
+msgid "No status associated"
+msgstr "Pas de statut associé"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:54
+msgid "Tracking event: order delivered"
+msgstr "Événement de suivi : commande livrée"
+
 #: Boxtal/BoxtalConnectWoocommerce/assets/views/html-setup-wizard-notice.php:14
 msgid "Run the setup wizard to connect your shop to Boxtal."
 msgstr ""
@@ -168,6 +189,26 @@ msgstr ""
 #: Boxtal/BoxtalConnectWoocommerce/assets/views/html-setup-wizard-notice.php:17
 msgid "Connect my shop"
 msgstr "Je connecte ma boutique"
+
+#: Boxtal/BoxtalConnectWoocommerce/rest-controller/class-order.php:215
+msgid "Your order has been shipped."
+msgstr "Votre commande a été expédiée."
+
+#: Boxtal/BoxtalConnectWoocommerce/rest-controller/class-order.php:232
+msgid "Your order has been delivered."
+msgstr "Votre commande a été livrée."
+
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:76
+msgid "Boxtal Connect"
+msgstr "Boxtal Connect"
+
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:91
+msgid "Order shipped "
+msgstr "Commande expédiée"
+
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:101
+msgid "Order delivered "
+msgstr "Commande livrée"
 
 #: Boxtal/BoxtalConnectWoocommerce/shipping-method/class-settings-override.php:83
 msgid "Parcel points map display (Boxtal Connect)"
@@ -216,7 +257,7 @@ msgid "None"
 msgstr "Aucune"
 
 #: Boxtal/BoxtalConnectWoocommerce/shipping-method/parcel-point/class-controller.php:78
-#: Boxtal/BoxtalConnectWoocommerce/shipping-method/parcel-point/class-controller.php:150
+#: Boxtal/BoxtalConnectWoocommerce/shipping-method/parcel-point/class-controller.php:152
 msgid "Unable to find carrier"
 msgstr "Impossible de trouver le transporteur"
 
@@ -290,7 +331,7 @@ msgstr "Autre point relais"
 msgid "Boxtal - Shipment tracking"
 msgstr "Boxtal - Suivi d'expédition"
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:144
+#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:146
 msgid ""
 "There's been a change in the parcel point network list, we've adapted your "
 "shipping method configuration. Please check that everything is in order."
@@ -299,7 +340,7 @@ msgstr ""
 "configuration de vos méthodes de livraison. Veuillez vérifier que tout est "
 "en ordre."
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:163
+#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:165
 msgid ""
 "There's been a change in the parcel point network list, you can add the "
 "extra parcel point network(s) to your shipping method configuration."
@@ -340,11 +381,11 @@ msgstr ""
 "Boxtal Connect - La version minimale de Woocommerce requise pour ce plugin "
 "est %1$s. Vous utilisez la version %2$s."
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-shipping-method-util.php:65
+#: Boxtal/BoxtalConnectWoocommerce/util/class-shipping-method-util.php:48
 msgid "No shipping class"
 msgstr "Pas de classe de livraison"
 
-#: boxtal-connect.php:119
+#: boxtal-connect.php:121
 msgid ""
 "Boxtal Connect - from version 1.1.0, use of parcel point map additional "
 "field on shipping methods is deprecated. Use the Boxtal Connect rate method "
@@ -648,9 +689,6 @@ msgstr ""
 #~ msgid "Mark awaiting shipment"
 #~ msgstr "Marquer en attente d'expédition"
 
-#~ msgid "Mark shipped"
-#~ msgstr "Marquer expédiée"
-
 #~ msgid "Download all waybills"
 #~ msgstr "Télécharger tous les bordereaux"
 
@@ -709,9 +747,6 @@ msgstr ""
 
 #~ msgid "Order tracking: cancelled."
 #~ msgstr "Etat de la commande : annulée."
-
-#~ msgid "Order tracking: delivered."
-#~ msgstr "Etat de la commande : livrée."
 
 #~ msgid "Select all"
 #~ msgstr "Tout sélectionner"
@@ -885,9 +920,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Vous devez d'abord choisir un transporteur EnvoiMoinsCher pour expédier "
 #~ "votre commande."
-
-#~ msgid "Your order has already been sent."
-#~ msgstr "Votre commande a déjà été expédiée."
 
 #~ msgid "Boxtal reference: %s."
 #~ msgstr "Référence EnvoiMoinsCher : %s."

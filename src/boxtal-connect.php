@@ -24,6 +24,7 @@ use Boxtal\BoxtalConnectWoocommerce\Rest_Controller\Shop;
 use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point\Checkout;
 use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point\Label_Override;
 use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Settings_Override;
+use Boxtal\BoxtalConnectWoocommerce\Settings\Page;
 use Boxtal\BoxtalConnectWoocommerce\Tracking\Admin_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Tracking\Front_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
@@ -73,6 +74,7 @@ function boxtal_connect_init() {
 			$plugin['parcel-point-label-override']       = 'boxtal_connect_parcel_point_label_override';
 			$plugin['parcel-point-controller']           = 'boxtal_connect_parcel_point_controller';
 			$plugin['parcel-point-checkout']             = 'boxtal_connect_parcel_point_checkout';
+			$plugin['settings-page']                     = 'boxtal_connect_settings_page';
 		}
 	}
 	$plugin->run();
@@ -481,5 +483,23 @@ function boxtal_connect_admin_order_page( $plugin ) {
 	}
 
 	$object = new Admin_Order_Page( $plugin );
+	return $object;
+}
+
+
+/**
+ * Plugin settings page.
+ *
+ * @param array $plugin plugin array.
+ * @return Page $object static Page instance.
+ */
+function boxtal_connect_settings_page( $plugin ) {
+	static $object;
+
+	if ( null !== $object ) {
+		return $object;
+	}
+
+	$object = new Page( $plugin );
 	return $object;
 }

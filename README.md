@@ -4,31 +4,22 @@ If you are not a developer, please use the <a href="https://wordpress.org/plugin
 
 ## Hooks
 
-### Tracking event hook
+### Order tracking event hooks
 
-You can use the tracking event hook to launch actions when a shipment (sent via Boxtal) tracking status changes.
+You can use the order tracking event hooks to launch actions when you've sent shipment(s) via Boxtal and those shipments are shipped or delivered.
 
 ```
-function my_tracking_function($order_id, $carrier_reference, $tracking_event_date, $tracking_event_code) {
+function my_order_shipped_function($order_id) {
     /* your code here */
 }
 
-add_action( 'boxtal_tracking_event', 'my_tracking_function' );`
+function my_order_delivered_function($order_id) {
+    /* your code here */
+}
+
+add_action( 'boxtal_connect_order_shipped', 'my_order_shipped_function' );`
+add_action( 'boxtal_connect_order_delivered', 'my_order_delivered_function' );`
 ```
-
-Be aware that an order can have several carrier references if dispatched in several shipments.
-
-Here is a list of all possible tracking event codes:
-A - Waiting for pickup from carrier
-B - Waiting for drop-off at proximity point
-C - Shipping in progress
-D - Exception
-E - Delivery attempt
-F - Delivered
-G - Delivered at relay point
-Z - Other
-R - Returned
-N - new
 
 ## Contributing to Boxtal Connect
 If you have a patch or have stumbled upon an issue with our plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/Boxtale/boxtal-connect-woocommerce/blob/master/.github/CONTRIBUTING.md) for more information how you can do this.

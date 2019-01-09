@@ -47,9 +47,21 @@ class Order {
 		add_action(
 			'rest_api_init', function() {
 				register_rest_route(
-					'boxtal-connect/v1', '/order/(?P<order_id>[\d]+)/tracking', array(
+					'boxtal-connect/v1', '/order/(?P<order_id>[\d]+)/shipped', array(
 						'methods'             => 'POST',
-						'callback'            => array( $this, 'tracking_event_handler' ),
+						'callback'            => array( $this, 'order_shipped_handler' ),
+						'permission_callback' => array( $this, 'authenticate' ),
+					)
+				);
+			}
+		);
+
+		add_action(
+			'rest_api_init', function() {
+				register_rest_route(
+					'boxtal-connect/v1', '/order/(?P<order_id>[\d]+)/delivered', array(
+						'methods'             => 'POST',
+						'callback'            => array( $this, 'order_delivered_handler' ),
 						'permission_callback' => array( $this, 'authenticate' ),
 					)
 				);
@@ -159,51 +171,78 @@ class Order {
 	}
 
 	/**
-	 * Tracking event handler callback.
+	 * Order shipped handler callback.
 	 *
 	 * @param \WP_REST_Request $request request.
 	 * @void
 	 */
-	public function tracking_event_handler( $request ) {
+	public function order_shipped_handler( $request ) {
+		$this->order_tracking_event_handler( $request, 'shipped' );
+	}
 
+	/**
+	 * Order delivered handler callback.
+	 *
+	 * @param \WP_REST_Request $request request.
+	 *
+	 * @void
+	 */
+	public function order_delivered_handler( $request ) {
+		$this->order_tracking_event_handler( $request, 'delivered' );
+	}
+
+	/**
+	 * Order tracking event handler.
+	 *
+	 * @param \WP_REST_Request $request request.
+	 * @param string           $type type of event (e.g. 'shipped' or 'delivered').
+	 *
+	 * @void
+	 */
+	public function order_tracking_event_handler( $request, $type ) {
 		if ( ! isset( $request['order_id'] ) ) {
 			Api_Util::send_api_response( 400 );
 		}
 
-		$body = Auth_Util::decrypt_body( $request->get_body() );
+		$order_id       = $request['order_id'];
+		$order_statuses = wc_get_order_statuses();
 
-		if ( ! $this::parse_tracking_event( $request['order_id'], $body ) ) {
-			Api_Util::send_api_response( 400 );
+		if ( 'shipped' === $type ) {
+			$shipped_status = get_option( 'BW_ORDER_SHIPPED', null );
+			$order          = wc_get_order( $order_id );
+			if ( false !== $order ) {
+				$note = esc_html( __( 'Your order has been shipped.', 'boxtal-connect' ) );
+				$order->add_order_note( $note, true );
+				$order->save();
+
+				do_action( 'boxtal_connect_order_shipped', $order_id );
+
+				if ( null !== $shipped_status && isset( $order_statuses[ $shipped_status ] ) ) {
+					$order->update_status( $shipped_status );
+				} elseif ( null !== $shipped_status ) {
+					update_option( 'BW_ORDER_SHIPPED', null );
+				}
+			}
+		}
+
+		if ( 'delivered' === $type ) {
+			$delivered_status = get_option( 'BW_ORDER_DELIVERED', null );
+			$order            = wc_get_order( $order_id );
+			if ( false !== $order ) {
+				$note = esc_html( __( 'Your order has been delivered.', 'boxtal-connect' ) );
+				$order->add_order_note( $note, true );
+				$order->save();
+
+				do_action( 'boxtal_connect_order_delivered', $order_id );
+
+				if ( null !== $delivered_status && isset( $order_statuses[ $delivered_status ] ) ) {
+					$order->update_status( $delivered_status );
+				} elseif ( null !== $delivered_status ) {
+					update_option( 'BW_ORDER_DELIVERED', null );
+				}
+			}
 		}
 
 		Api_Util::send_api_response( 200 );
-	}
-
-	/**
-	 * Parse tracking event.
-	 *
-	 * @param int    $order_id order id.
-	 * @param object $body request body.
-	 * @return boolean
-	 */
-	public static function parse_tracking_event( $order_id, $body ) {
-		if ( ! ( is_object( $body ) && property_exists( $body, 'carrierReference' )
-			&& property_exists( $body, 'trackingDate' ) && property_exists( $body, 'trackingCode' ) ) ) {
-			return false;
-		}
-
-		$tracking_events = get_option( 'BW_TRACKING_EVENTS', array() );
-        //phpcs:disable
-        $tracking_events[] =  array(
-            'order_id'          => $order_id,
-            'carrier_reference' => $body->carrierReference,
-            'date'              => $body->trackingDate,
-            'code'              => $body->trackingCode,
-        );
-        //phpcs:enable
-
-		update_option( 'BW_TRACKING_EVENTS', $tracking_events );
-
-		return true;
 	}
 }

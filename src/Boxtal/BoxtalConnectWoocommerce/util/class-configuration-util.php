@@ -85,6 +85,8 @@ class Configuration_Util {
 		delete_option( 'BW_TRACKING_EVENTS' );
 		delete_option( 'BW_NOTICES' );
 		delete_option( 'BW_PAIRING_UPDATE' );
+		delete_option( 'BW_ORDER_SHIPPED' );
+		delete_option( 'BW_ORDER_DELIVERED' );
 		//phpcs:ignore
 		$wpdb->query(
 			$wpdb->prepare(
