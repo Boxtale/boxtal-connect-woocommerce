@@ -28,7 +28,7 @@ class Product_Util {
 		if ( isset( $product_id ) && ! empty( $product_id ) ) {
 			$product = self::get_product( $product_id );
 			if ( $product->get_weight() && $product->get_weight() !== '' ) {
-				$weight = wc_format_decimal( wc_get_weight( $product->get_weight(), 'kg' ), 2 );
+				$weight = wc_format_decimal( wc_get_weight( $product->get_weight(), 'kg' ), false );
 			} else {
 				return false;
 			}
