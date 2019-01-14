@@ -6,7 +6,7 @@
  * Author URI: https://www.boxtal.com
  * Text Domain: boxtal-connect
  * Domain Path: /Boxtal/BoxtalConnectWoocommerce/translation
- * Version: 1.1.5
+ * Version: 1.1.6
  * WC requires at least: 2.6.14
  * WC tested up to: 3.5.1
  *
@@ -52,7 +52,7 @@ function boxtal_connect_init() {
 	$plugin                      = new Plugin(); // Create container.
 	$plugin['path']              = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 	$plugin['url']               = plugin_dir_url( __FILE__ );
-	$plugin['version']           = '1.1.5';
+	$plugin['version']           = '1.1.6';
 	$plugin['min-wc-version']    = '2.6.14';
 	$plugin['min-php-version']   = '5.6.0';
 	$plugin['translation']       = 'boxtal_connect_init_translation';
