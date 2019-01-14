@@ -69,7 +69,7 @@ Boxtal Connect by Boxtal is a free non-binding solution.
 == Changelog ==
 
 = 1.1.6 =
-* removed limit of manageable weight decimals
+* corrected bad javascript compression
 
 = 1.1.5 =
 * removed limit of manageable weight decimals
