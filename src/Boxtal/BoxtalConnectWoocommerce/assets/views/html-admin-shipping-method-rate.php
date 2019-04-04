@@ -15,23 +15,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<td class="sort"></td>
 
 	<td>
-		<input type="text" value="<?php echo isset( $pricing_item['price_from'] ) ? esc_html( $pricing_item['price_from'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["price-from"]'>
+		<input type="text" value="<?php echo isset( $pricing_item['price_from'] ) ? esc_html( $pricing_item['price_from'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["price-from"]' class="price-from">
 	</td>
 
 	<td>
-		<input type="text" value="<?php echo isset( $pricing_item['price_to'] ) ? esc_html( $pricing_item['price_to'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["price-to"]'>
+		<input type="text" value="<?php echo isset( $pricing_item['price_to'] ) ? esc_html( $pricing_item['price_to'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["price-to"]' class="price-to">
 	</td>
 
 	<td>
-		<input type="text" value="<?php echo isset( $pricing_item['weight_from'] ) ? esc_html( $pricing_item['weight_from'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["weight-from"]'>
+		<input type="text" value="<?php echo isset( $pricing_item['weight_from'] ) ? esc_html( $pricing_item['weight_from'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["weight-from"]' class="weight-from">
 	</td>
 
 	<td>
-		<input type="text" value="<?php echo isset( $pricing_item['weight_to'] ) ? esc_html( $pricing_item['weight_to'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["weight-to"]'>
+		<input type="text" value="<?php echo isset( $pricing_item['weight_to'] ) ? esc_html( $pricing_item['weight_to'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["weight-to"]' class="weight-to">
 	</td>
 
 	<td>
-		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["shipping-class"][]' multiple="multiple" class="bw-tail-select">
+		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["shipping-class"][]' multiple="multiple" class="bw-tail-select shipping-class">
 
 			<?php
 				$selected = isset( $pricing_item['shipping_class'] ) ? $pricing_item['shipping_class'] : false;
@@ -47,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</td>
 
 	<td>
-		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["parcel-point-network"][]' multiple="multiple" class="bw-tail-select">
+		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["parcel-point-network"][]' multiple="multiple" class="bw-tail-select parcel-point-network">
 			<?php
 				$selected = isset( $pricing_item['parcel_point_network'] ) ? $pricing_item['parcel_point_network'] : null;
 			foreach ( $parcel_point_networks as $network => $name_array ) {
@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</td>
 
 	<td>
-		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["pricing"]' class="bw-tail-select">
+		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["pricing"]' class="bw-tail-select pricing">
 			<?php
 				$default_value = isset( $pricing_item['pricing'] ) ? $pricing_item['pricing'] : Controller::$rate;
 			?>
@@ -94,6 +94,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			echo 'disabled';
 		}
 		?>
-		>
+		 class="flat-rate">
 	</td>
 </tr>

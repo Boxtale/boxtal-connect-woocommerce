@@ -102,14 +102,14 @@
 				for (let i = 0; i < pricingRows.length; i++) {
 					const element = pricingRows[i];
 					const pricingItem = {
-						'price-from': element.querySelector("[name='pricing-items["+i+"][\"price-from\"]']").value,
-						'price-to': element.querySelector("[name='pricing-items["+i+"][\"price-to\"]']").value,
-						'weight-from': element.querySelector("[name='pricing-items["+i+"][\"weight-from\"]']").value,
-						'weight-to': element.querySelector("[name='pricing-items["+i+"][\"weight-to\"]']").value,
-						'shipping-class': Array.apply(null, element.querySelector("[name='pricing-items["+i+"][\"shipping-class\"][]']").options).filter(option => option.selected).map(option => option.value),
-						'parcel-point-network': Array.apply(null, element.querySelector("[name='pricing-items["+i+"][\"parcel-point-network\"][]']").options).filter(option => option.selected).map(option => option.value),
-						'pricing': element.querySelector("[name='pricing-items["+i+"][\"pricing\"]']").value,
-						'flat-rate': element.querySelector("[name='pricing-items["+i+"][\"flat-rate\"]']").value
+						'price-from': element.querySelector("td .price-from").value,
+						'price-to': element.querySelector("td .price-to").value,
+						'weight-from': element.querySelector("td .weight-from").value,
+						'weight-to': element.querySelector("td .weight-to").value,
+						'shipping-class': Array.apply(null, element.querySelector("td .shipping-class").options).filter(option => option.selected).map(option => option.value),
+						'parcel-point-network': Array.apply(null, element.querySelector("td .parcel-point-network").options).filter(option => option.selected).map(option => option.value),
+						'pricing': element.querySelector("td .pricing").value,
+						'flat-rate': element.querySelector("td .flat-rate").value
 					};
 					pricingItems.push(pricingItem);
 				}
