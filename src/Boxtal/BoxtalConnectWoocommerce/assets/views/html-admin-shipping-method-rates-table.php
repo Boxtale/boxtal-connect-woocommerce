@@ -25,11 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<tr>
 			<th rowspan="2" class="sort">&nbsp;</th>
 			<th colspan="2" class="bw-center">
-			<?php
-				echo '<span>' . esc_html( 'Cart price', 'boxtal-connect' ) . ' (' . esc_html( get_woocommerce_currency_symbol() ) . ')</span>';
-				$tooltip_html = esc_html( 'cart price tax excluded', 'boxtal-connect' );
-				Misc_Util::echo_tooltip( $tooltip_html );
-			?>
+                <?php echo esc_html( 'Cart price Excluding Tax', 'boxtal-connect' ) . ' (' . esc_html( get_woocommerce_currency_symbol() ) . ') '; ?>
 			</th>
 			<th colspan="2" class="bw-center"><?php echo esc_html( 'Cart weight', 'boxtal-connect' ) . ' (kg)'; ?></th>
 			<th rowspan="2" class="bw-center">
@@ -40,14 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				Misc_Util::echo_tooltip( $tooltip_html );
 			?>
 			</th>
-			<th rowspan="2" class="bw-center">
-				<?php
-				echo '<span>' . esc_html( 'Parcel points', 'boxtal-connect' ) . '</span>';
-				$tooltip_html  = '<ul><li>' . esc_html( 'Choose one or more parcel point networks in order to display a parcel point map for this shipping method', 'boxtal-connect' ) . '</li>';
-				$tooltip_html .= '</ul>';
-				Misc_Util::echo_tooltip( $tooltip_html );
-				?>
-			</th>
+			<th class="bw-center"><?php echo esc_html( 'Parcel points', 'boxtal-connect' ); ?></th>
 			<th rowspan="2" class="bw-center">
 			<?php
 				echo '<span>' . esc_html( 'Pricing', 'boxtal-connect' ) . '</span>';
@@ -66,6 +55,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<th class="bw-center"><?php esc_html_e( 'To', 'boxtal-connect' ); ?> (<)</th>
 			<th class="bw-center"><?php esc_html_e( 'From', 'boxtal-connect' ); ?> (≥)</th>
 			<th class="bw-center"><?php esc_html_e( 'To', 'boxtal-connect' ); ?> (<)</th>
+			<th class="bw-center info-small">
+                <?php esc_html_e( 'Associate one or more parcel points networks with your delivery method to display the map', 'boxtal-connect' ); ?>
+            </th>
 		</tr>
 	</thead>
 	<tbody class="ui-sortable">
