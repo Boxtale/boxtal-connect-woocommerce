@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<input type="text" value="<?php echo isset( $pricing_item['weight_to'] ) ? esc_html( $pricing_item['weight_to'] ) : null; ?>" name='pricing-items[<?php echo esc_html( $i ); ?>]["weight-to"]' class="weight-to">
 	</td>
 
-	<td>
+	<td class="select">
 		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["shipping-class"][]' multiple="multiple" class="bw-tail-select shipping-class">
 
 			<?php
@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</select>
 	</td>
 
-	<td>
+	<td class="select">
 		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["parcel-point-network"][]' multiple="multiple" class="bw-tail-select parcel-point-network">
 			<?php
 				$selected = isset( $pricing_item['parcel_point_network'] ) ? $pricing_item['parcel_point_network'] : null;
@@ -61,7 +61,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</select>
 	</td>
 
-	<td>
+	<td class="select">
 		<select name='pricing-items[<?php echo esc_html( $i ); ?>]["pricing"]' class="bw-tail-select pricing">
 			<?php
 				$default_value = isset( $pricing_item['pricing'] ) ? $pricing_item['pricing'] : Controller::$rate;
@@ -94,6 +94,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			echo 'disabled';
 		}
 		?>
-		 class="flat-rate">
+		class="flat-rate">
 	</td>
 </tr>
