@@ -11,11 +11,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div class="wrap">
+<div class="wrap" id="bw-settings">
 	<h1>Boxtal Connect</h1>
 
-	<h2><?php esc_html_e( 'Statuses associated to tracking events', 'boxtal-connect' ); ?></h2>
-	<div><?php esc_html_e( 'Associate your order statuses to tracking events.', 'boxtal-connect' ); ?></div>
+	<h2>1. <?php esc_html_e( 'Create your shipping methods in settings > shipping' ); ?></h2>
+	<ul class="settings-plugin">
+		<li><?php esc_html_e( 'Add your shipping zone' ); ?></li>
+		<li><?php esc_html_e( 'Add the "Boxtal Connect Rate" shipping methods' ); ?></li>
+		<li><?php esc_html_e( 'Create your rules and link it to a parcel point map' ); ?></li>
+	</ul>
+	<?php
+	if ( $help_center_url ) {
+		echo '<p>' . sprintf(
+			esc_html( 'For more information, please go to our help center : %s' ),
+			'<a target="_blank" href="' . esc_url( $help_center_url ) . '">help center</a>'
+		) . '</p>';
+	}
+	?>
+
+	<h2>2. <?php esc_html_e( 'Associate your order statuses to tracking events', 'boxtal-connect' ); ?></h2>
 
 	<form method="post" action="options.php">
 		<?php settings_fields( 'boxtal-connect-settings-group' ); ?>

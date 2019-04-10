@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal connect 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-05 15:33+0200\n"
-"PO-Revision-Date: 2019-04-05 15:36+0200\n"
+"POT-Creation-Date: 2019-04-08 17:10+0200\n"
+"PO-Revision-Date: 2019-04-08 17:49+0200\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -169,23 +169,42 @@ msgid "no"
 msgstr "non"
 
 #: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:17
-msgid "Statuses associated to tracking events"
-msgstr "Statuts associés à des événements de suivi"
+msgid "Create your shipping methods in settings > shipping"
+msgstr "Créez vos méthodes de livraison dans réglages > expédition "
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:18
-msgid "Associate your order statuses to tracking events."
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:19
+#, fuzzy
+#| msgid "Shipping zone"
+msgid "Add your shipping zone"
+msgstr "Zone de livraison"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:20
+#, fuzzy
+#| msgid "Deprecated. Use the Boxtal Connect rate shipping method instead."
+msgid "Add the \"Boxtal Connect Rate\" shipping methods"
+msgstr ""
+"Déprécié. Utilisez la méthode de livraison Forfait Boxtal Connect à la place."
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:21
+msgid "Create your rules and link it to a parcel point map"
+msgstr "Créez vos règles et associez-y nos cartes de point relais"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:30
+#, fuzzy
+#| msgid "Associate your order statuses to tracking events."
+msgid "Associate your order statuses to tracking events"
 msgstr "Associez vos statuts de commandes à des événements de suivi."
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:26
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:38
 msgid "Tracking event: order shipped"
 msgstr "Événement de suivi : commande expédiée"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:36
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:64
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:48
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:76
 msgid "No status associated"
 msgstr "Pas de statut associé"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:54
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:66
 msgid "Tracking event: order delivered"
 msgstr "Événement de suivi : commande livrée"
 
@@ -206,15 +225,15 @@ msgstr "Votre commande a été expédiée."
 msgid "Your order has been delivered."
 msgstr "Votre commande a été livrée."
 
-#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:76
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:78
 msgid "Boxtal Connect"
 msgstr "Boxtal Connect"
 
-#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:91
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:93
 msgid "Order shipped "
 msgstr "Commande expédiée"
 
-#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:101
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:103
 msgid "Order delivered "
 msgstr "Commande livrée"
 
@@ -339,7 +358,7 @@ msgstr "Autre point relais"
 msgid "Boxtal - Shipment tracking"
 msgstr "Boxtal - Suivi d'expédition"
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:146
+#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:159
 msgid ""
 "There's been a change in the parcel point network list, we've adapted your "
 "shipping method configuration. Please check that everything is in order."
@@ -348,7 +367,7 @@ msgstr ""
 "configuration de vos méthodes de livraison. Veuillez vérifier que tout est "
 "en ordre."
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:165
+#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:178
 msgid ""
 "There's been a change in the parcel point network list, you can add the "
 "extra parcel point network(s) to your shipping method configuration."
@@ -393,7 +412,7 @@ msgstr ""
 msgid "No shipping class"
 msgstr "Pas de classe de livraison"
 
-#: boxtal-connect.php:134
+#: boxtal-connect.php:135
 msgid ""
 "Boxtal Connect - from version 1.1.0, use of parcel point map additional "
 "field on shipping methods is deprecated. Use the Boxtal Connect rate method "
@@ -402,6 +421,9 @@ msgstr ""
 "Boxtal Connect - à partir de la version 1.1.0, l'utilisation du champ "
 "additionnel points relais dans les méthodes de livraison est déprécié. "
 "Veuillez utiliser la méthode Forfait Boxtal Connect à la place."
+
+#~ msgid "Statuses associated to tracking events"
+#~ msgstr "Statuts associés à des événements de suivi"
 
 #~ msgid "Cart price Excluding Tax"
 #~ msgstr "Prix du panier hors Taxe"
@@ -2259,9 +2281,6 @@ msgstr ""
 
 #~ msgid "cart price tax excluded"
 #~ msgstr "prix du panier hors taxe"
-
-#~ msgid "Shipping zone"
-#~ msgstr "Zone de livraison"
 
 #~ msgid ""
 #~ "If you choose a shipping zone, the rule will only apply to customer "

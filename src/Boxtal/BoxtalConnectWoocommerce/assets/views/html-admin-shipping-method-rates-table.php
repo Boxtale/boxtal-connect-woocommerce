@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<tr>
 			<th rowspan="2" class="sort">&nbsp;</th>
 			<th colspan="2" class="bw-center">
-                <?php echo esc_html( 'Cart price Excluding Tax', 'boxtal-connect' ) . ' (' . esc_html( get_woocommerce_currency_symbol() ) . ') '; ?>
+				<?php echo esc_html( 'Cart price Excluding Tax', 'boxtal-connect' ) . ' (' . esc_html( get_woocommerce_currency_symbol() ) . ') '; ?>
 			</th>
 			<th colspan="2" class="bw-center"><?php echo esc_html( 'Cart weight', 'boxtal-connect' ) . ' (kg)'; ?></th>
 			<th rowspan="2" class="bw-center">
@@ -56,8 +56,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<th class="bw-center"><?php esc_html_e( 'From', 'boxtal-connect' ); ?> (≥)</th>
 			<th class="bw-center"><?php esc_html_e( 'To', 'boxtal-connect' ); ?> (<)</th>
 			<th class="bw-center info-small">
-                <?php esc_html_e( 'Associate one or more parcel points networks with your delivery method to display the map', 'boxtal-connect' ); ?>
-            </th>
+				<?php esc_html_e( 'Associate one or more parcel points networks with your delivery method to display the map', 'boxtal-connect' ); ?>
+			</th>
 		</tr>
 	</thead>
 	<tbody class="ui-sortable">
