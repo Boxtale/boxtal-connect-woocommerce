@@ -9,6 +9,7 @@ namespace Boxtal\BoxtalConnectWoocommerce\Settings;
 
 use Boxtal\BoxtalConnectWoocommerce\Util\Misc_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Shipping_Method_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Configuration_Util;
 
 /**
  * Settings page class.
@@ -65,6 +66,7 @@ class Page {
 	 */
 	public function settings_page_styles() {
 		wp_enqueue_style( 'bw_tail_select', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/css/tail.select-bootstrap3.css', array(), $this->plugin_version );
+		wp_enqueue_style( 'bw_parcel_point', $this->plugin_url . 'Boxtal/BoxtalConnectWoocommerce/assets/css/settings.css', array(), $this->plugin_version );
 	}
 
 	/**
@@ -111,7 +113,8 @@ class Page {
 	 * @void
 	 */
 	public function render_page() {
-		$order_statuses = wc_get_order_statuses();
+		$order_statuses  = wc_get_order_statuses();
+		$help_center_url = Configuration_Util::get_help_center_link();
 		include_once dirname( __DIR__ ) . '/assets/views/html-settings-page.php';
 	}
 

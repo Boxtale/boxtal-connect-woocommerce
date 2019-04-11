@@ -2,7 +2,7 @@
 
 PHP_VERSION=${1-5.6}
 WP_VERSION=${2-latest}
-WC_VERSION=${3-3.3.5}
+WC_VERSION=${3-3.5.7}
 
 if [ ! -d "vendor" ]; then
   composer install --no-scripts --no-autoloader

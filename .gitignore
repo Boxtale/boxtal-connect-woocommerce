@@ -7,3 +7,4 @@ src/Boxtal/BoxtalConnectWoocommerce/assets/css
 src/Boxtal/BoxtalConnectWoocommerce/assets/js/*.min.js
 src/Boxtal/BoxtalConnectWoocommerce/translation/*.mo
 node_modules/
+pack/

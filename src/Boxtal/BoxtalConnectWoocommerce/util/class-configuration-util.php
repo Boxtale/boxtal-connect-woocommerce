@@ -39,6 +39,16 @@ class Configuration_Util {
 	}
 
 	/**
+	 * Get help center url
+	 *
+	 * @return string onboarding link
+	 */
+	public static function get_help_center_link() {
+		$url = get_option( 'BW_HELP_CENTER_URL' );
+		return false !== $url ? $url : null;
+	}
+
+	/**
 	 * Get map logo href url.
 	 *
 	 * @return string map logo href url
@@ -87,6 +97,7 @@ class Configuration_Util {
 		delete_option( 'BW_PAIRING_UPDATE' );
 		delete_option( 'BW_ORDER_SHIPPED' );
 		delete_option( 'BW_ORDER_DELIVERED' );
+		delete_option( 'BW_HELP_CENTER_URL' );
 		//phpcs:ignore
 		$wpdb->query(
 			$wpdb->prepare(
@@ -106,7 +117,9 @@ class Configuration_Util {
 	 * @return boolean
 	 */
 	public static function parse_configuration( $body ) {
-		return self::parse_parcel_point_networks( $body ) && self::parse_map_configuration( $body );
+		return self::parse_parcel_point_networks( $body )
+			&& self::parse_map_configuration( $body )
+			&& self::parse_help_center_configuration( $body );
 	}
 
 	/**
@@ -191,6 +204,21 @@ class Configuration_Util {
             update_option('BW_MAP_LOGO_IMAGE_URL', $body->mapsLogoImageUrl);
             //phpcs:ignore
             update_option('BW_MAP_LOGO_HREF_URL', $body->mapsLogoHrefUrl);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Parse help center configuration.
+	 *
+	 * @param object $body body.
+	 * @return boolean
+	 */
+	private static function parse_help_center_configuration( $body ) {
+		if ( is_object( $body ) && property_exists( $body, 'helpCenterUrl' ) ) {
+            //phpcs:ignore
+            update_option('BW_HELP_CENTER_URL', $body->helpCenterUrl);
 			return true;
 		}
 		return false;

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Boxtal connect 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 17:28+0100\n"
-"PO-Revision-Date: 2019-01-09 17:30+0100\n"
+"POT-Creation-Date: 2019-04-08 17:10+0200\n"
+"PO-Revision-Date: 2019-04-08 17:49+0200\n"
 "Last-Translator: \n"
 "Language-Team: Boxtal\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Loco-Source-Locale: fr_FR\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_n_noop:1,2;_x:1,2c;esc_attr_e;"
 "esc_html_e\n"
@@ -53,25 +53,33 @@ msgstr ""
 "seront remplies sera appliquée. Si aucune règle n'est trouvée, le "
 "transporteur ne sera pas affiché."
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:59
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:48
 msgid "flat rate before taxes"
 msgstr "prix fixe avant taxes"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:65
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:67
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:54
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:56
 msgid "From"
 msgstr "À partir de"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:66
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:68
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:55
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:57
 msgid "To"
 msgstr "Jusqu'à"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:85
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:59
+msgid ""
+"Associate one or more parcel points networks with your delivery method to "
+"display the map"
+msgstr ""
+"Associez un ou plusieurs réseaux de point relais à votre méthode de "
+"livraison afin d’en afficher la carte"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:77
 msgid "Add rule"
 msgstr "Ajouter une règle"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:86
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:78
 msgid "Remove selected rule"
 msgstr "Supprimer la règle sélectionnée"
 
@@ -161,23 +169,42 @@ msgid "no"
 msgstr "non"
 
 #: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:17
-msgid "Statuses associated to tracking events"
-msgstr "Statuts associés à des événements de suivi"
+msgid "Create your shipping methods in settings > shipping"
+msgstr "Créez vos méthodes de livraison dans réglages > expédition "
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:18
-msgid "Associate your order statuses to tracking events."
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:19
+#, fuzzy
+#| msgid "Shipping zone"
+msgid "Add your shipping zone"
+msgstr "Zone de livraison"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:20
+#, fuzzy
+#| msgid "Deprecated. Use the Boxtal Connect rate shipping method instead."
+msgid "Add the \"Boxtal Connect Rate\" shipping methods"
+msgstr ""
+"Déprécié. Utilisez la méthode de livraison Forfait Boxtal Connect à la place."
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:21
+msgid "Create your rules and link it to a parcel point map"
+msgstr "Créez vos règles et associez-y nos cartes de point relais"
+
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:30
+#, fuzzy
+#| msgid "Associate your order statuses to tracking events."
+msgid "Associate your order statuses to tracking events"
 msgstr "Associez vos statuts de commandes à des événements de suivi."
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:26
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:38
 msgid "Tracking event: order shipped"
 msgstr "Événement de suivi : commande expédiée"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:36
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:64
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:48
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:76
 msgid "No status associated"
 msgstr "Pas de statut associé"
 
-#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:54
+#: Boxtal/BoxtalConnectWoocommerce/assets/views/html-settings-page.php:66
 msgid "Tracking event: order delivered"
 msgstr "Événement de suivi : commande livrée"
 
@@ -190,7 +217,7 @@ msgstr ""
 msgid "Connect my shop"
 msgstr "Je connecte ma boutique"
 
-#: Boxtal/BoxtalConnectWoocommerce/rest-controller/class-order.php:215
+#: Boxtal/BoxtalConnectWoocommerce/rest-controller/class-order.php:214
 msgid "Your order has been shipped."
 msgstr "Votre commande a été expédiée."
 
@@ -198,15 +225,15 @@ msgstr "Votre commande a été expédiée."
 msgid "Your order has been delivered."
 msgstr "Votre commande a été livrée."
 
-#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:76
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:78
 msgid "Boxtal Connect"
 msgstr "Boxtal Connect"
 
-#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:91
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:93
 msgid "Order shipped "
 msgstr "Commande expédiée"
 
-#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:101
+#: Boxtal/BoxtalConnectWoocommerce/settings/class-page.php:103
 msgid "Order delivered "
 msgstr "Commande livrée"
 
@@ -331,7 +358,7 @@ msgstr "Autre point relais"
 msgid "Boxtal - Shipment tracking"
 msgstr "Boxtal - Suivi d'expédition"
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:146
+#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:159
 msgid ""
 "There's been a change in the parcel point network list, we've adapted your "
 "shipping method configuration. Please check that everything is in order."
@@ -340,7 +367,7 @@ msgstr ""
 "configuration de vos méthodes de livraison. Veuillez vérifier que tout est "
 "en ordre."
 
-#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:165
+#: Boxtal/BoxtalConnectWoocommerce/util/class-configuration-util.php:178
 msgid ""
 "There's been a change in the parcel point network list, you can add the "
 "extra parcel point network(s) to your shipping method configuration."
@@ -385,7 +412,7 @@ msgstr ""
 msgid "No shipping class"
 msgstr "Pas de classe de livraison"
 
-#: boxtal-connect.php:121
+#: boxtal-connect.php:135
 msgid ""
 "Boxtal Connect - from version 1.1.0, use of parcel point map additional "
 "field on shipping methods is deprecated. Use the Boxtal Connect rate method "
@@ -394,6 +421,46 @@ msgstr ""
 "Boxtal Connect - à partir de la version 1.1.0, l'utilisation du champ "
 "additionnel points relais dans les méthodes de livraison est déprécié. "
 "Veuillez utiliser la méthode Forfait Boxtal Connect à la place."
+
+#~ msgid "Statuses associated to tracking events"
+#~ msgstr "Statuts associés à des événements de suivi"
+
+#~ msgid "Cart price Excluding Tax"
+#~ msgstr "Prix du panier hors Taxe"
+
+#~ msgid "Cart weight"
+#~ msgstr "Poids du panier"
+
+#~ msgid "Shipping class"
+#~ msgstr "Classe de livraison"
+
+#~ msgid ""
+#~ "if you choose a shipping class, the rule will only apply to carts with "
+#~ "all products belonging to the class"
+#~ msgstr ""
+#~ "Si vous choisissez une classe de livraison, la règle ne sera prise en "
+#~ "compte que si tous les produits dans le panier ont cette classe de "
+#~ "livraison"
+
+#, fuzzy
+#~| msgid ""
+#~| "Careful: newly created shipping classes won't be selected by default"
+#~ msgid ""
+#~ "Beware that newly created shipping classes won't be selected by default"
+#~ msgstr ""
+#~ "Attention: si vous créez de nouvelles classes de livraison, celles-ci ne "
+#~ "seront pas sélectionnées par défaut"
+
+#, fuzzy
+#~| msgid "Your parcel point:"
+#~ msgid "Parcel points"
+#~ msgstr "Votre point relais :"
+
+#~ msgid "Pricing"
+#~ msgstr "Type de prix"
+
+#~ msgid "Cart price"
+#~ msgstr "Prix du panier"
 
 #~ msgid "Flat rate: the shipping rate that you define"
 #~ msgstr "Prix fixe : le prix de la livraison sera celui que vous avez défini"
@@ -2212,33 +2279,8 @@ msgstr ""
 #~ "de prix. La configuration des zones de livraison se fait dans l'onglet <a "
 #~ "target=\"_blank\" href=\"%s\">Zones de livraison</a>."
 
-#~ msgid "Cart price"
-#~ msgstr "Prix du panier"
-
 #~ msgid "cart price tax excluded"
 #~ msgstr "prix du panier hors taxe"
-
-#~ msgid "Cart weight"
-#~ msgstr "Poids du panier"
-
-#~ msgid "Shipping class"
-#~ msgstr "Classe de livraison"
-
-#~ msgid ""
-#~ "if you choose a shipping class, the rule will only apply to carts with "
-#~ "all products belonging to the class"
-#~ msgstr ""
-#~ "Si vous choisissez une classe de livraison, la règle ne sera prise en "
-#~ "compte que si tous les produits dans le panier ont cette classe de "
-#~ "livraison"
-
-#~ msgid "Careful: newly created shipping classes won't be selected by default"
-#~ msgstr ""
-#~ "Attention: si vous créez de nouvelles classes de livraison, celles-ci ne "
-#~ "seront pas sélectionnées par défaut"
-
-#~ msgid "Shipping zone"
-#~ msgstr "Zone de livraison"
 
 #~ msgid ""
 #~ "If you choose a shipping zone, the rule will only apply to customer "
@@ -2271,9 +2313,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Les frais sans TVA. Entrez un montant, ex : %s, ou un pourcentage, ex : 5%"
 #~ "%. Laissez vide ou à 0 pour désactiver."
-
-#~ msgid "Pricing"
-#~ msgstr "Type de prix"
 
 #~ msgid ""
 #~ "Boxtal quote: the shipping rate automatically calculated by Boxtal.com"
