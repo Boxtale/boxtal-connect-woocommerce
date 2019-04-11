@@ -237,20 +237,4 @@ class BW_Test_Order extends WP_UnitTestCase {
 			)
 		);
 	}
-
-	/**
-	 * Test parse tracking event.
-	 */
-	public function test_parse_tracking_event() {
-		$body1 = new stdClass();
-        //phpcs:disable
-		$body1->carrierReference = 'XXX';
-		$body1->trackingDate     = '2018-10-04T17:57:10.945Z';
-        //phpcs:enable
-		$this->assertFalse( Order::parse_tracking_event( 1, $body1 ) );
-
-        //phpcs:ignore
-		$body1->trackingCode = 'B';
-		$this->assertTrue( Order::parse_tracking_event( 1, $body1 ) );
-	}
 }
