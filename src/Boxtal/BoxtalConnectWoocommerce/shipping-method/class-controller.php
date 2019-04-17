@@ -150,8 +150,9 @@ class Controller {
 	 */
 	public static function get_pricing_items( $method ) {
 		global $wpdb;
+		$query = "SELECT * FROM {$wpdb->prefix}bw_pricing_items WHERE shipping_method_instance = '" . $method . "' order by pricing_id";
 		//phpcs:ignore
-		$result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}bw_pricing_items WHERE shipping_method_instance = '" . $method . "'", ARRAY_A );
+		$result = $wpdb->get_results($query, ARRAY_A);
 		$pricing_items = array();
 		foreach ( $result as $row_number => $pricing_item ) {
 			foreach ( $pricing_item as $key => $value ) {
