@@ -68,6 +68,9 @@ Boxtal Connect by Boxtal is a free non-binding solution.
 
 == Changelog ==
 
+= 1.1.8 =
+* fixed an issue when exporting orders with articles with variation
+
 = 1.1.7 =
 * added a quick installation guide on the settings page
 * fixed an issue when changing pricing rules order
