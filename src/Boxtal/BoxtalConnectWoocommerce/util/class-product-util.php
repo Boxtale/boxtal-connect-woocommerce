@@ -66,10 +66,13 @@ class Product_Util {
 		if ( 'variation' === $product_type ) {
 			$parent_id      = self::get_parent_id( $product );
 			$parent_product = self::get_product( $parent_id );
-			foreach ( $parent_product->get_available_variations() as $variation ) {
-				if ( $variation['variation_id'] === (int) $check_id ) {
-					foreach ( $variation['attributes'] as $attributes ) {
-						$description .= ' ' . $attributes;
+			$parent_product_type = self::get_product_type( $parent_product );
+			if ( 'variation' === $parent_product_type ) {
+				foreach ( $parent_product->get_available_variations() as $variation ) {
+					if ( $variation['variation_id'] === (int) $check_id ) {
+						foreach ( $variation['attributes'] as $attributes ) {
+							$description .= ' ' . $attributes;
+						}
 					}
 				}
 			}
