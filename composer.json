@@ -24,7 +24,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0",
-    "wimg/php-compatibility": "^8.0",
+    "phpcompatibility/php-compatibility": "^9.2",
     "squizlabs/php_codesniffer": "^2.2 || ^3.0.2",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
     "wp-coding-standards/wpcs": "^0.14"
