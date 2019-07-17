@@ -3,6 +3,7 @@
 set -ex
 
 sudo chown -R www-data:www-data /var/www/html
+npm install
 sudo node_modules/gulp/bin/gulp.js css
 sudo node_modules/gulp/bin/gulp.js js
 sudo rm -rf src/Boxtal/BoxtalPhp
