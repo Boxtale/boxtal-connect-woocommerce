@@ -131,16 +131,7 @@ class Order {
 				$products[]             = $product;
 			}
 
-			$parcel_point         = null;
-			$parcel_point_code    = Order_Util::get_meta( $order, 'bw_parcel_point_code' );
-			$parcel_point_network = Order_Util::get_meta( $order, 'bw_parcel_point_network' );
-			if ( $parcel_point_code && $parcel_point_network ) {
-				$parcel_point = array(
-					'code'    => $parcel_point_code,
-					'network' => $parcel_point_network,
-				);
-			}
-
+			$parcelpoint      = Order_Util::get_parcelpoint( $order );
 			$status           = Order_Util::get_status( $order );
 			$shipping_methods = $order->get_shipping_methods();
 			$shipping_method  = ! empty( $shipping_methods ) ? array_shift( $shipping_methods ) : null;
@@ -164,7 +155,10 @@ class Order {
 				'orderAmount'       => Order_Util::get_total( $order ),
 				'recipient'         => $recipient,
 				'products'          => $products,
-				'parcelPoint'       => $parcel_point,
+				'parcelPoint'       => array(
+					'code'    => $parcelpoint->code,
+					'network' => $parcelpoint->network,
+				),
 			);
 		}
 		return array( 'orders' => $result );

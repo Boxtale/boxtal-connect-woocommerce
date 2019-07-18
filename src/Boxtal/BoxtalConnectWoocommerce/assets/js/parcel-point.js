@@ -73,7 +73,14 @@
             });
 
             self.on("body", "click", ".bw-parcel-point-button", function() {
-                self.selectPoint(this.getAttribute("data-code"), this.getAttribute("data-name"), this.getAttribute("data-network"))
+                self.selectPoint(this.getAttribute("data-code"),
+                                unescape(this.getAttribute("data-name")),
+                                this.getAttribute("data-network"),
+                                unescape(this.getAttribute("data-street")),
+                                unescape(this.getAttribute("data-zipcode")),
+                                unescape(this.getAttribute("data-city")),
+                                unescape(this.getAttribute("data-country")),
+                                unescape(this.getAttribute("data-openinghours")))
                     .then(function(name) {
                         self.initSelectedParcelPoint();
                         const target = document.querySelector(".bw-parcel-name");
@@ -157,27 +164,70 @@
             }
         },
 
+        fillSpaces(value, wantedSize) {
+            while(value.length < wantedSize) {
+                value += ' ';
+            }
+            return value;
+        },
+
+        formatOpeningDays(openingDays) {
+            var parsedDays = [];
+      
+            for (var i = 0; i < openingDays.length; i++) {
+                var openingDay = openingDays[i];
+      
+                if (openingDay.weekday) {
+                    var parsedDay = openingDay.weekday[0] + ' ';
+                    var openingPeriods = openingDay.openingPeriods;
+                    var parsedPeriods = [];
+      
+                    for (var j = 0; j < openingPeriods.length; j++) {
+                        var openingPeriod = openingPeriods[j];
+                        var open = openingPeriod.openingTime === undefined ? '' : openingPeriod.openingTime;
+                        var close = openingPeriod.closingTime === undefined ? '' : openingPeriod.closingTime;
+      
+                        if (open !== '' && close !== '') {
+                            parsedPeriods.push(open + '-' + close);
+                        }
+                    }
+      
+                    while (parsedPeriods.length < 2) {
+                      parsedPeriods.push(this.fillSpaces(translations.text.closed, 11));
+                    }
+      
+                    parsedDay += parsedPeriods.join(' ');
+      
+                    if (i % 2 === 1) {
+                      parsedDay = '<span style="background-color: #d8d8d8;">' + parsedDay + '</span>';
+                    }
+      
+                    parsedDays.push(parsedDay);
+                }
+            }
+            
+            return '<pre class="bw-parcel-point-schedule">' + parsedDays.join("\n") + '</pre>';
+        },
+
+        generateParcelPointTagData: function(parcelpoint) {
+            return ' data-code="'    + parcelpoint.code + '" ' +
+                    'data-name="'    + escape(parcelpoint.name) + '" ' +
+                    'data-network="' + parcelpoint.network + '" ' +
+                    'data-zipcode="' + escape(parcelpoint.location.zipCode) + '" ' +
+                    'data-country="' + escape(parcelpoint.location.country) + '" ' +
+                    'data-city="'    + escape(parcelpoint.location.city) + '" ' +
+                    'data-street="'  + escape(parcelpoint.location.street) + '" ' +
+                    'data-openinghours="'  + escape(JSON.stringify(parcelpoint.openingDays)) + '" ';
+        },
+
         addParcelPointMarker: function(point) {
             const self = this;
             let info ="<div class='bw-marker-popup'><b>"+point.parcelPoint.name+'</b><br/>'+
-                '<a href="#" class="bw-parcel-point-button" data-code="'+point.parcelPoint.code+'" data-name="'+point.parcelPoint.name+'" data-network="'+point.parcelPoint.network+'"><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
+                '<a href="#" class="bw-parcel-point-button" ' + this.generateParcelPointTagData(point.parcelPoint) + '><b>'+translations.text.chooseParcelPoint+'</b></a><br/>' +
                 point.parcelPoint.location.street+", "+point.parcelPoint.location.zipCode+" "+point.parcelPoint.location.city+"<br/>"+"<b>" + translations.text.openingHours +
-                "</b><br/>"+'<div class="bw-parcel-point-schedule">';
+                "</b><br/>";
 
-            for (let i = 0, l = point.parcelPoint.openingDays.length; i < l; i++) {
-                const day = point.parcelPoint.openingDays[i];
-
-                if (day.openingPeriods.length > 0) {
-                    info += '<span class="bw-parcel-point-day">'+translations.day[day.weekday]+'</span>';
-
-                    for (let j = 0, t = day.openingPeriods.length; j < t; j++) {
-                        const openingPeriod = day.openingPeriods[j];
-                        info += ' ' + self.formatHours(openingPeriod.openingTime) +'-'+self.formatHours(openingPeriod.closingTime);
-                    }
-                    info += '<br/>';
-                }
-            }
-            info += '</div>';
+            info += this.formatOpeningDays(point.parcelPoint.openingDays);
 
             const el = this.getMarkerHtmlElement(point.index + 1);
 
@@ -255,7 +305,7 @@
                 html += '<div class="bw-parcel-point-title"><a class="bw-show-info-' + point.parcelPoint.code + '">' + point.parcelPoint.name + '</a></div><br/>';
                 html += point.parcelPoint.location.street + '<br/>';
                 html += point.parcelPoint.location.zipCode + ' ' + point.parcelPoint.location.city + '<br/>';
-                html += '<a class="bw-parcel-point-button" data-code="'+point.parcelPoint.code+'" data-name="'+point.parcelPoint.name+'" data-network="'+point.parcelPoint.network+'"><b>'+translations.text.chooseParcelPoint+'</b></a>';
+                html += '<a class="bw-parcel-point-button" ' + this.generateParcelPointTagData(point.parcelPoint) + '><b>'+translations.text.chooseParcelPoint+'</b></a>';
                 html += '</td>';
                 html += '</tr>';
             }
@@ -270,7 +320,7 @@
             return el;
         },
 
-        selectPoint: function(code, name, network) {
+        selectPoint: function (code, name, network, address, zipcode, city, country, openingHours) {
             const self = this;
             return new Promise(function(resolve, reject) {
                 const carrier = self.getSelectedCarrier();
@@ -294,8 +344,16 @@
                     "application/x-www-form-urlencoded"
                 );
                 setPointRequest.responseType = "json";
-                setPointRequest.send("action=bw_set_point&carrier="+ encodeURIComponent(carrier) +"&code=" + encodeURIComponent(code)
-                    + "&name=" + encodeURIComponent(name) + "&network=" + encodeURIComponent(network));
+                setPointRequest.send("action=bw_set_point" 
+                + "&carrier=" + encodeURIComponent(carrier)
+                + "&code=" + encodeURIComponent(code)
+                + "&name=" + encodeURIComponent(name)
+                + "&address=" + encodeURIComponent(address)
+                + "&zipcode=" + encodeURIComponent(zipcode)
+                + "&city=" + encodeURIComponent(city)
+                + "&country=" + encodeURIComponent(country)
+                + "&openingHours=" + encodeURIComponent(openingHours)
+                + "&network=" + encodeURIComponent(network));
             });
         },
 

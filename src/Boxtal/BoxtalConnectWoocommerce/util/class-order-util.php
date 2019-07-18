@@ -7,6 +7,8 @@
 
 namespace Boxtal\BoxtalConnectWoocommerce\Util;
 
+use Boxtal\BoxtalConnectWoocommerce\Util\Parcelpoint_Util;
+
 /**
  * Order util class.
  *
@@ -438,6 +440,37 @@ class Order_Util {
 			return $order->get_meta( $key );
 		}
 		return get_post_meta( $order->id, $key, true );
+	}
+
+	/**
+	 * Get an order parcelpoint meta data
+	 *
+	 * @param \WC_Order $order woocommerce order.
+	 * @return mixed    $parcelpoint in standard format
+	 */
+	public static function get_parcelpoint( $order ) {
+
+		$parcelpoint = Order_Util::get_meta( $order, 'bw_parcel_point' );
+
+		if ( ! $parcelpoint ) {
+			$code    = Order_Util::get_meta( $order, 'bw_parcel_point_code' );
+			$network = Order_Util::get_meta( $order, 'bw_parcel_point_network' );
+
+			if ( $code && $network ) {
+				$parcelpoint = Parcelpoint_Util::create_parcelpoint(
+					$network,
+					$code,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				);
+			}
+		}
+
+		return $parcelpoint;
 	}
 
 	/**

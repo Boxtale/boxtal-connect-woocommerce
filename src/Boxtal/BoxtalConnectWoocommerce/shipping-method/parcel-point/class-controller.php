@@ -14,6 +14,7 @@ use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Customer_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Misc_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Shipping_Rate_Util;
+use Boxtal\BoxtalConnectWoocommerce\Util\Parcelpoint_Util;
 
 /**
  * Controller class.
@@ -85,6 +86,7 @@ class Controller {
 				'yourAddress'         => __( 'Your address:', 'boxtal-connect' ),
 				'closeMap'            => __( 'Close map', 'boxtal-connect' ),
 				'selectedParcelPoint' => __( 'Your parcel point:', 'boxtal-connect' ),
+				'closed'              => __( 'Closed', 'boxtal-connect' ),
 			),
 			'day'   => array(
 				'MONDAY'    => __( 'monday', 'boxtal-connect' ),
@@ -169,21 +171,36 @@ class Controller {
 			wp_send_json_error( array( 'message' => 'could not set point' ) );
 		}
         // phpcs:ignore
-        $carrier  = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
+        $carrier       = sanitize_text_field( wp_unslash( $_REQUEST['carrier'] ) );
         // phpcs:ignore
-        $network = sanitize_text_field( wp_unslash( $_REQUEST['network'] ) );
+        $network       = sanitize_text_field( wp_unslash( $_REQUEST['network'] ) );
         // phpcs:ignore
-        $code     = sanitize_text_field( wp_unslash( $_REQUEST['code'] ) );
+        $code          = sanitize_text_field( wp_unslash( $_REQUEST['code'] ) );
         // phpcs:ignore
-        $name     = sanitize_text_field( wp_unslash( $_REQUEST['name'] ) );
+		$name          = sanitize_text_field( wp_unslash( $_REQUEST['name'] ) );
+        // phpcs:ignore
+		$address       = sanitize_text_field( wp_unslash( $_REQUEST['address'] ) );
+        // phpcs:ignore
+		$zipcode       = sanitize_text_field( wp_unslash( $_REQUEST['zipcode'] ) );
+        // phpcs:ignore
+		$city          = sanitize_text_field( wp_unslash( $_REQUEST['city'] ) );
+        // phpcs:ignore
+		$country       = sanitize_text_field( wp_unslash( $_REQUEST['country'] ) );
+        // phpcs:ignore
+		$opening_hours = @json_decode( sanitize_text_field( wp_unslash( $_REQUEST['openingHours'] ) ) );
+
+		$parcel_point = ParcelPoint_Util::create_parcelpoint(
+			$network,
+			$code,
+			$name,
+			$address,
+			$zipcode,
+			$city,
+			$country,
+			$opening_hours
+		);
+
 		if ( WC()->session ) {
-			$parcel_point = new \stdClass();
-			//phpcs:disable
-            $parcel_point->parcelPoint          = new \stdClass();
-            $parcel_point->parcelPoint->network = $network;
-            $parcel_point->parcelPoint->code    = $code;
-            $parcel_point->parcelPoint->name    = $name;
-            //phpcs:enable
 			WC()->session->set( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $carrier ), $parcel_point );
 		} else {
 			wp_send_json_error( array( 'message' => 'could not set point. Woocommerce sessions are not enabled!' ) );
@@ -261,7 +278,7 @@ class Controller {
             //phpcs:ignore
 			if ( property_exists( $parcel_points, 'nearbyParcelPoints' ) && is_array( $parcel_points->nearbyParcelPoints ) && count( $parcel_points->nearbyParcelPoints ) > 0 ) {
                 //phpcs:ignore
-			    return $parcel_points->nearbyParcelPoints[0];
+			    return Parcelpoint_Util::normalize_parcelpoint( $parcel_points->nearbyParcelPoints[0] );
 			}
 		}
 		return null;
@@ -275,7 +292,8 @@ class Controller {
 	 */
 	public static function get_chosen_point( $id ) {
 		if ( WC()->session ) {
-			return WC()->session->get( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $id ), null );
+			$point = WC()->session->get( 'bw_chosen_parcel_point_' . Shipping_Rate_Util::get_clean_id( $id ), null );
+			return Parcelpoint_Util::normalize_parcelpoint( $point );
 		}
 		return null;
 	}
@@ -288,7 +306,7 @@ class Controller {
 	public static function reset_chosen_points() {
 		if ( WC()->session ) {
 			foreach ( WC()->session->get_session_data() as $key => $value ) {
-				if ( -1 !== strpos( 'bw_chosen_parcel_point_', $key ) ) {
+				if ( 0 === strpos( $key, 'bw_chosen_parcel_point_' ) ) {
 					WC()->session->set( $key, null );
 				}
 			}

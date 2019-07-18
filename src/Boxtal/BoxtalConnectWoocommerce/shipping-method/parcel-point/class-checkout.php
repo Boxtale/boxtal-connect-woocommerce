@@ -43,20 +43,17 @@ class Checkout {
             // phpcs:ignore
 			$carrier  = sanitize_text_field( wp_unslash( $posted_data['shipping_method'][0] ) );
 			if ( WC()->session ) {
-				$closest_point = Controller::get_closest_point( $carrier );
-				if ( null !== $closest_point ) {
-					$point = Controller::get_chosen_point( $carrier );
-					if ( null === $point ) {
-						$point = $closest_point;
-					} else {
-						Controller::reset_chosen_points();
-					}
 
+				$point = Controller::get_chosen_point( $carrier );
+				if ( null === $point ) {
+					$point = Controller::get_closest_point( $carrier );
+				}
+
+				Controller::reset_chosen_points();
+
+				if ( null !== $point ) {
 					$order = new \WC_Order( $order_id );
-					//phpcs:ignore
-                    Order_Util::add_meta_data( $order, 'bw_parcel_point_code', $point->parcelPoint->code );
-                    //phpcs:ignore
-                    Order_Util::add_meta_data( $order, 'bw_parcel_point_network', $point->parcelPoint->network );
+					Order_Util::add_meta_data( $order, 'bw_parcel_point', $point );
 					Order_Util::save( $order );
 				}
 			}

@@ -2,6 +2,7 @@ vendor/
 composer.lock
 package-lock.json
 .idea/
+.vscode/
 coverage.xml
 src/Boxtal/BoxtalConnectWoocommerce/assets/css
 src/Boxtal/BoxtalConnectWoocommerce/assets/js/*.min.js
