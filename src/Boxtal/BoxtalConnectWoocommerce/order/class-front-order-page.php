@@ -72,8 +72,13 @@ class Front_Order_Page {
 	 */
 	public function add_parcelpoint_to_front_order_page( $order ) {
 		$parcelpoint = Order_Util::get_parcelpoint( $order );
+		$has_address = null !== $parcelpoint->name
+			&& null !== $parcelpoint->address
+			&& null !== $parcelpoint->zipcode
+			&& null !== $parcelpoint->city
+			&& null !== $parcelpoint->country;
 
-		if ( null !== $parcelpoint ) {
+		if ( null !== $parcelpoint && $has_address ) {
 			include realpath( plugin_dir_path( __DIR__ ) ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'html-front-order-parcelpoint.php';
 		}
 	}
