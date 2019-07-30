@@ -1,3 +1,4 @@
+set -e
 echo "Packing plugin ..."
 
 if [ ! -d "vendor" ]; then
@@ -18,8 +19,8 @@ echo "Copying sources into pack folder ..."
 mkdir pack
 cp -rf src/* pack/
 rm -rf pack/Boxtal/BoxtalConnectWoocommerce/assets/less
-rm pack/Boxtal/BoxtalConnectWoocommerce/assets/js/*
-rm pack/Boxtal/BoxtalConnectWoocommerce/translation/*.mo
+rm -f pack/Boxtal/BoxtalConnectWoocommerce/assets/js/*
+rm -f pack/Boxtal/BoxtalConnectWoocommerce/translation/*.mo
 
 # add library
 echo "Adding BoxtalPhp library ..."
