@@ -1,11 +1,11 @@
 <?php
 /**
- * Contains code for the tracking controller class.
+ * Contains code for the order controller class.
  *
- * @package     Boxtal\BoxtalConnectWoocommerce\Tracking
+ * @package     Boxtal\BoxtalConnectWoocommerce\Order
  */
 
-namespace Boxtal\BoxtalConnectWoocommerce\Tracking;
+namespace Boxtal\BoxtalConnectWoocommerce\Order;
 
 use Boxtal\BoxtalPhp\ApiClient;
 use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
@@ -13,10 +13,10 @@ use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
 /**
  * Controller class.
  *
- * Handles tracking hooks and functions.
+ * Handles additional info hooks and functions.
  *
  * @class       Controller
- * @package     Boxtal\BoxtalConnectWoocommerce\Tracking
+ * @package     Boxtal\BoxtalConnectWoocommerce\Order
  * @category    Class
  * @author      API Boxtal
  */

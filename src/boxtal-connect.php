@@ -25,8 +25,8 @@ use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point\Checkout;
 use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Parcel_Point\Label_Override;
 use Boxtal\BoxtalConnectWoocommerce\Shipping_Method\Settings_Override;
 use Boxtal\BoxtalConnectWoocommerce\Settings\Page;
-use Boxtal\BoxtalConnectWoocommerce\Tracking\Admin_Order_Page;
-use Boxtal\BoxtalConnectWoocommerce\Tracking\Front_Order_Page;
+use Boxtal\BoxtalConnectWoocommerce\Order\Admin_Order_Page;
+use Boxtal\BoxtalConnectWoocommerce\Order\Front_Order_Page;
 use Boxtal\BoxtalConnectWoocommerce\Util\Auth_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Configuration_Util;
 use Boxtal\BoxtalConnectWoocommerce\Util\Database_Util;
@@ -448,7 +448,7 @@ function boxtal_connect_tracking_controller( $plugin ) {
 		return $object;
 	}
 
-	$object = new Boxtal\BoxtalConnectWoocommerce\Tracking\Controller( $plugin );
+	$object = new Boxtal\BoxtalConnectWoocommerce\Order\Controller( $plugin );
 	return $object;
 }
 
