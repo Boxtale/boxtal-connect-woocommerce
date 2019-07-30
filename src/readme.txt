@@ -70,6 +70,7 @@ Boxtal Connect by Boxtal is a free non-binding solution.
 
 = 1.1.10 =
 * Added selected parcelpoint infos on front and admin order page
+* Fixed an issue causing the plugin to empty all the session instead of only it's own attributes
 
 = 1.1.9 =
 * fixed an issue when exporting orders with articles with variation
