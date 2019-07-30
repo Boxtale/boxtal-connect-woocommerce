@@ -83,7 +83,7 @@ class Parcelpoint_Util {
 	public static function create_parcelpoint( $network, $code, $name, $address, $zipcode, $city, $country, $opening_hours ) {
 		$point = null;
 
-		if ( null !== $network && null !== $code && null !== $name ) {
+		if ( null !== $network && null !== $code ) {
 			$point = new \stdClass();
 
 			$point->network       = $network;
