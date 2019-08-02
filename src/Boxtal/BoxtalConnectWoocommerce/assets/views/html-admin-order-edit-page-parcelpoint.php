@@ -9,8 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$networks_name = array_key_exists( $parcelpoint->network, $parcelpoint_networks )
-	? implode( ', ', $parcelpoint_networks[ $parcelpoint->network ] ) : null;
+$network       = $parcelpoint->network;
+$networks_name = array_key_exists( $network, $parcelpoint_networks )
+	? implode( ', ', $parcelpoint_networks->$network ) : null;
 
 ?>
 <div class="bw-order-parcelpoint">
