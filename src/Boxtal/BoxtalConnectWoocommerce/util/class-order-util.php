@@ -453,8 +453,9 @@ class Order_Util {
 		$parcelpoint = Order_Util::get_meta( $order, 'bw_parcel_point' );
 
 		if ( ! $parcelpoint ) {
-			$code    = Order_Util::get_meta( $order, 'bw_parcel_point_code' );
-			$network = Order_Util::get_meta( $order, 'bw_parcel_point_network' );
+			$parcelpoint = null;
+			$code        = Order_Util::get_meta( $order, 'bw_parcel_point_code' );
+			$network     = Order_Util::get_meta( $order, 'bw_parcel_point_network' );
 
 			if ( $code && $network ) {
 				$parcelpoint = Parcelpoint_Util::create_parcelpoint(

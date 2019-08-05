@@ -155,7 +155,7 @@ class Order {
 				'orderAmount'       => Order_Util::get_total( $order ),
 				'recipient'         => $recipient,
 				'products'          => $products,
-				'parcelPoint'       => array(
+				'parcelPoint'       => null === $parcelpoint ? null : array(
 					'code'    => $parcelpoint->code,
 					'network' => $parcelpoint->network,
 				),
