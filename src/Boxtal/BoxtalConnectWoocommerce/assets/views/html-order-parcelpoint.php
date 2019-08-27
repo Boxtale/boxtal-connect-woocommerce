@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$closed           = __( 'Closed', 'boxtal-connect' );
 $weekday_initials = array(
 	'MONDAY'    => substr( __( 'MONDAY', 'boxtal-connect' ), 0, 1 ),
 	'TUESDAY'   => substr( __( 'TUESDAY', 'boxtal-connect' ), 0, 1 ),
@@ -30,16 +29,20 @@ $has_address       = null !== $parcelpoint->name
 if ( $has_opening_hours ) {
 	$lines = array();
 	foreach ( $parcelpoint->opening_hours as $index => $opening_hour ) {
-		$am = $closed;
-		$pm = $closed;
+		$am = '';
+		$pm = '';
 
 		if ( isset( $opening_hour->opening_periods[0] ) ) {
 			$hours = $opening_hour->opening_periods[0];
-			$am    = $hours->open . '-' . $hours->close;
+			if ( strlen( $hours->open ) > 0 && strlen( $hours->close ) > 0 ) {
+				$am = $hours->open . '-' . $hours->close;
+			}
 		}
 		if ( isset( $opening_hour->opening_periods[1] ) ) {
 			$hours = $opening_hour->opening_periods[1];
-			$pm    = $hours->open . '-' . $hours->close;
+			if ( strlen( $hours->open ) > 0 && strlen( $hours->close ) > 0 ) {
+				$pm = $hours->open . '-' . $hours->close;
+			}
 		}
 
 		$line = $weekday_initials[ $opening_hour->weekday ] . ' ' . str_pad( $am, 11 ) . ' ' . str_pad( $pm, 11 );

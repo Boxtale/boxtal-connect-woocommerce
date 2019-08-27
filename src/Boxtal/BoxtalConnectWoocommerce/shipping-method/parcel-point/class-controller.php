@@ -86,7 +86,6 @@ class Controller {
 				'yourAddress'         => __( 'Your address:', 'boxtal-connect' ),
 				'closeMap'            => __( 'Close map', 'boxtal-connect' ),
 				'selectedParcelPoint' => __( 'Your parcel point:', 'boxtal-connect' ),
-				'closed'              => __( 'Closed', 'boxtal-connect' ),
 			),
 			'day'   => array(
 				'MONDAY'    => __( 'monday', 'boxtal-connect' ),

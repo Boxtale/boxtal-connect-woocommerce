@@ -173,6 +173,7 @@
 
         formatOpeningDays(openingDays) {
             var parsedDays = [];
+            var emptyPeriod = this.fillSpaces('', 11);
       
             for (var i = 0; i < openingDays.length; i++) {
                 var openingDay = openingDays[i];
@@ -189,11 +190,9 @@
       
                         if (open !== '' && close !== '') {
                             parsedPeriods.push(open + '-' + close);
+                        } else {
+                            parsedPeriods.push(emptyPeriod);
                         }
-                    }
-      
-                    while (parsedPeriods.length < 2) {
-                      parsedPeriods.push(this.fillSpaces(translations.text.closed, 11));
                     }
       
                     parsedDay += parsedPeriods.join(' ');
